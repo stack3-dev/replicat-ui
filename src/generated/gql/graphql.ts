@@ -759,6 +759,217 @@ export enum ReplicaCreated_OrderBy {
   TransactionHash = 'transactionHash'
 }
 
+export type Subscription = {
+  __typename?: 'Subscription';
+  /** Access to subgraph metadata */
+  _meta?: Maybe<_Meta_>;
+  eip712DomainChanged?: Maybe<Eip712DomainChanged>;
+  eip712DomainChangeds: Array<Eip712DomainChanged>;
+  ownershipTransferred?: Maybe<OwnershipTransferred>;
+  ownershipTransferreds: Array<OwnershipTransferred>;
+  relayerRegistered?: Maybe<RelayerRegistered>;
+  relayerRegistereds: Array<RelayerRegistered>;
+  replicaAdapterCreated?: Maybe<ReplicaAdapterCreated>;
+  replicaAdapterCreateds: Array<ReplicaAdapterCreated>;
+  replicaCreated?: Maybe<ReplicaCreated>;
+  replicaCreateds: Array<ReplicaCreated>;
+  transferFeeUpdated?: Maybe<TransferFeeUpdated>;
+  transferFeeUpdateds: Array<TransferFeeUpdated>;
+  transferFeesWithdrawn?: Maybe<TransferFeesWithdrawn>;
+  transferFeesWithdrawns: Array<TransferFeesWithdrawn>;
+  transferReverted?: Maybe<TransferReverted>;
+  transferReverteds: Array<TransferReverted>;
+  transfered?: Maybe<Transfered>;
+  transferedCrosschain?: Maybe<TransferedCrosschain>;
+  transferedCrosschains: Array<TransferedCrosschain>;
+  transfereds: Array<Transfered>;
+};
+
+
+export type Subscription_MetaArgs = {
+  block?: InputMaybe<Block_Height>;
+};
+
+
+export type SubscriptionEip712DomainChangedArgs = {
+  block?: InputMaybe<Block_Height>;
+  id: Scalars['ID']['input'];
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+
+export type SubscriptionEip712DomainChangedsArgs = {
+  block?: InputMaybe<Block_Height>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Eip712DomainChanged_OrderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  subgraphError?: _SubgraphErrorPolicy_;
+  where?: InputMaybe<Eip712DomainChanged_Filter>;
+};
+
+
+export type SubscriptionOwnershipTransferredArgs = {
+  block?: InputMaybe<Block_Height>;
+  id: Scalars['ID']['input'];
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+
+export type SubscriptionOwnershipTransferredsArgs = {
+  block?: InputMaybe<Block_Height>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<OwnershipTransferred_OrderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  subgraphError?: _SubgraphErrorPolicy_;
+  where?: InputMaybe<OwnershipTransferred_Filter>;
+};
+
+
+export type SubscriptionRelayerRegisteredArgs = {
+  block?: InputMaybe<Block_Height>;
+  id: Scalars['ID']['input'];
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+
+export type SubscriptionRelayerRegisteredsArgs = {
+  block?: InputMaybe<Block_Height>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<RelayerRegistered_OrderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  subgraphError?: _SubgraphErrorPolicy_;
+  where?: InputMaybe<RelayerRegistered_Filter>;
+};
+
+
+export type SubscriptionReplicaAdapterCreatedArgs = {
+  block?: InputMaybe<Block_Height>;
+  id: Scalars['ID']['input'];
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+
+export type SubscriptionReplicaAdapterCreatedsArgs = {
+  block?: InputMaybe<Block_Height>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<ReplicaAdapterCreated_OrderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  subgraphError?: _SubgraphErrorPolicy_;
+  where?: InputMaybe<ReplicaAdapterCreated_Filter>;
+};
+
+
+export type SubscriptionReplicaCreatedArgs = {
+  block?: InputMaybe<Block_Height>;
+  id: Scalars['ID']['input'];
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+
+export type SubscriptionReplicaCreatedsArgs = {
+  block?: InputMaybe<Block_Height>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<ReplicaCreated_OrderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  subgraphError?: _SubgraphErrorPolicy_;
+  where?: InputMaybe<ReplicaCreated_Filter>;
+};
+
+
+export type SubscriptionTransferFeeUpdatedArgs = {
+  block?: InputMaybe<Block_Height>;
+  id: Scalars['ID']['input'];
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+
+export type SubscriptionTransferFeeUpdatedsArgs = {
+  block?: InputMaybe<Block_Height>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<TransferFeeUpdated_OrderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  subgraphError?: _SubgraphErrorPolicy_;
+  where?: InputMaybe<TransferFeeUpdated_Filter>;
+};
+
+
+export type SubscriptionTransferFeesWithdrawnArgs = {
+  block?: InputMaybe<Block_Height>;
+  id: Scalars['ID']['input'];
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+
+export type SubscriptionTransferFeesWithdrawnsArgs = {
+  block?: InputMaybe<Block_Height>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<TransferFeesWithdrawn_OrderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  subgraphError?: _SubgraphErrorPolicy_;
+  where?: InputMaybe<TransferFeesWithdrawn_Filter>;
+};
+
+
+export type SubscriptionTransferRevertedArgs = {
+  block?: InputMaybe<Block_Height>;
+  id: Scalars['ID']['input'];
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+
+export type SubscriptionTransferRevertedsArgs = {
+  block?: InputMaybe<Block_Height>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<TransferReverted_OrderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  subgraphError?: _SubgraphErrorPolicy_;
+  where?: InputMaybe<TransferReverted_Filter>;
+};
+
+
+export type SubscriptionTransferedArgs = {
+  block?: InputMaybe<Block_Height>;
+  id: Scalars['ID']['input'];
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+
+export type SubscriptionTransferedCrosschainArgs = {
+  block?: InputMaybe<Block_Height>;
+  id: Scalars['ID']['input'];
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+
+export type SubscriptionTransferedCrosschainsArgs = {
+  block?: InputMaybe<Block_Height>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<TransferedCrosschain_OrderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  subgraphError?: _SubgraphErrorPolicy_;
+  where?: InputMaybe<TransferedCrosschain_Filter>;
+};
+
+
+export type SubscriptionTransferedsArgs = {
+  block?: InputMaybe<Block_Height>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Transfered_OrderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  subgraphError?: _SubgraphErrorPolicy_;
+  where?: InputMaybe<Transfered_Filter>;
+};
+
 export type TransferFeeUpdated = {
   __typename?: 'TransferFeeUpdated';
   blockNumber: Scalars['BigInt']['output'];

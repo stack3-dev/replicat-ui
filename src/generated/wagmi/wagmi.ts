@@ -82,7 +82,11 @@ export const bridgeAbi = [
     ],
     name: 'createReplicaAdapter',
     outputs: [
-      { name: 'replicaAddress', internalType: 'address', type: 'address' },
+      {
+        name: 'replicaAdapterAddress',
+        internalType: 'address',
+        type: 'address',
+      },
     ],
     stateMutability: 'nonpayable',
   },
@@ -386,7 +390,39 @@ export const bridgeAbi = [
     inputs: [
       { name: 'hash', internalType: 'bytes32', type: 'bytes32', indexed: true },
       {
-        name: 'asset',
+        name: 'address_',
+        internalType: 'address',
+        type: 'address',
+        indexed: true,
+      },
+      {
+        name: 'creator',
+        internalType: 'address',
+        type: 'address',
+        indexed: true,
+      },
+      {
+        name: 'assetData',
+        internalType: 'struct Asset',
+        type: 'tuple',
+        components: [
+          { name: 'type_', internalType: 'enum AssetType', type: 'uint8' },
+          { name: 'chainBid', internalType: 'uint256', type: 'uint256' },
+          { name: 'address_', internalType: 'bytes32', type: 'bytes32' },
+          { name: 'metadata', internalType: 'bytes', type: 'bytes' },
+        ],
+        indexed: false,
+      },
+    ],
+    name: 'ReplicaAdapterCreated',
+  },
+  {
+    type: 'event',
+    anonymous: false,
+    inputs: [
+      { name: 'hash', internalType: 'bytes32', type: 'bytes32', indexed: true },
+      {
+        name: 'address_',
         internalType: 'address',
         type: 'address',
         indexed: true,
@@ -1072,36 +1108,90 @@ export const erc20PermitAbi = [
 ] as const
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// IRERC20
+// ERC721
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-export const irerc20Abi = [
+export const erc721Abi = [
   {
     type: 'function',
     inputs: [
-      { name: '_from', internalType: 'address', type: 'address' },
-      { name: '_amount', internalType: 'uint256', type: 'uint256' },
+      { name: 'to', internalType: 'address', type: 'address' },
+      { name: 'tokenId', internalType: 'uint256', type: 'uint256' },
     ],
-    name: 'crosschainBurn',
+    name: 'approve',
     outputs: [],
     stateMutability: 'nonpayable',
   },
   {
     type: 'function',
+    inputs: [{ name: 'owner', internalType: 'address', type: 'address' }],
+    name: 'balanceOf',
+    outputs: [{ name: '', internalType: 'uint256', type: 'uint256' }],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
+    inputs: [{ name: 'tokenId', internalType: 'uint256', type: 'uint256' }],
+    name: 'getApproved',
+    outputs: [{ name: '', internalType: 'address', type: 'address' }],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
     inputs: [
-      { name: '_to', internalType: 'address', type: 'address' },
-      { name: '_amount', internalType: 'uint256', type: 'uint256' },
+      { name: 'owner', internalType: 'address', type: 'address' },
+      { name: 'operator', internalType: 'address', type: 'address' },
     ],
-    name: 'crosschainMint',
-    outputs: [],
-    stateMutability: 'nonpayable',
+    name: 'isApprovedForAll',
+    outputs: [{ name: '', internalType: 'bool', type: 'bool' }],
+    stateMutability: 'view',
   },
   {
     type: 'function',
     inputs: [],
-    name: 'decimals',
-    outputs: [{ name: '', internalType: 'uint8', type: 'uint8' }],
+    name: 'name',
+    outputs: [{ name: '', internalType: 'string', type: 'string' }],
     stateMutability: 'view',
+  },
+  {
+    type: 'function',
+    inputs: [{ name: 'tokenId', internalType: 'uint256', type: 'uint256' }],
+    name: 'ownerOf',
+    outputs: [{ name: '', internalType: 'address', type: 'address' }],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
+    inputs: [
+      { name: 'from', internalType: 'address', type: 'address' },
+      { name: 'to', internalType: 'address', type: 'address' },
+      { name: 'tokenId', internalType: 'uint256', type: 'uint256' },
+    ],
+    name: 'safeTransferFrom',
+    outputs: [],
+    stateMutability: 'nonpayable',
+  },
+  {
+    type: 'function',
+    inputs: [
+      { name: 'from', internalType: 'address', type: 'address' },
+      { name: 'to', internalType: 'address', type: 'address' },
+      { name: 'tokenId', internalType: 'uint256', type: 'uint256' },
+      { name: 'data', internalType: 'bytes', type: 'bytes' },
+    ],
+    name: 'safeTransferFrom',
+    outputs: [],
+    stateMutability: 'nonpayable',
+  },
+  {
+    type: 'function',
+    inputs: [
+      { name: 'operator', internalType: 'address', type: 'address' },
+      { name: 'approved', internalType: 'bool', type: 'bool' },
+    ],
+    name: 'setApprovalForAll',
+    outputs: [],
+    stateMutability: 'nonpayable',
   },
   {
     type: 'function',
@@ -1111,436 +1201,136 @@ export const irerc20Abi = [
     stateMutability: 'view',
   },
   {
+    type: 'function',
+    inputs: [],
+    name: 'symbol',
+    outputs: [{ name: '', internalType: 'string', type: 'string' }],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
+    inputs: [{ name: 'tokenId', internalType: 'uint256', type: 'uint256' }],
+    name: 'tokenURI',
+    outputs: [{ name: '', internalType: 'string', type: 'string' }],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
+    inputs: [
+      { name: 'from', internalType: 'address', type: 'address' },
+      { name: 'to', internalType: 'address', type: 'address' },
+      { name: 'tokenId', internalType: 'uint256', type: 'uint256' },
+    ],
+    name: 'transferFrom',
+    outputs: [],
+    stateMutability: 'nonpayable',
+  },
+  {
+    type: 'event',
+    anonymous: false,
+    inputs: [
+      {
+        name: 'owner',
+        internalType: 'address',
+        type: 'address',
+        indexed: true,
+      },
+      {
+        name: 'approved',
+        internalType: 'address',
+        type: 'address',
+        indexed: true,
+      },
+      {
+        name: 'tokenId',
+        internalType: 'uint256',
+        type: 'uint256',
+        indexed: true,
+      },
+    ],
+    name: 'Approval',
+  },
+  {
+    type: 'event',
+    anonymous: false,
+    inputs: [
+      {
+        name: 'owner',
+        internalType: 'address',
+        type: 'address',
+        indexed: true,
+      },
+      {
+        name: 'operator',
+        internalType: 'address',
+        type: 'address',
+        indexed: true,
+      },
+      { name: 'approved', internalType: 'bool', type: 'bool', indexed: false },
+    ],
+    name: 'ApprovalForAll',
+  },
+  {
     type: 'event',
     anonymous: false,
     inputs: [
       { name: 'from', internalType: 'address', type: 'address', indexed: true },
-      {
-        name: 'amount',
-        internalType: 'uint256',
-        type: 'uint256',
-        indexed: false,
-      },
-      {
-        name: 'sender',
-        internalType: 'address',
-        type: 'address',
-        indexed: true,
-      },
-    ],
-    name: 'CrosschainBurn',
-  },
-  {
-    type: 'event',
-    anonymous: false,
-    inputs: [
       { name: 'to', internalType: 'address', type: 'address', indexed: true },
       {
-        name: 'amount',
-        internalType: 'uint256',
-        type: 'uint256',
-        indexed: false,
-      },
-      {
-        name: 'sender',
-        internalType: 'address',
-        type: 'address',
-        indexed: true,
-      },
-    ],
-    name: 'CrosschainMint',
-  },
-] as const
-
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// LayerZeroMessenger
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-export const layerZeroMessengerAbi = [
-  {
-    type: 'constructor',
-    inputs: [
-      {
-        name: 'messageHandler',
-        internalType: 'contract IMessageHandler',
-        type: 'address',
-      },
-      { name: 'endpoint', internalType: 'address', type: 'address' },
-      { name: 'initialOwner', internalType: 'address', type: 'address' },
-    ],
-    stateMutability: 'nonpayable',
-  },
-  {
-    type: 'function',
-    inputs: [
-      {
-        name: 'origin',
-        internalType: 'struct Origin',
-        type: 'tuple',
-        components: [
-          { name: 'srcEid', internalType: 'uint32', type: 'uint32' },
-          { name: 'sender', internalType: 'bytes32', type: 'bytes32' },
-          { name: 'nonce', internalType: 'uint64', type: 'uint64' },
-        ],
-      },
-    ],
-    name: 'allowInitializePath',
-    outputs: [{ name: '', internalType: 'bool', type: 'bool' }],
-    stateMutability: 'view',
-  },
-  {
-    type: 'function',
-    inputs: [],
-    name: 'endpoint',
-    outputs: [
-      {
-        name: '',
-        internalType: 'contract ILayerZeroEndpointV2',
-        type: 'address',
-      },
-    ],
-    stateMutability: 'view',
-  },
-  {
-    type: 'function',
-    inputs: [{ name: 'chainBid', internalType: 'uint256', type: 'uint256' }],
-    name: 'getChainBidEndpoint',
-    outputs: [{ name: '', internalType: 'uint32', type: 'uint32' }],
-    stateMutability: 'view',
-  },
-  {
-    type: 'function',
-    inputs: [],
-    name: 'getOptions',
-    outputs: [{ name: '', internalType: 'bytes', type: 'bytes' }],
-    stateMutability: 'view',
-  },
-  {
-    type: 'function',
-    inputs: [
-      {
-        name: '',
-        internalType: 'struct Origin',
-        type: 'tuple',
-        components: [
-          { name: 'srcEid', internalType: 'uint32', type: 'uint32' },
-          { name: 'sender', internalType: 'bytes32', type: 'bytes32' },
-          { name: 'nonce', internalType: 'uint64', type: 'uint64' },
-        ],
-      },
-      { name: '', internalType: 'bytes', type: 'bytes' },
-      { name: '_sender', internalType: 'address', type: 'address' },
-    ],
-    name: 'isComposeMsgSender',
-    outputs: [{ name: '', internalType: 'bool', type: 'bool' }],
-    stateMutability: 'view',
-  },
-  {
-    type: 'function',
-    inputs: [{ name: '', internalType: 'uint256', type: 'uint256' }],
-    name: 'isFailed',
-    outputs: [{ name: '', internalType: 'bool', type: 'bool' }],
-    stateMutability: 'pure',
-  },
-  {
-    type: 'function',
-    inputs: [
-      {
-        name: '_origin',
-        internalType: 'struct Origin',
-        type: 'tuple',
-        components: [
-          { name: 'srcEid', internalType: 'uint32', type: 'uint32' },
-          { name: 'sender', internalType: 'bytes32', type: 'bytes32' },
-          { name: 'nonce', internalType: 'uint64', type: 'uint64' },
-        ],
-      },
-      { name: '_guid', internalType: 'bytes32', type: 'bytes32' },
-      { name: '_message', internalType: 'bytes', type: 'bytes' },
-      { name: '_executor', internalType: 'address', type: 'address' },
-      { name: '_extraData', internalType: 'bytes', type: 'bytes' },
-    ],
-    name: 'lzReceive',
-    outputs: [],
-    stateMutability: 'payable',
-  },
-  {
-    type: 'function',
-    inputs: [],
-    name: 'messageHandler',
-    outputs: [
-      { name: '', internalType: 'contract IMessageHandler', type: 'address' },
-    ],
-    stateMutability: 'view',
-  },
-  {
-    type: 'function',
-    inputs: [],
-    name: 'messengerClass',
-    outputs: [{ name: '', internalType: 'bytes4', type: 'bytes4' }],
-    stateMutability: 'view',
-  },
-  {
-    type: 'function',
-    inputs: [
-      { name: '', internalType: 'uint32', type: 'uint32' },
-      { name: '', internalType: 'bytes32', type: 'bytes32' },
-    ],
-    name: 'nextNonce',
-    outputs: [{ name: 'nonce', internalType: 'uint64', type: 'uint64' }],
-    stateMutability: 'view',
-  },
-  {
-    type: 'function',
-    inputs: [],
-    name: 'oAppVersion',
-    outputs: [
-      { name: 'senderVersion', internalType: 'uint64', type: 'uint64' },
-      { name: 'receiverVersion', internalType: 'uint64', type: 'uint64' },
-    ],
-    stateMutability: 'pure',
-  },
-  {
-    type: 'function',
-    inputs: [],
-    name: 'owner',
-    outputs: [{ name: '', internalType: 'address', type: 'address' }],
-    stateMutability: 'view',
-  },
-  {
-    type: 'function',
-    inputs: [{ name: 'eid', internalType: 'uint32', type: 'uint32' }],
-    name: 'peers',
-    outputs: [{ name: 'peer', internalType: 'bytes32', type: 'bytes32' }],
-    stateMutability: 'view',
-  },
-  {
-    type: 'function',
-    inputs: [
-      { name: 'chainBid', internalType: 'uint256', type: 'uint256' },
-      { name: 'data', internalType: 'bytes', type: 'bytes' },
-    ],
-    name: 'quoteTransmit',
-    outputs: [{ name: '', internalType: 'uint256', type: 'uint256' }],
-    stateMutability: 'view',
-  },
-  {
-    type: 'function',
-    inputs: [],
-    name: 'renounceOwnership',
-    outputs: [],
-    stateMutability: 'nonpayable',
-  },
-  {
-    type: 'function',
-    inputs: [
-      { name: 'chainBid', internalType: 'uint256', type: 'uint256' },
-      { name: 'endpoint', internalType: 'uint32', type: 'uint32' },
-    ],
-    name: 'setChainBidEndpoint',
-    outputs: [],
-    stateMutability: 'nonpayable',
-  },
-  {
-    type: 'function',
-    inputs: [{ name: '_delegate', internalType: 'address', type: 'address' }],
-    name: 'setDelegate',
-    outputs: [],
-    stateMutability: 'nonpayable',
-  },
-  {
-    type: 'function',
-    inputs: [
-      {
-        name: 'newHandler',
-        internalType: 'contract IMessageHandler',
-        type: 'address',
-      },
-    ],
-    name: 'setMessageHandler',
-    outputs: [],
-    stateMutability: 'nonpayable',
-  },
-  {
-    type: 'function',
-    inputs: [{ name: 'options', internalType: 'bytes', type: 'bytes' }],
-    name: 'setOptions',
-    outputs: [],
-    stateMutability: 'nonpayable',
-  },
-  {
-    type: 'function',
-    inputs: [
-      { name: '_eid', internalType: 'uint32', type: 'uint32' },
-      { name: '_peer', internalType: 'bytes32', type: 'bytes32' },
-    ],
-    name: 'setPeer',
-    outputs: [],
-    stateMutability: 'nonpayable',
-  },
-  {
-    type: 'function',
-    inputs: [{ name: 'newOwner', internalType: 'address', type: 'address' }],
-    name: 'transferOwnership',
-    outputs: [],
-    stateMutability: 'nonpayable',
-  },
-  {
-    type: 'function',
-    inputs: [
-      { name: 'chainBid', internalType: 'uint256', type: 'uint256' },
-      { name: 'data', internalType: 'bytes', type: 'bytes' },
-      {
-        name: 'refundAddress',
-        internalType: 'address payable',
-        type: 'address',
-      },
-    ],
-    name: 'transmit',
-    outputs: [{ name: '', internalType: 'uint256', type: 'uint256' }],
-    stateMutability: 'payable',
-  },
-  {
-    type: 'event',
-    anonymous: false,
-    inputs: [
-      {
-        name: 'chainBid',
+        name: 'tokenId',
         internalType: 'uint256',
         type: 'uint256',
         indexed: true,
       },
-      {
-        name: 'endpoint',
-        internalType: 'uint32',
-        type: 'uint32',
-        indexed: true,
-      },
     ],
-    name: 'BridgeChainEndpointSet',
-  },
-  {
-    type: 'event',
-    anonymous: false,
-    inputs: [
-      {
-        name: 'trackId',
-        internalType: 'uint256',
-        type: 'uint256',
-        indexed: true,
-      },
-      { name: 'data', internalType: 'bytes', type: 'bytes', indexed: false },
-    ],
-    name: 'Messenger_MessageHandled',
-  },
-  {
-    type: 'event',
-    anonymous: false,
-    inputs: [
-      {
-        name: 'oldHandler',
-        internalType: 'contract IMessageHandler',
-        type: 'address',
-        indexed: true,
-      },
-      {
-        name: 'newHandler',
-        internalType: 'contract IMessageHandler',
-        type: 'address',
-        indexed: true,
-      },
-    ],
-    name: 'Messenger_MessageHandlerChanged',
-  },
-  {
-    type: 'event',
-    anonymous: false,
-    inputs: [
-      { name: 'options', internalType: 'bytes', type: 'bytes', indexed: false },
-    ],
-    name: 'OptionsSet',
-  },
-  {
-    type: 'event',
-    anonymous: false,
-    inputs: [
-      {
-        name: 'previousOwner',
-        internalType: 'address',
-        type: 'address',
-        indexed: true,
-      },
-      {
-        name: 'newOwner',
-        internalType: 'address',
-        type: 'address',
-        indexed: true,
-      },
-    ],
-    name: 'OwnershipTransferred',
-  },
-  {
-    type: 'event',
-    anonymous: false,
-    inputs: [
-      { name: 'eid', internalType: 'uint32', type: 'uint32', indexed: false },
-      {
-        name: 'peer',
-        internalType: 'bytes32',
-        type: 'bytes32',
-        indexed: false,
-      },
-    ],
-    name: 'PeerSet',
-  },
-  { type: 'error', inputs: [], name: 'InvalidDelegate' },
-  { type: 'error', inputs: [], name: 'InvalidEndpointCall' },
-  { type: 'error', inputs: [], name: 'LzTokenUnavailable' },
-  { type: 'error', inputs: [], name: 'Messenger_InvalidMessage' },
-  { type: 'error', inputs: [], name: 'Messenger_MessageAlreadyHandled' },
-  { type: 'error', inputs: [], name: 'Messenger_OperationNotSupported' },
-  {
-    type: 'error',
-    inputs: [{ name: 'chainBid', internalType: 'uint256', type: 'uint256' }],
-    name: 'Messenger_UnsupportedChainBid',
-  },
-  {
-    type: 'error',
-    inputs: [{ name: 'eid', internalType: 'uint32', type: 'uint32' }],
-    name: 'NoPeer',
-  },
-  {
-    type: 'error',
-    inputs: [{ name: 'msgValue', internalType: 'uint256', type: 'uint256' }],
-    name: 'NotEnoughNative',
-  },
-  {
-    type: 'error',
-    inputs: [{ name: 'addr', internalType: 'address', type: 'address' }],
-    name: 'OnlyEndpoint',
+    name: 'Transfer',
   },
   {
     type: 'error',
     inputs: [
-      { name: 'eid', internalType: 'uint32', type: 'uint32' },
-      { name: 'sender', internalType: 'bytes32', type: 'bytes32' },
+      { name: 'sender', internalType: 'address', type: 'address' },
+      { name: 'tokenId', internalType: 'uint256', type: 'uint256' },
+      { name: 'owner', internalType: 'address', type: 'address' },
     ],
-    name: 'OnlyPeer',
+    name: 'ERC721IncorrectOwner',
+  },
+  {
+    type: 'error',
+    inputs: [
+      { name: 'operator', internalType: 'address', type: 'address' },
+      { name: 'tokenId', internalType: 'uint256', type: 'uint256' },
+    ],
+    name: 'ERC721InsufficientApproval',
+  },
+  {
+    type: 'error',
+    inputs: [{ name: 'approver', internalType: 'address', type: 'address' }],
+    name: 'ERC721InvalidApprover',
+  },
+  {
+    type: 'error',
+    inputs: [{ name: 'operator', internalType: 'address', type: 'address' }],
+    name: 'ERC721InvalidOperator',
   },
   {
     type: 'error',
     inputs: [{ name: 'owner', internalType: 'address', type: 'address' }],
-    name: 'OwnableInvalidOwner',
+    name: 'ERC721InvalidOwner',
   },
   {
     type: 'error',
-    inputs: [{ name: 'account', internalType: 'address', type: 'address' }],
-    name: 'OwnableUnauthorizedAccount',
+    inputs: [{ name: 'receiver', internalType: 'address', type: 'address' }],
+    name: 'ERC721InvalidReceiver',
   },
   {
     type: 'error',
-    inputs: [{ name: 'token', internalType: 'address', type: 'address' }],
-    name: 'SafeERC20FailedOperation',
+    inputs: [{ name: 'sender', internalType: 'address', type: 'address' }],
+    name: 'ERC721InvalidSender',
+  },
+  {
+    type: 'error',
+    inputs: [{ name: 'tokenId', internalType: 'uint256', type: 'uint256' }],
+    name: 'ERC721NonexistentToken',
   },
 ] as const
 
@@ -1894,6 +1684,15 @@ export const useWatchBridgeRelayerRegisteredEvent =
   /*#__PURE__*/ createUseWatchContractEvent({
     abi: bridgeAbi,
     eventName: 'RelayerRegistered',
+  })
+
+/**
+ * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link bridgeAbi}__ and `eventName` set to `"ReplicaAdapterCreated"`
+ */
+export const useWatchBridgeReplicaAdapterCreatedEvent =
+  /*#__PURE__*/ createUseWatchContractEvent({
+    abi: bridgeAbi,
+    eventName: 'ReplicaAdapterCreated',
   })
 
 /**
@@ -2290,459 +2089,190 @@ export const useWatchErc20PermitTransferEvent =
   })
 
 /**
- * Wraps __{@link useReadContract}__ with `abi` set to __{@link irerc20Abi}__
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link erc721Abi}__
  */
-export const useReadIrerc20 = /*#__PURE__*/ createUseReadContract({
-  abi: irerc20Abi,
+export const useReadErc721 = /*#__PURE__*/ createUseReadContract({
+  abi: erc721Abi,
 })
 
 /**
- * Wraps __{@link useReadContract}__ with `abi` set to __{@link irerc20Abi}__ and `functionName` set to `"decimals"`
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link erc721Abi}__ and `functionName` set to `"balanceOf"`
  */
-export const useReadIrerc20Decimals = /*#__PURE__*/ createUseReadContract({
-  abi: irerc20Abi,
-  functionName: 'decimals',
+export const useReadErc721BalanceOf = /*#__PURE__*/ createUseReadContract({
+  abi: erc721Abi,
+  functionName: 'balanceOf',
 })
 
 /**
- * Wraps __{@link useReadContract}__ with `abi` set to __{@link irerc20Abi}__ and `functionName` set to `"supportsInterface"`
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link erc721Abi}__ and `functionName` set to `"getApproved"`
  */
-export const useReadIrerc20SupportsInterface =
+export const useReadErc721GetApproved = /*#__PURE__*/ createUseReadContract({
+  abi: erc721Abi,
+  functionName: 'getApproved',
+})
+
+/**
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link erc721Abi}__ and `functionName` set to `"isApprovedForAll"`
+ */
+export const useReadErc721IsApprovedForAll =
   /*#__PURE__*/ createUseReadContract({
-    abi: irerc20Abi,
+    abi: erc721Abi,
+    functionName: 'isApprovedForAll',
+  })
+
+/**
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link erc721Abi}__ and `functionName` set to `"name"`
+ */
+export const useReadErc721Name = /*#__PURE__*/ createUseReadContract({
+  abi: erc721Abi,
+  functionName: 'name',
+})
+
+/**
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link erc721Abi}__ and `functionName` set to `"ownerOf"`
+ */
+export const useReadErc721OwnerOf = /*#__PURE__*/ createUseReadContract({
+  abi: erc721Abi,
+  functionName: 'ownerOf',
+})
+
+/**
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link erc721Abi}__ and `functionName` set to `"supportsInterface"`
+ */
+export const useReadErc721SupportsInterface =
+  /*#__PURE__*/ createUseReadContract({
+    abi: erc721Abi,
     functionName: 'supportsInterface',
   })
 
 /**
- * Wraps __{@link useWriteContract}__ with `abi` set to __{@link irerc20Abi}__
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link erc721Abi}__ and `functionName` set to `"symbol"`
  */
-export const useWriteIrerc20 = /*#__PURE__*/ createUseWriteContract({
-  abi: irerc20Abi,
+export const useReadErc721Symbol = /*#__PURE__*/ createUseReadContract({
+  abi: erc721Abi,
+  functionName: 'symbol',
 })
 
 /**
- * Wraps __{@link useWriteContract}__ with `abi` set to __{@link irerc20Abi}__ and `functionName` set to `"crosschainBurn"`
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link erc721Abi}__ and `functionName` set to `"tokenURI"`
  */
-export const useWriteIrerc20CrosschainBurn =
-  /*#__PURE__*/ createUseWriteContract({
-    abi: irerc20Abi,
-    functionName: 'crosschainBurn',
-  })
-
-/**
- * Wraps __{@link useWriteContract}__ with `abi` set to __{@link irerc20Abi}__ and `functionName` set to `"crosschainMint"`
- */
-export const useWriteIrerc20CrosschainMint =
-  /*#__PURE__*/ createUseWriteContract({
-    abi: irerc20Abi,
-    functionName: 'crosschainMint',
-  })
-
-/**
- * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link irerc20Abi}__
- */
-export const useSimulateIrerc20 = /*#__PURE__*/ createUseSimulateContract({
-  abi: irerc20Abi,
+export const useReadErc721TokenUri = /*#__PURE__*/ createUseReadContract({
+  abi: erc721Abi,
+  functionName: 'tokenURI',
 })
 
 /**
- * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link irerc20Abi}__ and `functionName` set to `"crosschainBurn"`
+ * Wraps __{@link useWriteContract}__ with `abi` set to __{@link erc721Abi}__
  */
-export const useSimulateIrerc20CrosschainBurn =
-  /*#__PURE__*/ createUseSimulateContract({
-    abi: irerc20Abi,
-    functionName: 'crosschainBurn',
-  })
-
-/**
- * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link irerc20Abi}__ and `functionName` set to `"crosschainMint"`
- */
-export const useSimulateIrerc20CrosschainMint =
-  /*#__PURE__*/ createUseSimulateContract({
-    abi: irerc20Abi,
-    functionName: 'crosschainMint',
-  })
-
-/**
- * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link irerc20Abi}__
- */
-export const useWatchIrerc20Event = /*#__PURE__*/ createUseWatchContractEvent({
-  abi: irerc20Abi,
+export const useWriteErc721 = /*#__PURE__*/ createUseWriteContract({
+  abi: erc721Abi,
 })
 
 /**
- * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link irerc20Abi}__ and `eventName` set to `"CrosschainBurn"`
+ * Wraps __{@link useWriteContract}__ with `abi` set to __{@link erc721Abi}__ and `functionName` set to `"approve"`
  */
-export const useWatchIrerc20CrosschainBurnEvent =
-  /*#__PURE__*/ createUseWatchContractEvent({
-    abi: irerc20Abi,
-    eventName: 'CrosschainBurn',
-  })
-
-/**
- * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link irerc20Abi}__ and `eventName` set to `"CrosschainMint"`
- */
-export const useWatchIrerc20CrosschainMintEvent =
-  /*#__PURE__*/ createUseWatchContractEvent({
-    abi: irerc20Abi,
-    eventName: 'CrosschainMint',
-  })
-
-/**
- * Wraps __{@link useReadContract}__ with `abi` set to __{@link layerZeroMessengerAbi}__
- */
-export const useReadLayerZeroMessenger = /*#__PURE__*/ createUseReadContract({
-  abi: layerZeroMessengerAbi,
+export const useWriteErc721Approve = /*#__PURE__*/ createUseWriteContract({
+  abi: erc721Abi,
+  functionName: 'approve',
 })
 
 /**
- * Wraps __{@link useReadContract}__ with `abi` set to __{@link layerZeroMessengerAbi}__ and `functionName` set to `"allowInitializePath"`
+ * Wraps __{@link useWriteContract}__ with `abi` set to __{@link erc721Abi}__ and `functionName` set to `"safeTransferFrom"`
  */
-export const useReadLayerZeroMessengerAllowInitializePath =
-  /*#__PURE__*/ createUseReadContract({
-    abi: layerZeroMessengerAbi,
-    functionName: 'allowInitializePath',
+export const useWriteErc721SafeTransferFrom =
+  /*#__PURE__*/ createUseWriteContract({
+    abi: erc721Abi,
+    functionName: 'safeTransferFrom',
   })
 
 /**
- * Wraps __{@link useReadContract}__ with `abi` set to __{@link layerZeroMessengerAbi}__ and `functionName` set to `"endpoint"`
+ * Wraps __{@link useWriteContract}__ with `abi` set to __{@link erc721Abi}__ and `functionName` set to `"setApprovalForAll"`
  */
-export const useReadLayerZeroMessengerEndpoint =
-  /*#__PURE__*/ createUseReadContract({
-    abi: layerZeroMessengerAbi,
-    functionName: 'endpoint',
+export const useWriteErc721SetApprovalForAll =
+  /*#__PURE__*/ createUseWriteContract({
+    abi: erc721Abi,
+    functionName: 'setApprovalForAll',
   })
 
 /**
- * Wraps __{@link useReadContract}__ with `abi` set to __{@link layerZeroMessengerAbi}__ and `functionName` set to `"getChainBidEndpoint"`
+ * Wraps __{@link useWriteContract}__ with `abi` set to __{@link erc721Abi}__ and `functionName` set to `"transferFrom"`
  */
-export const useReadLayerZeroMessengerGetChainBidEndpoint =
-  /*#__PURE__*/ createUseReadContract({
-    abi: layerZeroMessengerAbi,
-    functionName: 'getChainBidEndpoint',
-  })
-
-/**
- * Wraps __{@link useReadContract}__ with `abi` set to __{@link layerZeroMessengerAbi}__ and `functionName` set to `"getOptions"`
- */
-export const useReadLayerZeroMessengerGetOptions =
-  /*#__PURE__*/ createUseReadContract({
-    abi: layerZeroMessengerAbi,
-    functionName: 'getOptions',
-  })
-
-/**
- * Wraps __{@link useReadContract}__ with `abi` set to __{@link layerZeroMessengerAbi}__ and `functionName` set to `"isComposeMsgSender"`
- */
-export const useReadLayerZeroMessengerIsComposeMsgSender =
-  /*#__PURE__*/ createUseReadContract({
-    abi: layerZeroMessengerAbi,
-    functionName: 'isComposeMsgSender',
-  })
-
-/**
- * Wraps __{@link useReadContract}__ with `abi` set to __{@link layerZeroMessengerAbi}__ and `functionName` set to `"isFailed"`
- */
-export const useReadLayerZeroMessengerIsFailed =
-  /*#__PURE__*/ createUseReadContract({
-    abi: layerZeroMessengerAbi,
-    functionName: 'isFailed',
-  })
-
-/**
- * Wraps __{@link useReadContract}__ with `abi` set to __{@link layerZeroMessengerAbi}__ and `functionName` set to `"messageHandler"`
- */
-export const useReadLayerZeroMessengerMessageHandler =
-  /*#__PURE__*/ createUseReadContract({
-    abi: layerZeroMessengerAbi,
-    functionName: 'messageHandler',
-  })
-
-/**
- * Wraps __{@link useReadContract}__ with `abi` set to __{@link layerZeroMessengerAbi}__ and `functionName` set to `"messengerClass"`
- */
-export const useReadLayerZeroMessengerMessengerClass =
-  /*#__PURE__*/ createUseReadContract({
-    abi: layerZeroMessengerAbi,
-    functionName: 'messengerClass',
-  })
-
-/**
- * Wraps __{@link useReadContract}__ with `abi` set to __{@link layerZeroMessengerAbi}__ and `functionName` set to `"nextNonce"`
- */
-export const useReadLayerZeroMessengerNextNonce =
-  /*#__PURE__*/ createUseReadContract({
-    abi: layerZeroMessengerAbi,
-    functionName: 'nextNonce',
-  })
-
-/**
- * Wraps __{@link useReadContract}__ with `abi` set to __{@link layerZeroMessengerAbi}__ and `functionName` set to `"oAppVersion"`
- */
-export const useReadLayerZeroMessengerOAppVersion =
-  /*#__PURE__*/ createUseReadContract({
-    abi: layerZeroMessengerAbi,
-    functionName: 'oAppVersion',
-  })
-
-/**
- * Wraps __{@link useReadContract}__ with `abi` set to __{@link layerZeroMessengerAbi}__ and `functionName` set to `"owner"`
- */
-export const useReadLayerZeroMessengerOwner =
-  /*#__PURE__*/ createUseReadContract({
-    abi: layerZeroMessengerAbi,
-    functionName: 'owner',
-  })
-
-/**
- * Wraps __{@link useReadContract}__ with `abi` set to __{@link layerZeroMessengerAbi}__ and `functionName` set to `"peers"`
- */
-export const useReadLayerZeroMessengerPeers =
-  /*#__PURE__*/ createUseReadContract({
-    abi: layerZeroMessengerAbi,
-    functionName: 'peers',
-  })
-
-/**
- * Wraps __{@link useReadContract}__ with `abi` set to __{@link layerZeroMessengerAbi}__ and `functionName` set to `"quoteTransmit"`
- */
-export const useReadLayerZeroMessengerQuoteTransmit =
-  /*#__PURE__*/ createUseReadContract({
-    abi: layerZeroMessengerAbi,
-    functionName: 'quoteTransmit',
-  })
-
-/**
- * Wraps __{@link useWriteContract}__ with `abi` set to __{@link layerZeroMessengerAbi}__
- */
-export const useWriteLayerZeroMessenger = /*#__PURE__*/ createUseWriteContract({
-  abi: layerZeroMessengerAbi,
+export const useWriteErc721TransferFrom = /*#__PURE__*/ createUseWriteContract({
+  abi: erc721Abi,
+  functionName: 'transferFrom',
 })
 
 /**
- * Wraps __{@link useWriteContract}__ with `abi` set to __{@link layerZeroMessengerAbi}__ and `functionName` set to `"lzReceive"`
+ * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link erc721Abi}__
  */
-export const useWriteLayerZeroMessengerLzReceive =
-  /*#__PURE__*/ createUseWriteContract({
-    abi: layerZeroMessengerAbi,
-    functionName: 'lzReceive',
-  })
+export const useSimulateErc721 = /*#__PURE__*/ createUseSimulateContract({
+  abi: erc721Abi,
+})
 
 /**
- * Wraps __{@link useWriteContract}__ with `abi` set to __{@link layerZeroMessengerAbi}__ and `functionName` set to `"renounceOwnership"`
+ * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link erc721Abi}__ and `functionName` set to `"approve"`
  */
-export const useWriteLayerZeroMessengerRenounceOwnership =
-  /*#__PURE__*/ createUseWriteContract({
-    abi: layerZeroMessengerAbi,
-    functionName: 'renounceOwnership',
-  })
+export const useSimulateErc721Approve = /*#__PURE__*/ createUseSimulateContract(
+  { abi: erc721Abi, functionName: 'approve' },
+)
 
 /**
- * Wraps __{@link useWriteContract}__ with `abi` set to __{@link layerZeroMessengerAbi}__ and `functionName` set to `"setChainBidEndpoint"`
+ * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link erc721Abi}__ and `functionName` set to `"safeTransferFrom"`
  */
-export const useWriteLayerZeroMessengerSetChainBidEndpoint =
-  /*#__PURE__*/ createUseWriteContract({
-    abi: layerZeroMessengerAbi,
-    functionName: 'setChainBidEndpoint',
-  })
-
-/**
- * Wraps __{@link useWriteContract}__ with `abi` set to __{@link layerZeroMessengerAbi}__ and `functionName` set to `"setDelegate"`
- */
-export const useWriteLayerZeroMessengerSetDelegate =
-  /*#__PURE__*/ createUseWriteContract({
-    abi: layerZeroMessengerAbi,
-    functionName: 'setDelegate',
-  })
-
-/**
- * Wraps __{@link useWriteContract}__ with `abi` set to __{@link layerZeroMessengerAbi}__ and `functionName` set to `"setMessageHandler"`
- */
-export const useWriteLayerZeroMessengerSetMessageHandler =
-  /*#__PURE__*/ createUseWriteContract({
-    abi: layerZeroMessengerAbi,
-    functionName: 'setMessageHandler',
-  })
-
-/**
- * Wraps __{@link useWriteContract}__ with `abi` set to __{@link layerZeroMessengerAbi}__ and `functionName` set to `"setOptions"`
- */
-export const useWriteLayerZeroMessengerSetOptions =
-  /*#__PURE__*/ createUseWriteContract({
-    abi: layerZeroMessengerAbi,
-    functionName: 'setOptions',
-  })
-
-/**
- * Wraps __{@link useWriteContract}__ with `abi` set to __{@link layerZeroMessengerAbi}__ and `functionName` set to `"setPeer"`
- */
-export const useWriteLayerZeroMessengerSetPeer =
-  /*#__PURE__*/ createUseWriteContract({
-    abi: layerZeroMessengerAbi,
-    functionName: 'setPeer',
-  })
-
-/**
- * Wraps __{@link useWriteContract}__ with `abi` set to __{@link layerZeroMessengerAbi}__ and `functionName` set to `"transferOwnership"`
- */
-export const useWriteLayerZeroMessengerTransferOwnership =
-  /*#__PURE__*/ createUseWriteContract({
-    abi: layerZeroMessengerAbi,
-    functionName: 'transferOwnership',
-  })
-
-/**
- * Wraps __{@link useWriteContract}__ with `abi` set to __{@link layerZeroMessengerAbi}__ and `functionName` set to `"transmit"`
- */
-export const useWriteLayerZeroMessengerTransmit =
-  /*#__PURE__*/ createUseWriteContract({
-    abi: layerZeroMessengerAbi,
-    functionName: 'transmit',
-  })
-
-/**
- * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link layerZeroMessengerAbi}__
- */
-export const useSimulateLayerZeroMessenger =
-  /*#__PURE__*/ createUseSimulateContract({ abi: layerZeroMessengerAbi })
-
-/**
- * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link layerZeroMessengerAbi}__ and `functionName` set to `"lzReceive"`
- */
-export const useSimulateLayerZeroMessengerLzReceive =
+export const useSimulateErc721SafeTransferFrom =
   /*#__PURE__*/ createUseSimulateContract({
-    abi: layerZeroMessengerAbi,
-    functionName: 'lzReceive',
+    abi: erc721Abi,
+    functionName: 'safeTransferFrom',
   })
 
 /**
- * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link layerZeroMessengerAbi}__ and `functionName` set to `"renounceOwnership"`
+ * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link erc721Abi}__ and `functionName` set to `"setApprovalForAll"`
  */
-export const useSimulateLayerZeroMessengerRenounceOwnership =
+export const useSimulateErc721SetApprovalForAll =
   /*#__PURE__*/ createUseSimulateContract({
-    abi: layerZeroMessengerAbi,
-    functionName: 'renounceOwnership',
+    abi: erc721Abi,
+    functionName: 'setApprovalForAll',
   })
 
 /**
- * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link layerZeroMessengerAbi}__ and `functionName` set to `"setChainBidEndpoint"`
+ * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link erc721Abi}__ and `functionName` set to `"transferFrom"`
  */
-export const useSimulateLayerZeroMessengerSetChainBidEndpoint =
+export const useSimulateErc721TransferFrom =
   /*#__PURE__*/ createUseSimulateContract({
-    abi: layerZeroMessengerAbi,
-    functionName: 'setChainBidEndpoint',
+    abi: erc721Abi,
+    functionName: 'transferFrom',
   })
 
 /**
- * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link layerZeroMessengerAbi}__ and `functionName` set to `"setDelegate"`
+ * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link erc721Abi}__
  */
-export const useSimulateLayerZeroMessengerSetDelegate =
-  /*#__PURE__*/ createUseSimulateContract({
-    abi: layerZeroMessengerAbi,
-    functionName: 'setDelegate',
-  })
+export const useWatchErc721Event = /*#__PURE__*/ createUseWatchContractEvent({
+  abi: erc721Abi,
+})
 
 /**
- * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link layerZeroMessengerAbi}__ and `functionName` set to `"setMessageHandler"`
+ * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link erc721Abi}__ and `eventName` set to `"Approval"`
  */
-export const useSimulateLayerZeroMessengerSetMessageHandler =
-  /*#__PURE__*/ createUseSimulateContract({
-    abi: layerZeroMessengerAbi,
-    functionName: 'setMessageHandler',
-  })
-
-/**
- * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link layerZeroMessengerAbi}__ and `functionName` set to `"setOptions"`
- */
-export const useSimulateLayerZeroMessengerSetOptions =
-  /*#__PURE__*/ createUseSimulateContract({
-    abi: layerZeroMessengerAbi,
-    functionName: 'setOptions',
-  })
-
-/**
- * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link layerZeroMessengerAbi}__ and `functionName` set to `"setPeer"`
- */
-export const useSimulateLayerZeroMessengerSetPeer =
-  /*#__PURE__*/ createUseSimulateContract({
-    abi: layerZeroMessengerAbi,
-    functionName: 'setPeer',
-  })
-
-/**
- * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link layerZeroMessengerAbi}__ and `functionName` set to `"transferOwnership"`
- */
-export const useSimulateLayerZeroMessengerTransferOwnership =
-  /*#__PURE__*/ createUseSimulateContract({
-    abi: layerZeroMessengerAbi,
-    functionName: 'transferOwnership',
-  })
-
-/**
- * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link layerZeroMessengerAbi}__ and `functionName` set to `"transmit"`
- */
-export const useSimulateLayerZeroMessengerTransmit =
-  /*#__PURE__*/ createUseSimulateContract({
-    abi: layerZeroMessengerAbi,
-    functionName: 'transmit',
-  })
-
-/**
- * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link layerZeroMessengerAbi}__
- */
-export const useWatchLayerZeroMessengerEvent =
-  /*#__PURE__*/ createUseWatchContractEvent({ abi: layerZeroMessengerAbi })
-
-/**
- * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link layerZeroMessengerAbi}__ and `eventName` set to `"BridgeChainEndpointSet"`
- */
-export const useWatchLayerZeroMessengerBridgeChainEndpointSetEvent =
+export const useWatchErc721ApprovalEvent =
   /*#__PURE__*/ createUseWatchContractEvent({
-    abi: layerZeroMessengerAbi,
-    eventName: 'BridgeChainEndpointSet',
+    abi: erc721Abi,
+    eventName: 'Approval',
   })
 
 /**
- * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link layerZeroMessengerAbi}__ and `eventName` set to `"Messenger_MessageHandled"`
+ * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link erc721Abi}__ and `eventName` set to `"ApprovalForAll"`
  */
-export const useWatchLayerZeroMessengerMessengerMessageHandledEvent =
+export const useWatchErc721ApprovalForAllEvent =
   /*#__PURE__*/ createUseWatchContractEvent({
-    abi: layerZeroMessengerAbi,
-    eventName: 'Messenger_MessageHandled',
+    abi: erc721Abi,
+    eventName: 'ApprovalForAll',
   })
 
 /**
- * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link layerZeroMessengerAbi}__ and `eventName` set to `"Messenger_MessageHandlerChanged"`
+ * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link erc721Abi}__ and `eventName` set to `"Transfer"`
  */
-export const useWatchLayerZeroMessengerMessengerMessageHandlerChangedEvent =
+export const useWatchErc721TransferEvent =
   /*#__PURE__*/ createUseWatchContractEvent({
-    abi: layerZeroMessengerAbi,
-    eventName: 'Messenger_MessageHandlerChanged',
-  })
-
-/**
- * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link layerZeroMessengerAbi}__ and `eventName` set to `"OptionsSet"`
- */
-export const useWatchLayerZeroMessengerOptionsSetEvent =
-  /*#__PURE__*/ createUseWatchContractEvent({
-    abi: layerZeroMessengerAbi,
-    eventName: 'OptionsSet',
-  })
-
-/**
- * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link layerZeroMessengerAbi}__ and `eventName` set to `"OwnershipTransferred"`
- */
-export const useWatchLayerZeroMessengerOwnershipTransferredEvent =
-  /*#__PURE__*/ createUseWatchContractEvent({
-    abi: layerZeroMessengerAbi,
-    eventName: 'OwnershipTransferred',
-  })
-
-/**
- * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link layerZeroMessengerAbi}__ and `eventName` set to `"PeerSet"`
- */
-export const useWatchLayerZeroMessengerPeerSetEvent =
-  /*#__PURE__*/ createUseWatchContractEvent({
-    abi: layerZeroMessengerAbi,
-    eventName: 'PeerSet',
+    abi: erc721Abi,
+    eventName: 'Transfer',
   })

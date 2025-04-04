@@ -1,5 +1,5 @@
+import { useReadErc721SupportsInterface } from '@/generated/wagmi/wagmi';
 import { Hex } from 'viem';
-import { useReadIrerc20SupportsInterface } from '@/generated/wagmi/wagmi';
 
 export const useAssetIsReplica = ({
   address,
@@ -10,7 +10,7 @@ export const useAssetIsReplica = ({
   chainBid: number;
   enabled?: boolean;
 }) => {
-  return useReadIrerc20SupportsInterface({
+  return useReadErc721SupportsInterface({
     address: address,
     args: ['0xcdf7653c'], // IReplica
     chainId: chainBid,
