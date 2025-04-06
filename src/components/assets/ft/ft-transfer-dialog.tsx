@@ -40,6 +40,13 @@ export default function FtTransferDialog(props: {
     onTransactionSuccessParent?.(receipt);
   };
 
+  // const { data: dataQuote, isPending: isPendingQuote } = useBridgeTransferQuote(
+  //   {
+  //     transfer,
+  //     enabled: true,
+  //   }
+  // );
+
   return (
     <DialogRoot
       size='md'

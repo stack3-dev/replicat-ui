@@ -23,6 +23,10 @@ export const getChainBidFromAlchemyName = (alchemyName: string): number => {
   return chain;
 };
 
+export const getChainDecimals = (chainBid: number): number => {
+  return ReplicatChains[chainBid as ReplicatChainBidsType].decimals;
+};
+
 export const getBridgeAddress = (chainBid: number): Hex => {
   return ReplicatChains[chainBid as ReplicatChainBidsType].bridgeAddress;
 };

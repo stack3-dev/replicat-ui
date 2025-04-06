@@ -10,6 +10,7 @@ export default function AccountConnectButton(props: ButtonProps) {
       onClick={() => connect({ connector: injected() })}
       loading={isPending}
       disabled={isConnected}
+      asChild
       {...props}
     />
   );

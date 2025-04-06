@@ -1,8 +1,9 @@
-import { Box, VStack } from '@chakra-ui/react';
+import { Box, Center, VStack } from '@chakra-ui/react';
 import Navbar from './components/navbar/navbar';
 import Bridge from './components/bridge/common/bridge';
 import './App.css';
 import { Toaster } from './components/ui/toaster';
+import FAQ from './components/common/faq';
 
 function App() {
   // const [{ assetAddress, assetChainBid, assetType }] =
@@ -31,15 +32,16 @@ function App() {
     <>
       <Box pos='relative'>
         <Navbar />
-        <Box textAlign='center' fontSize='xl' pt='30vh'>
-          <VStack gap='8'>
-            <Bridge
-            // defaultAsset={defaultAsset}
-            // defaultFrom={defaultAccount}
-            // defaultTo={defaultAccount}
-            />
+        <Center fontSize='xl' pt='15vh'>
+          <VStack gap='8' width='sm'>
+            <Bridge />
           </VStack>
-        </Box>
+        </Center>
+        <Center fontSize='xl' pt='15vh'>
+          <VStack gap='8' width='lg'>
+            <FAQ />
+          </VStack>
+        </Center>
       </Box>
       <Toaster />
     </>

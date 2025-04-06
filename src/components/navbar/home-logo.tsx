@@ -8,14 +8,14 @@ export const HomeLogo = () => {
   return (
     <Box position='relative'>
       <Image
-        src={theme.theme === 'dark' ? '/logo-dark.png' : '/logo-light.png'}
+        src={theme.theme === 'light' ? '/logo-light.png' : '/logo-dark.png'}
         alt='Home'
         height='60px'
         p='1'
       />
       {isTestnet && (
-        <Float placement={'bottom-end'}>
-          <Badge variant={'solid'} ml='4'>
+        <Float placement={'bottom-start'}>
+          <Badge variant={'solid'} ml='16'>
             testnet
           </Badge>
         </Float>

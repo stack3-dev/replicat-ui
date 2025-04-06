@@ -5,8 +5,9 @@ import { encodeTransferParamsFT, hashAsset } from '@/utils/encoding';
 import { LAYERZERO } from '@/config/messengers';
 import { Hex, TransactionReceipt } from 'viem';
 import { ButtonProps } from '@chakra-ui/react';
-import { bridgeAbi, useReadBridgeQuoteTransfer } from '@/generated/wagmi/wagmi';
+import { bridgeAbi } from '@/generated/wagmi/wagmi';
 import { addressToEvm } from '@/utils/format';
+import { useBridgeTransferQuote } from '@/hooks/bridge/useBridgeTransferQuote';
 
 export default function EvmTransferButton(
   props: {
@@ -29,12 +30,11 @@ export default function EvmTransferButton(
     nonce: transfer.nonce,
   };
 
-  const { data: dataQuote, isPending: isPendingQuote } =
-    useReadBridgeQuoteTransfer({
-      chainId: chainBid,
-      address: bridgeAddress,
-      args: [transferData, LAYERZERO, '0x'],
-    });
+  const { data: dataQuote, isPending: isPendingQuote } = useBridgeTransferQuote(
+    {
+      transfer,
+    }
+  );
 
   return (
     <EvmWriteContractButton

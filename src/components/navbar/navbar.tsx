@@ -1,4 +1,4 @@
-import { Box, Button, Flex, Stack } from '@chakra-ui/react';
+import { Box, Button, Center, Flex, Link, Stack } from '@chakra-ui/react';
 import AccountConnectButton from '../account/account-connect-button';
 import { useAccount } from 'wagmi';
 import { AccountDrawer } from '../account/account-drawer';
@@ -13,7 +13,17 @@ export default function Navbar() {
     <>
       <Box px={4}>
         <Flex alignItems={'center'} justifyContent={'space-between'}>
-          <HomeLogo />
+          <Flex gap={10} alignItems={'center'}>
+            <HomeLogo />
+            <Center>
+              <Link
+                variant={'underline'}
+                href='https://replicat-docs.stack3.dev'
+              >
+                Docs
+              </Link>
+            </Center>
+          </Flex>
 
           <Flex alignItems='center'>
             <Stack direction='row'>

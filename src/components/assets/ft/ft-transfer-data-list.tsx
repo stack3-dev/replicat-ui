@@ -13,6 +13,11 @@ export default function FtTransferDataList({
   transfer: Transfer;
 }) {
   const params = transfer.params as TransferParamsFT;
+
+  // const { data: dataQuote } = useBridgeTransferQuote({
+  //   transfer,
+  // });
+
   return (
     <Stack gap={4}>
       <AssetDataList asset={transfer.asset} />
@@ -37,6 +42,15 @@ export default function FtTransferDataList({
             {formatUnits(params.amount, params.decimals)}
           </DataList.ItemValue>
         </DataList.Item>
+
+        {/* <DataList.Item>
+          <DataList.ItemLabel>Transfer fee </DataList.ItemLabel>
+          <DataList.ItemValue>
+            {dataQuote
+              ? formatUnits(dataQuote, getChainDecimals(transfer.from.chainBid))
+              : '-'}
+          </DataList.ItemValue>
+        </DataList.Item> */}
 
         <DataList.Item>
           <DataList.ItemLabel>Bridge </DataList.ItemLabel>

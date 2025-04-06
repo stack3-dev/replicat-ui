@@ -23,7 +23,7 @@ export default function Bridge() {
   const queryClient = useQueryClient();
 
   return (
-    <Stack gap='4' width='sm'>
+    <Stack gap='4'>
       <Field label='Asset'>
         <FtAssetInput asset={asset} onChange={setAsset} />
       </Field>

@@ -1,6 +1,6 @@
 import { getExplorerTransactionLink, isChainBidValid } from '@/utils/chains';
 import { safeAddress } from '@/utils/format';
-import { Flex, Icon, Link, Separator, Text, VStack } from '@chakra-ui/react';
+import { Flex, Icon, Link, Text, VStack } from '@chakra-ui/react';
 import { useAccount } from 'wagmi';
 import {
   useBridgeTransfers,
@@ -26,11 +26,12 @@ export const AccountActivity = () => {
   const transfers = transfersQuery.data ?? [];
 
   return (
-    <VStack gap={2}>
+    <VStack gap={4}>
       {transfers.map((transfer) => (
         <>
           <Flex
             gap={2}
+            p={2}
             alignItems={'center'}
             key={'account-activity-transfer-' + transfer.transferHash}
           >
@@ -42,6 +43,7 @@ export const AccountActivity = () => {
             >
               <Flex gap={2} alignItems={'center'}>
                 <AccountBadge
+                  variant={'outline'}
                   account={{
                     address: transfer.from,
                     chainBid: account.chainId ?? 0,
@@ -51,6 +53,7 @@ export const AccountActivity = () => {
                   <LuArrowRight />
                 </Icon>
                 <AccountBadge
+                  variant={'outline'}
                   account={{
                     address: transfer.to,
                     chainBid: transfer.chainBid,
@@ -58,20 +61,29 @@ export const AccountActivity = () => {
                 />
               </Flex>
 
-              <TransferParams transfer={transfer} chainBid={account.chainId!} />
+              <Flex
+                gap={2}
+                justifyContent={'center'}
+                alignItems={'center'}
+                borderLeft={'1px solid var(--chakra-colors-border)'}
+                w={'100%'}
+              >
+                <TransferParams
+                  transfer={transfer}
+                  chainBid={account.chainId!}
+                />
+                <Link
+                  href={getExplorerTransactionLink(
+                    account.chainId!,
+                    transfer.transactionHash
+                  )}
+                >
+                  <Icon>
+                    <LuExternalLink />
+                  </Icon>
+                </Link>
+              </Flex>
             </Flex>
-            <Link
-              href={getExplorerTransactionLink(
-                account.chainId!,
-                transfer.transactionHash
-              )}
-            >
-              <Icon>
-                <LuExternalLink />
-              </Icon>
-            </Link>
-
-            <Separator />
           </Flex>
         </>
       ))}
