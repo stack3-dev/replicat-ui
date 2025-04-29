@@ -24,18 +24,12 @@ export const useBridgeTransferQuote = ({
     nonce: transfer.nonce,
   };
 
-  const query = useReadBridgeQuoteTransfer({
-    chainId: transfer.to.chainBid,
+  return useReadBridgeQuoteTransfer({
+    chainId: transfer.from.chainBid,
     address: bridgeAddress,
     args: [transferData, LAYERZERO, '0x'],
     query: {
       enabled,
     },
   });
-
-  console.log(transferData);
-  console.log('quote: ', query.data);
-  console.log('quote error: ', query.error);
-
-  return query;
 };
