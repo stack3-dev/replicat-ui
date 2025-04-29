@@ -1,11 +1,11 @@
 import { Asset, Transfer, TransferParamsFT } from '@/types/types';
 import FtTransferDialog from '../../assets/ft/ft-transfer-dialog.tsx';
-import { ReplicatChains, ReplicatEvmChainBidsType } from '@/config/bridge';
 import FtCreateReplicaDialog from '../../assets/create-replica-dialog.tsx';
 import { Alert, Button } from '@chakra-ui/react';
 import { TransactionReceipt } from 'viem';
 import { hashAsset } from '@/utils/encoding.ts';
 import { useBridgeReplicaByHash } from '@/hooks/bridge/useBridgeReplicaByHash.ts';
+import { chains } from '@/config/chains.ts';
 
 export default function BridgeActions({
   transfer,
@@ -21,7 +21,7 @@ export default function BridgeActions({
     isPending: isPendingFrom,
     refetch: refetchFrom,
   } = useBridgeReplicaByHash({
-    chainBid: transfer.from.chainBid as ReplicatEvmChainBidsType,
+    chainBid: transfer.from.chainBid,
     assetHash,
   });
 
@@ -30,7 +30,7 @@ export default function BridgeActions({
     isPending: isPendingTo,
     refetch: refetchTo,
   } = useBridgeReplicaByHash({
-    chainBid: transfer.to.chainBid as ReplicatEvmChainBidsType,
+    chainBid: transfer.to.chainBid,
     assetHash,
   });
 
@@ -95,8 +95,7 @@ function ReplicaCreateAlert({
     <Alert.Root status='warning'>
       <Alert.Indicator />
       <Alert.Title>
-        The token is not yet bridged on chain '
-        {ReplicatChains[chainBid as ReplicatEvmChainBidsType].name}'.
+        The token is not yet bridged on chain '{chains[chainBid].name}'.
       </Alert.Title>
       <FtCreateReplicaDialog
         asset={asset}

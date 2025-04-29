@@ -1,7 +1,7 @@
-import { ReplicatChainBidsType, ReplicatChains } from '@/config/bridge';
 import { ImageProps } from '@chakra-ui/react';
 import IconImage from '../common/icon-image';
 import { getChainName } from '@/utils/chains';
+import { chains } from '@/config/chains';
 
 type ChainIconVariantProp = 'default' | 'ghost';
 
@@ -24,7 +24,7 @@ export default function ChainIcon(
   props: { chainBid: number; variant?: ChainIconVariantProp } & ImageProps
 ) {
   const { chainBid, variant = 'default', ...imageProps } = props;
-  const icon = ReplicatChains[chainBid as ReplicatChainBidsType]?.icon;
+  const icon = chains[chainBid]?.icon;
 
   return (
     <>

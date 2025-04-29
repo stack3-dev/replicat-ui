@@ -1,10 +1,10 @@
+import { isTestnet } from '@/config/chains';
 import { Badge, Box, Float, Image } from '@chakra-ui/react';
 import { useTheme } from 'next-themes';
 
 export const HomeLogo = () => {
   const theme = useTheme();
 
-  const isTestnet = import.meta.env.DEV;
   return (
     <Box position='relative'>
       <Image

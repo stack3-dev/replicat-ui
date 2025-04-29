@@ -1,4 +1,3 @@
-import { ReplicatEvmChainBidsType } from '@/config/bridge';
 import { Transfer } from '@/types/types';
 import { graphql } from '@/generated/gql';
 import request from 'graphql-request';
@@ -21,7 +20,7 @@ export const useBridgeTransfer = ({
   transfer: Transfer;
   enabled: boolean;
 }) => {
-  const targetChainBid = transfer.from.chainBid as ReplicatEvmChainBidsType;
+  const targetChainBid = transfer.from.chainBid;
   const transferHash = ''; // TODO hashTransfer(transfer, targetChainBid);
 
   const result = useQuery({

@@ -12,8 +12,8 @@ import {
   soneiumMinato,
   unichainSepolia,
 } from 'wagmi/chains';
-
-const isTestnet = import.meta.env.DEV;
+import { coinbaseWallet, injected, walletConnect } from 'wagmi/connectors';
+import { isTestnet } from './chains';
 
 export const chains: [Chain, ...Chain[]] = isTestnet
   ? [
@@ -28,6 +28,11 @@ export const chains: [Chain, ...Chain[]] = isTestnet
   : [mainnet, base, optimism];
 
 export const config = createConfig({
+  connectors: [
+    injected(),
+    coinbaseWallet(),
+    walletConnect({ projectId: import.meta.env.VITE_WC_PROJECT_ID }),
+  ],
   chains: chains,
   transports: {
     [sepolia.id]: http(
@@ -67,3 +72,9 @@ export const config = createConfig({
     ),
   },
 });
+
+declare module 'wagmi' {
+  interface Register {
+    config: typeof config;
+  }
+}

@@ -5,7 +5,6 @@ import {
   TransferParamsFT,
 } from '@/types/types';
 import { EvmWriteContractButton } from './evm-write-contract-button';
-import { ReplicatChainBidsType } from '@/config/bridge';
 import { TransactionReceipt } from 'viem';
 import { Button, ButtonProps } from '@chakra-ui/react';
 import {
@@ -30,7 +29,7 @@ export default function EvmTransferWithAllowanceOrPermitButton(
 ) {
   const [permit, setPermit] = useState<TransferEvmPermit>();
   const { transfer, onTransactionSuccess, ...buttonProps } = props;
-  const chainBid = transfer.from.chainBid as ReplicatChainBidsType;
+  const chainBid = transfer.from.chainBid;
   const assetEvmAddress = addressToEvm(transfer.asset.address);
   const params = transfer.params as TransferParamsFT;
   const metadata = transfer.asset.metadata as MetadataFT;

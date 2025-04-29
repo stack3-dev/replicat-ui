@@ -1,11 +1,11 @@
 import { Hex } from 'viem';
 import { alchemy } from '../../utils/alchemy';
 import { useQueries } from '@tanstack/react-query';
-import { ReplicatChainBids, ReplicatChainBidsType } from '@/config/bridge';
 import { TokenBalancesResponseErc20 } from 'alchemy-sdk';
+import { chainBids } from '@/config/chains';
 
 interface MultiChainTokenBalancesResponse extends TokenBalancesResponseErc20 {
-  chainBid: ReplicatChainBidsType;
+  chainBid: number;
 }
 
 export const useAccountMultichainTokenBalances = ({
@@ -14,7 +14,7 @@ export const useAccountMultichainTokenBalances = ({
   address: Hex;
 }) => {
   const tokenBalances = async (
-    chainBid: ReplicatChainBidsType
+    chainBid: number
   ): Promise<MultiChainTokenBalancesResponse> => {
     const sdk = alchemy(chainBid);
     return {
@@ -31,7 +31,7 @@ export const useAccountMultichainTokenBalances = ({
         error: results.find((result) => result.error)?.error,
       };
     },
-    queries: ReplicatChainBids.map((chainBid) => {
+    queries: chainBids.map((chainBid) => {
       return {
         queryKey: ['account-token-balances', address, { chainBid }],
         queryFn: async () => tokenBalances(chainBid),

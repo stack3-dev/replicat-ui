@@ -1,19 +1,14 @@
-import {
-  ReplicatChainBids,
-  ReplicatChainBidsType,
-  ReplicatChains,
-} from '@/config/bridge';
 import { Hex } from 'viem';
 import { formatAddress } from './format';
+import { chainBids, chains } from '@/config/chains';
 
 export const getAlchemyName = (chainBid: number): string => {
-  return ReplicatChains[chainBid as ReplicatChainBidsType].alchemyNetwork;
+  return chains[chainBid].alchemyNetwork;
 };
 
 export const getChainBidFromAlchemyName = (alchemyName: string): number => {
-  const chainBids = ReplicatChainBids;
   const chain = chainBids.find(
-    (chainBid) => ReplicatChains[chainBid].alchemyNetwork === alchemyName
+    (chainBid) => chains[chainBid].alchemyNetwork === alchemyName
   );
 
   if (chain === undefined) {
@@ -24,28 +19,26 @@ export const getChainBidFromAlchemyName = (alchemyName: string): number => {
 };
 
 export const getChainDecimals = (chainBid: number): number => {
-  return ReplicatChains[chainBid as ReplicatChainBidsType].decimals;
+  return chains[chainBid].decimals;
 };
 
 export const getBridgeAddress = (chainBid: number): Hex => {
-  return ReplicatChains[chainBid as ReplicatChainBidsType].bridgeAddress;
+  return chains[chainBid].bridgeAddress;
 };
 
 export const getAddressLength = (chainBid: number): number => {
-  return ReplicatChains[chainBid as ReplicatChainBidsType].addressLength;
+  return chains[chainBid].addressLength;
 };
 
 export const isChainBidValid = (chainBid?: number): boolean => {
-  return ReplicatChainBids.includes(chainBid as ReplicatChainBidsType);
+  return chainBid ? chainBids.includes(chainBid) : false;
 };
 
 export const getExplorerTransactionLink = (
   chainBid: number,
   hash: Hex
 ): string => {
-  return `${
-    ReplicatChains[chainBid as ReplicatChainBidsType].explorerTransactionLink
-  }${hash}`;
+  return `${chains[chainBid].explorerTransactionLink}${hash}`;
 };
 
 export const getExplorerAddressLink = (
@@ -53,9 +46,7 @@ export const getExplorerAddressLink = (
   address: Hex
 ): string => {
   const formattedAddress = formatAddress(address, chainBid);
-  return `${
-    ReplicatChains[chainBid as ReplicatChainBidsType].explorerAddressLink
-  }${formattedAddress}`;
+  return `${chains[chainBid].explorerAddressLink}${formattedAddress}`;
 };
 
 export const getExplorerTokenLink = (
@@ -63,11 +54,9 @@ export const getExplorerTokenLink = (
   address: Hex
 ): string => {
   const formattedAddress = formatAddress(address, chainBid);
-  return `${
-    ReplicatChains[chainBid as ReplicatChainBidsType].explorerTokenLink
-  }${formattedAddress}`;
+  return `${chains[chainBid].explorerTokenLink}${formattedAddress}`;
 };
 
 export const getChainName = (chainBid: number): string => {
-  return ReplicatChains[chainBid as ReplicatChainBidsType].name;
+  return chains[chainBid].name;
 };

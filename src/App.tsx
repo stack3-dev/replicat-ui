@@ -6,28 +6,6 @@ import { Toaster } from './components/ui/toaster';
 import FAQ from './components/common/faq';
 
 function App() {
-  // const [{ assetAddress, assetChainBid, assetType }] =
-  //   useQueryStates(assetSearchParams);
-
-  // const account = useAccount();
-
-  // let defaultAsset;
-  // if (assetAddress && assetChainBid && assetType) {
-  //   defaultAsset = {
-  //     address: assetAddress,
-  //     chainBid: assetChainBid,
-  //     type: assetType,
-  //   } as Asset;
-  // }
-
-  // let defaultAccount;
-  // if (account.isConnected) {
-  //   defaultAccount = {
-  //     address: account.address,
-  //     chainBid: account.chainId,
-  //   } as Account;
-  // }
-
   return (
     <>
       <Box pos='relative'>

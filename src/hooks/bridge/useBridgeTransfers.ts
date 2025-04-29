@@ -1,4 +1,3 @@
-import { ReplicatEvmChainBidsType } from '@/config/bridge';
 import { graphql } from '@/generated/gql';
 import request from 'graphql-request';
 import { graphUrl } from '@/config/thegraph';
@@ -71,7 +70,7 @@ export const useBridgeTransfers = ({
   chainBid: number;
   enabled: boolean;
 }) => {
-  const targetChainBid = chainBid as ReplicatEvmChainBidsType;
+  const targetChainBid = chainBid;
 
   const result = useQuery({
     queryKey: ['bridge-transfer', address, { targetChainBid }],

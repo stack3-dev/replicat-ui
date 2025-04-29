@@ -1,7 +1,7 @@
 import { Hex } from 'viem';
 import { alchemy } from '../../utils/alchemy';
 import { useQueries, useQuery } from '@tanstack/react-query';
-import { ReplicatChainBids } from '@/config/bridge';
+import { chainBids } from '@/config/chains';
 
 const fetchAccountTokenBalances = async ({
   address,
@@ -55,7 +55,7 @@ export const useAccountTokenBalancesAll = ({
   enabled: boolean;
 }) => {
   return useQueries({
-    queries: ReplicatChainBids.map((chainBid) => {
+    queries: chainBids.map((chainBid) => {
       return query({ address, chainBid, enabled });
     }),
   });

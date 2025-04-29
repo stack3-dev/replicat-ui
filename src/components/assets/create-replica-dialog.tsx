@@ -11,13 +11,13 @@ import {
   DialogActionTrigger,
   DialogCloseTrigger,
 } from '../ui/dialog';
-import { ReplicatChainBidsType, ReplicatChains } from '@/config/bridge';
 import { TransactionReceipt } from 'viem';
 import AssetDataList from './asset-data-list';
 import EvmCreateReplicaAdapterButton from '../evm/evm-create-replica-adapter-form';
 import EvmCreateReplicaButton from '../evm/evm-create-replica-button';
 import { useCallback, useState } from 'react';
 import TransactionSuccess from '@/components/common/transaction-success';
+import { chains } from '@/config/chains';
 
 export default function FtCreateReplicaDialog(props: {
   asset: Asset;
@@ -34,8 +34,8 @@ export default function FtCreateReplicaDialog(props: {
   const [transactionReceipt, setTransactionReceipt] =
     useState<TransactionReceipt>();
 
-  const chain = ReplicatChains[chainBid as ReplicatChainBidsType];
-  const targetChainBid = chainBid as ReplicatChainBidsType;
+  const chain = chains[chainBid];
+  const targetChainBid = chainBid;
   const isLocalChain = chainBid === asset.chainBid;
 
   const onTransactionSuccess = useCallback(
@@ -75,8 +75,7 @@ export default function FtCreateReplicaDialog(props: {
                               <Alert.Indicator />
                               <Alert.Title>
                                 You are about to create an <b>ERC20</b> Adapter
-                                on network '
-                                <b>{ReplicatChains[targetChainBid].name}</b>
+                                on network '<b>{chains[targetChainBid].name}</b>
                                 '.
                               </Alert.Title>
                             </Alert.Root>
@@ -95,8 +94,7 @@ export default function FtCreateReplicaDialog(props: {
                               <Alert.Indicator />
                               <Alert.Title>
                                 You are about to create an <b>RERC20</b> Replica
-                                on network '
-                                <b>{ReplicatChains[targetChainBid].name}</b>
+                                on network '<b>{chains[targetChainBid].name}</b>
                                 '.
                               </Alert.Title>
                             </Alert.Root>
@@ -114,21 +112,17 @@ export default function FtCreateReplicaDialog(props: {
 
                     {asset.type === AssetType.XFT && (
                       <>
-                        {ReplicatChains[chainBid as ReplicatChainBidsType]
-                          .isSuperchain ? (
+                        {chains[chainBid].isSuperchain ? (
                           <>
                             <Alert.Root status='info'>
                               <Alert.Indicator />
                               <Alert.Title>
                                 You are about to create an <b>xERC20</b> Adapter
-                                on network '
-                                <b>{ReplicatChains[targetChainBid].name}</b>
+                                on network '<b>{chains[targetChainBid].name}</b>
                                 '. You must ensure that the bridge{' '}
-                                {
-                                  ReplicatChains[targetChainBid].bridgeAddress
-                                }{' '}
-                                allowed to mint and burn tokens (see our
-                                documentation for more details).
+                                {chains[targetChainBid].bridgeAddress} allowed
+                                to mint and burn tokens (see our documentation
+                                for more details).
                               </Alert.Title>
                             </Alert.Root>
                             <EvmCreateReplicaAdapterButton
@@ -145,8 +139,7 @@ export default function FtCreateReplicaDialog(props: {
                               <Alert.Indicator />
                               <Alert.Title>
                                 You are about to create an <b>RERC20</b> Replica
-                                on network '
-                                <b>{ReplicatChains[targetChainBid].name}</b>
+                                on network '<b>{chains[targetChainBid].name}</b>
                                 '.
                               </Alert.Title>
                             </Alert.Root>

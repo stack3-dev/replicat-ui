@@ -1,7 +1,3 @@
-import {
-  ReplicatChainBidsType,
-  ReplicatEvmChainBidsType,
-} from '@/config/bridge';
 import { graphUrl } from '@/config/thegraph';
 import { graphql } from '@/generated/gql';
 import { Replica } from '@/types/types';
@@ -36,9 +32,7 @@ const replicasQuery = graphql(/* GraphQL */ `
   }
 `);
 
-const fetchBridgeReplicas = async (
-  chainBid: ReplicatEvmChainBidsType
-): Promise<Replica[]> => {
+const fetchBridgeReplicas = async (chainBid: number): Promise<Replica[]> => {
   const result = await request(graphUrl(chainBid), replicasQuery, {});
 
   return [...result.replicaCreateds, ...result.replicaAdapterCreateds].map(
@@ -66,8 +60,7 @@ export const useBridgeReplicas = ({
 }) => {
   return useQuery({
     queryKey: ['bridge-replicas', { chainBid }],
-    queryFn: async () =>
-      await fetchBridgeReplicas(chainBid as ReplicatChainBidsType),
+    queryFn: async () => await fetchBridgeReplicas(chainBid),
     enabled,
   });
 };

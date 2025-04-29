@@ -1,6 +1,5 @@
 import { Transfer, TransferEvmPermit, TransferParamsFT } from '@/types/types';
 import { EvmWriteContractButton } from './evm-write-contract-button';
-import { ReplicatChainBidsType, ReplicatChains } from '@/config/bridge';
 import { encodeTransferParamsFT, hashAsset } from '@/utils/encoding';
 import { LAYERZERO } from '@/config/messengers';
 import { Hex, TransactionReceipt } from 'viem';
@@ -8,6 +7,7 @@ import { ButtonProps } from '@chakra-ui/react';
 import { bridgeAbi } from '@/generated/wagmi/wagmi';
 import { addressToEvm } from '@/utils/format';
 import { useBridgeTransferQuote } from '@/hooks/bridge/useBridgeTransferQuote';
+import { chains } from '@/config/chains';
 
 export default function EvmTransferButton(
   props: {
@@ -17,8 +17,8 @@ export default function EvmTransferButton(
   } & ButtonProps
 ) {
   const { transfer, permit, onTransactionSuccess, ...buttonProps } = props;
-  const chainBid = transfer.from.chainBid as ReplicatChainBidsType;
-  const bridgeAddress = ReplicatChains[chainBid].bridgeAddress as Hex;
+  const chainBid = transfer.from.chainBid;
+  const bridgeAddress = chains[chainBid].bridgeAddress as Hex;
 
   const transferData = {
     assetType: transfer.asset.type,
