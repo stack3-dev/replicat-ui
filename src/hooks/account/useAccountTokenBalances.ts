@@ -1,48 +1,49 @@
 import { Hex } from 'viem';
 import { alchemy } from '../../utils/alchemy';
 import { useQueries, useQuery } from '@tanstack/react-query';
-import { chainBids } from '@/config/chains';
+import { Chain, chains } from '@/config/chains';
 
 const fetchAccountTokenBalances = async ({
   address,
-  chainBid,
+  chain,
 }: {
   address: Hex;
-  chainBid: number;
+  chain: Chain;
 }) => {
-  const sdk = alchemy(chainBid);
+  const sdk = alchemy(chain);
   const result = await sdk.core.getTokenBalances(address);
+
   return {
     ...result,
-    chainBid,
+    chain,
   };
 };
 
 const query = ({
   address,
-  chainBid,
+  chain,
   enabled = true,
 }: {
   address: Hex;
-  chainBid: number;
+  chain: Chain;
   enabled: boolean;
 }) => ({
-  queryKey: ['account-token-balances', address, { chainBid }],
-  queryFn: () => fetchAccountTokenBalances({ address, chainBid }),
+  queryKey: ['account-token-balances', address, { chainId: chain.id }],
+  queryFn: () => fetchAccountTokenBalances({ address, chain }),
   enabled,
 });
 
 export const useAccountTokenBalances = ({
   address,
-  chainBid,
+  chain,
   enabled = true,
 }: {
   address: Hex;
-  chainBid: number;
+  chain: Chain;
   enabled?: boolean;
 }) => {
   return useQuery({
-    ...query({ address, chainBid, enabled }),
+    ...query({ address, chain, enabled }),
     enabled: enabled,
   });
 };
@@ -55,8 +56,8 @@ export const useAccountTokenBalancesAll = ({
   enabled: boolean;
 }) => {
   return useQueries({
-    queries: chainBids.map((chainBid) => {
-      return query({ address, chainBid, enabled });
+    queries: chains.map((chain) => {
+      return query({ address, chain, enabled });
     }),
   });
 };

@@ -4,21 +4,22 @@ import ChainIcon from '../chains/chain-icon';
 import { LuExternalLink } from 'react-icons/lu';
 import { Hex } from 'viem';
 import { getExplorerTransactionLink } from '@/utils/chains';
+import { Chain } from '@/config/chains';
 
 export default function TransactionBadge({
   hash,
-  chainBid,
+  chain,
   ...badgeProps
-}: { hash: Hex; chainBid: number } & BadgeProps) {
+}: { hash: Hex; chain: Chain } & BadgeProps) {
   return (
-    <Link href={getExplorerTransactionLink(chainBid, hash)}>
+    <Link href={getExplorerTransactionLink(chain, hash)}>
       <Badge variant='solid' {...badgeProps}>
         <Flex alignItems={'center'} gap={2}>
           <ChainIcon
             bgColor='transparent'
             border='none'
             boxSize='15px'
-            chainBid={chainBid}
+            chain={chain}
           />
 
           {shorten(hash)}

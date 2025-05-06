@@ -10,18 +10,18 @@ import {
   PopoverTrigger,
 } from '@/components/ui/popover';
 
-import { formatAddress, safeAddress } from '@/utils/format';
+import { safeAddress } from '@/utils/format';
 import ChainInput from '../../chains/chain-input';
 import { useCallback, useEffect } from 'react';
 import { useFtMetadata } from '@/hooks/assets/ft/useFTMetadata';
 import { useQueryStates } from 'nuqs';
 import { assetQueryState } from '@/queries';
-import { isChainBidValid } from '@/utils/chains';
 import { Tooltip } from '@/components/ui/tooltip';
 import AssetDataList from '../asset-data-list';
 import { FtAssetIcon } from './ft-asset-icon';
 import { assetEquals } from '@/utils/types';
 import { useBridgeReplicaByAddress } from '@/hooks/bridge/useBridgeReplicaByAddress';
+import { chainByBid } from '@/config/chains';
 
 export default function FtAssetInput({
   asset,
@@ -32,14 +32,16 @@ export default function FtAssetInput({
 }) {
   const [query, setQuery] = useQueryStates(assetQueryState);
 
+  const chain = chainByBid(query.chainBid);
+
   const {
     data: dataMetadata,
     isLoading: isLoadingMetadata,
     error: errorMetadata,
   } = useFtMetadata({
-    chainBid: query.chainBid,
+    chain: chain,
     address: safeAddress(query.address),
-    enabled: query.address !== '' && isChainBidValid(query.chainBid),
+    enabled: query.address !== '' && !!chain,
   });
 
   const {
@@ -48,8 +50,8 @@ export default function FtAssetInput({
     error: errorBridgeReplica,
   } = useBridgeReplicaByAddress({
     address: safeAddress(query.address),
-    chainBid: query.chainBid,
-    enabled: isChainBidValid(query.chainBid),
+    chain: chain!,
+    enabled: !!chain,
   });
 
   const isLoading = isLoadingMetadata || isLoadingBridgeReplica;
@@ -59,9 +61,7 @@ export default function FtAssetInput({
     (asset: Asset | undefined) => {
       onChange(asset);
       setQuery({
-        address: asset
-          ? formatAddress(asset?.address, asset?.chainBid)
-          : undefined,
+        address: asset ? asset.address : undefined,
         chainBid: asset?.chainBid,
       });
     },
@@ -143,8 +143,8 @@ export default function FtAssetInput({
               <Field.Root>
                 <Field.Label>Network</Field.Label>
                 <ChainInput
-                  chainBid={query.chainBid}
-                  onChange={(chainBid) => setQuery({ ...query, chainBid })}
+                  chain={chain}
+                  onChange={(c) => setQuery({ ...query, chainBid: c.bridgeId })}
                   disabled={isLoadingMetadata}
                 />
               </Field.Root>

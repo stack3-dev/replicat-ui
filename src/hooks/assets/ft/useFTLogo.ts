@@ -1,32 +1,32 @@
+import { Chain } from '@/config/chains';
 import { alchemy } from '@/utils/alchemy';
-import { addressToEvm } from '@/utils/format';
 import { useQuery } from '@tanstack/react-query';
 import { Hex } from 'viem';
 
 const fetchFtLogo = async ({
-  chainBid,
+  chain,
   address,
 }: {
-  chainBid: number;
+  chain: Chain;
   address: Hex;
 }): Promise<string | null> => {
-  const sdk = alchemy(chainBid);
-  const result = await sdk.core.getTokenMetadata(addressToEvm(address));
+  const sdk = alchemy(chain);
+  const result = await sdk.core.getTokenMetadata(address);
   return result?.logo ?? null;
 };
 
 export const useFtLogo = ({
-  chainBid,
+  chain,
   address,
   enabled = true,
 }: {
-  chainBid: number;
+  chain: Chain;
   address: Hex;
   enabled?: boolean;
 }) => {
   return useQuery({
-    queryKey: ['ft-logo', address, { chainBid }],
-    queryFn: async () => await fetchFtLogo({ chainBid, address }),
+    queryKey: ['ft-logo', address, { chainId: chain.id }],
+    queryFn: async () => await fetchFtLogo({ chain, address }),
     enabled,
   });
 };

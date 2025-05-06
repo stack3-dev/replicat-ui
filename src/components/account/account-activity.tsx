@@ -1,4 +1,3 @@
-import { getExplorerTransactionLink, isChainBidValid } from '@/utils/chains';
 import { safeAddress } from '@/utils/format';
 import { Flex, Icon, Link, Text, VStack } from '@chakra-ui/react';
 import { useAccount } from 'wagmi';
@@ -12,15 +11,18 @@ import { AssetType } from '@/types/types';
 import { decodeTransferParamsFT } from '@/utils/encoding';
 import { formatUnits } from 'viem';
 import { useBridgeReplicaByHash } from '@/hooks/bridge/useBridgeReplicaByHash';
+import { Chain, chainByBid, chainById } from '@/config/chains';
+import { getWormholeTransactionLink } from '@/utils/chains';
 
 export const AccountActivity = () => {
-  const account = useAccount();
-  const isBridgeChain = isChainBidValid(account.chainId);
+  const { address, chainId } = useAccount();
+
+  const chain = chainById(chainId)!;
 
   const transfersQuery = useBridgeTransfers({
-    address: safeAddress(account.address),
-    chainBid: account.chainId ?? 0,
-    enabled: isBridgeChain,
+    address: safeAddress(address),
+    chain: chain,
+    enabled: true,
   });
 
   const transfers = transfersQuery.data ?? [];
@@ -46,7 +48,7 @@ export const AccountActivity = () => {
                   variant={'outline'}
                   account={{
                     address: transfer.from,
-                    chainBid: account.chainId ?? 0,
+                    chain: chain!,
                   }}
                 />
                 <Icon>
@@ -56,7 +58,7 @@ export const AccountActivity = () => {
                   variant={'outline'}
                   account={{
                     address: transfer.to,
-                    chainBid: transfer.chainBid,
+                    chain: chainByBid(transfer.chainBid)!,
                   }}
                 />
               </Flex>
@@ -68,15 +70,9 @@ export const AccountActivity = () => {
                 borderLeft={'1px solid var(--chakra-colors-border)'}
                 w={'100%'}
               >
-                <TransferParams
-                  transfer={transfer}
-                  chainBid={account.chainId!}
-                />
+                <TransferParams transfer={transfer} chain={chain} />
                 <Link
-                  href={getExplorerTransactionLink(
-                    account.chainId!,
-                    transfer.transactionHash
-                  )}
+                  href={getWormholeTransactionLink(transfer.transactionHash)}
                 >
                   <Icon>
                     <LuExternalLink />
@@ -93,14 +89,14 @@ export const AccountActivity = () => {
 
 const TransferParams = ({
   transfer,
-  chainBid,
+  chain,
 }: {
   transfer: Transfer;
-  chainBid: number;
+  chain: Chain;
 }) => {
   const { data: dataReplica } = useBridgeReplicaByHash({
     assetHash: transfer.assetHash,
-    chainBid: chainBid,
+    chain: chain,
   });
 
   if (

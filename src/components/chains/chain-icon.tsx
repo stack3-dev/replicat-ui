@@ -1,7 +1,6 @@
 import { ImageProps } from '@chakra-ui/react';
 import IconImage from '../common/icon-image';
-import { getChainName } from '@/utils/chains';
-import { chains } from '@/config/chains';
+import { Chain } from '@/config/chains';
 
 type ChainIconVariantProp = 'default' | 'ghost';
 
@@ -21,19 +20,19 @@ const ChainIconVariantColors: Record<ChainIconVariantProp, ImageProps> = {
 };
 
 export default function ChainIcon(
-  props: { chainBid: number; variant?: ChainIconVariantProp } & ImageProps
+  props: { chain: Chain; variant?: ChainIconVariantProp } & ImageProps
 ) {
-  const { chainBid, variant = 'default', ...imageProps } = props;
-  const icon = chains[chainBid]?.icon;
+  const { chain, variant = 'default', ...imageProps } = props;
+  const icon = chain.icon;
 
   return (
     <>
       {icon ? (
         <IconImage
           src={icon}
-          alt={`Chain ${chainBid}`}
+          alt={`${chain.name}`}
           boxSize='25px'
-          title={`${getChainName(chainBid)}`}
+          title={`${chain.name}`}
           {...ChainIconVariantColors[variant]}
           {...imageProps}
         />

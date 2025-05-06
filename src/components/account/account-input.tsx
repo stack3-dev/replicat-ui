@@ -15,7 +15,7 @@ import ChainInput from '../chains/chain-input';
 import ChainIcon from '../chains/chain-icon';
 import { safeAddress, shortenAddress } from '@/utils/format';
 import { useAccount } from 'wagmi';
-import { isChainBidValid } from '@/utils/chains';
+import { chainById } from '@/config/chains';
 
 export default function AccountInput({
   account,
@@ -26,33 +26,38 @@ export default function AccountInput({
   assetFilter?: Asset;
   onChange: (account: Account) => void;
 }) {
-  const { address: accountAddress, chainId: accountChainId } = useAccount();
+  const wallet = useAccount();
 
-  const isAccountChainBidValid = isChainBidValid(accountChainId ?? 0);
-  const defaultAddress = account?.address ?? accountAddress ?? '';
-  const defaultChainBid =
-    account?.chainBid ?? isAccountChainBidValid ? accountChainId! : 0;
+  const defaultChain = chainById(wallet.chainId);
+  const defaultAddress = account?.address ?? wallet.address ?? '';
 
   const [address, setAddress] = useState(defaultAddress);
-  const [chainBid, setChainBid] = useState(defaultChainBid);
+  const [chain, setChain] = useState(defaultChain);
 
   useEffect(() => {
-    if (address && chainBid > 0) {
-      onChange({ address: safeAddress(address), chainBid });
+    if (address && chain) {
+      onChange({ address: safeAddress(address), chain });
     }
-  }, [address, chainBid, onChange]);
+  }, [address, chain, onChange]);
+
+  useEffect(() => {
+    if (account?.address && !address) {
+      setAddress(account.address);
+    }
+    if (account?.chain && !chain) {
+      setChain(chainById(account.chain.id));
+    }
+  }, [wallet]);
 
   return (
     <PopoverRoot positioning={{ sameWidth: true }}>
       <PopoverTrigger asChild>
         <Button size='2xl' variant='outline' width='sm'>
           <Flex flex='1' gap='2' justify='space-between' align='center'>
-            {account && (
-              <ChainIcon chainBid={account.chainBid} boxSize={'30px'} />
-            )}
+            {account && <ChainIcon chain={account.chain} boxSize={'30px'} />}
             <Text>
               {account?.address
-                ? shortenAddress(account.address, account.chainBid)
+                ? shortenAddress(account.address)
                 : 'Select an account...'}
             </Text>
             <LuChevronDown />
@@ -73,9 +78,9 @@ export default function AccountInput({
           <Stack gap='2'>
             <Field label='Network'>
               <ChainInput
-                chainBid={chainBid}
+                chain={chain}
                 assetFilter={assetFilter}
-                onChange={setChainBid}
+                onChange={setChain}
               />
             </Field>
 

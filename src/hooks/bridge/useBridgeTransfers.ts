@@ -3,8 +3,8 @@ import request from 'graphql-request';
 import { graphUrl } from '@/config/thegraph';
 import { useQuery } from '@tanstack/react-query';
 import { Hex } from 'viem';
-import { formatAddress } from '@/utils/format';
 import { AssetType } from '@/types/types';
+import { Chain } from '@/config/chains';
 
 const transfersQuery = graphql(/* GraphQL */ `
   query transfersQuery($addressFrom: Bytes!, $addressTo: Bytes) {
@@ -37,15 +37,13 @@ export type Transfer = {
   nonce: string;
 };
 
-const fetchBridgTransfers = async (
-  chainBid: number,
+const fetchBridgeTransfers = async (
+  chain: Chain,
   address: Hex
 ): Promise<Transfer[]> => {
-  const addressFormatted = formatAddress(address, chainBid);
-
-  const result = await request(graphUrl(chainBid), transfersQuery, {
-    addressFrom: addressFormatted,
-    addressTo: addressFormatted,
+  const result = await request(graphUrl(chain), transfersQuery, {
+    addressFrom: address,
+    addressTo: address,
   });
 
   return result.transfereds.map((transfer) => ({
@@ -55,7 +53,7 @@ const fetchBridgTransfers = async (
     assetHash: transfer.data_assetHash,
     from: transfer.data_from,
     to: transfer.data_to,
-    chainBid: parseInt(transfer.data_chainBid),
+    chainBid: transfer.data_chainBid,
     params: transfer.data_params,
     nonce: transfer.data_nonce,
   }));
@@ -64,17 +62,15 @@ const fetchBridgTransfers = async (
 export const useBridgeTransfers = ({
   address,
   enabled,
-  chainBid,
+  chain,
 }: {
   address: Hex;
-  chainBid: number;
+  chain: Chain;
   enabled: boolean;
 }) => {
-  const targetChainBid = chainBid;
-
   const result = useQuery({
-    queryKey: ['bridge-transfer', address, { targetChainBid }],
-    queryFn: async () => await fetchBridgTransfers(targetChainBid, address),
+    queryKey: ['bridge-transfer', address, { chainId: chain.id }],
+    queryFn: async () => await fetchBridgeTransfers(chain, address),
     enabled: enabled,
   });
 

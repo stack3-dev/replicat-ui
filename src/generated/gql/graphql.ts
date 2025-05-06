@@ -198,22 +198,24 @@ export type Query = {
   eip712DomainChangeds: Array<Eip712DomainChanged>;
   ownershipTransferred?: Maybe<OwnershipTransferred>;
   ownershipTransferreds: Array<OwnershipTransferred>;
-  relayerRegistered?: Maybe<RelayerRegistered>;
-  relayerRegistereds: Array<RelayerRegistered>;
   replicaAdapterCreated?: Maybe<ReplicaAdapterCreated>;
   replicaAdapterCreateds: Array<ReplicaAdapterCreated>;
   replicaCreated?: Maybe<ReplicaCreated>;
   replicaCreateds: Array<ReplicaCreated>;
-  transferFeeUpdated?: Maybe<TransferFeeUpdated>;
-  transferFeeUpdateds: Array<TransferFeeUpdated>;
-  transferFeesWithdrawn?: Maybe<TransferFeesWithdrawn>;
-  transferFeesWithdrawns: Array<TransferFeesWithdrawn>;
+  replicaFactoryFeeUpdated?: Maybe<ReplicaFactory_FeeUpdated>;
+  replicaFactoryFeeUpdateds: Array<ReplicaFactory_FeeUpdated>;
+  replicaFactoryFeesWithdrawn?: Maybe<ReplicaFactory_FeesWithdrawn>;
+  replicaFactoryFeesWithdrawns: Array<ReplicaFactory_FeesWithdrawn>;
   transferReverted?: Maybe<TransferReverted>;
   transferReverteds: Array<TransferReverted>;
   transfered?: Maybe<Transfered>;
   transferedCrosschain?: Maybe<TransferedCrosschain>;
   transferedCrosschains: Array<TransferedCrosschain>;
   transfereds: Array<Transfered>;
+  wormholeMessageReceived?: Maybe<WormholeMessageReceived>;
+  wormholeMessageReceiveds: Array<WormholeMessageReceived>;
+  wormholeMessageSent?: Maybe<WormholeMessageSent>;
+  wormholeMessageSents: Array<WormholeMessageSent>;
 };
 
 
@@ -258,24 +260,6 @@ export type QueryOwnershipTransferredsArgs = {
 };
 
 
-export type QueryRelayerRegisteredArgs = {
-  block?: InputMaybe<Block_Height>;
-  id: Scalars['ID']['input'];
-  subgraphError?: _SubgraphErrorPolicy_;
-};
-
-
-export type QueryRelayerRegisteredsArgs = {
-  block?: InputMaybe<Block_Height>;
-  first?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<RelayerRegistered_OrderBy>;
-  orderDirection?: InputMaybe<OrderDirection>;
-  skip?: InputMaybe<Scalars['Int']['input']>;
-  subgraphError?: _SubgraphErrorPolicy_;
-  where?: InputMaybe<RelayerRegistered_Filter>;
-};
-
-
 export type QueryReplicaAdapterCreatedArgs = {
   block?: InputMaybe<Block_Height>;
   id: Scalars['ID']['input'];
@@ -312,39 +296,39 @@ export type QueryReplicaCreatedsArgs = {
 };
 
 
-export type QueryTransferFeeUpdatedArgs = {
+export type QueryReplicaFactoryFeeUpdatedArgs = {
   block?: InputMaybe<Block_Height>;
   id: Scalars['ID']['input'];
   subgraphError?: _SubgraphErrorPolicy_;
 };
 
 
-export type QueryTransferFeeUpdatedsArgs = {
+export type QueryReplicaFactoryFeeUpdatedsArgs = {
   block?: InputMaybe<Block_Height>;
   first?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<TransferFeeUpdated_OrderBy>;
+  orderBy?: InputMaybe<ReplicaFactory_FeeUpdated_OrderBy>;
   orderDirection?: InputMaybe<OrderDirection>;
   skip?: InputMaybe<Scalars['Int']['input']>;
   subgraphError?: _SubgraphErrorPolicy_;
-  where?: InputMaybe<TransferFeeUpdated_Filter>;
+  where?: InputMaybe<ReplicaFactory_FeeUpdated_Filter>;
 };
 
 
-export type QueryTransferFeesWithdrawnArgs = {
+export type QueryReplicaFactoryFeesWithdrawnArgs = {
   block?: InputMaybe<Block_Height>;
   id: Scalars['ID']['input'];
   subgraphError?: _SubgraphErrorPolicy_;
 };
 
 
-export type QueryTransferFeesWithdrawnsArgs = {
+export type QueryReplicaFactoryFeesWithdrawnsArgs = {
   block?: InputMaybe<Block_Height>;
   first?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<TransferFeesWithdrawn_OrderBy>;
+  orderBy?: InputMaybe<ReplicaFactory_FeesWithdrawn_OrderBy>;
   orderDirection?: InputMaybe<OrderDirection>;
   skip?: InputMaybe<Scalars['Int']['input']>;
   subgraphError?: _SubgraphErrorPolicy_;
-  where?: InputMaybe<TransferFeesWithdrawn_Filter>;
+  where?: InputMaybe<ReplicaFactory_FeesWithdrawn_Filter>;
 };
 
 
@@ -401,93 +385,47 @@ export type QueryTransferedsArgs = {
   where?: InputMaybe<Transfered_Filter>;
 };
 
-export type RelayerRegistered = {
-  __typename?: 'RelayerRegistered';
-  blockNumber: Scalars['BigInt']['output'];
-  blockTimestamp: Scalars['BigInt']['output'];
-  id: Scalars['Bytes']['output'];
-  relayer: Scalars['Bytes']['output'];
-  relayerClass: Scalars['Bytes']['output'];
-  transactionHash: Scalars['Bytes']['output'];
+
+export type QueryWormholeMessageReceivedArgs = {
+  block?: InputMaybe<Block_Height>;
+  id: Scalars['ID']['input'];
+  subgraphError?: _SubgraphErrorPolicy_;
 };
 
-export type RelayerRegistered_Filter = {
-  /** Filter for the block changed event. */
-  _change_block?: InputMaybe<BlockChangedFilter>;
-  and?: InputMaybe<Array<InputMaybe<RelayerRegistered_Filter>>>;
-  blockNumber?: InputMaybe<Scalars['BigInt']['input']>;
-  blockNumber_gt?: InputMaybe<Scalars['BigInt']['input']>;
-  blockNumber_gte?: InputMaybe<Scalars['BigInt']['input']>;
-  blockNumber_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
-  blockNumber_lt?: InputMaybe<Scalars['BigInt']['input']>;
-  blockNumber_lte?: InputMaybe<Scalars['BigInt']['input']>;
-  blockNumber_not?: InputMaybe<Scalars['BigInt']['input']>;
-  blockNumber_not_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
-  blockTimestamp?: InputMaybe<Scalars['BigInt']['input']>;
-  blockTimestamp_gt?: InputMaybe<Scalars['BigInt']['input']>;
-  blockTimestamp_gte?: InputMaybe<Scalars['BigInt']['input']>;
-  blockTimestamp_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
-  blockTimestamp_lt?: InputMaybe<Scalars['BigInt']['input']>;
-  blockTimestamp_lte?: InputMaybe<Scalars['BigInt']['input']>;
-  blockTimestamp_not?: InputMaybe<Scalars['BigInt']['input']>;
-  blockTimestamp_not_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
-  id?: InputMaybe<Scalars['Bytes']['input']>;
-  id_contains?: InputMaybe<Scalars['Bytes']['input']>;
-  id_gt?: InputMaybe<Scalars['Bytes']['input']>;
-  id_gte?: InputMaybe<Scalars['Bytes']['input']>;
-  id_in?: InputMaybe<Array<Scalars['Bytes']['input']>>;
-  id_lt?: InputMaybe<Scalars['Bytes']['input']>;
-  id_lte?: InputMaybe<Scalars['Bytes']['input']>;
-  id_not?: InputMaybe<Scalars['Bytes']['input']>;
-  id_not_contains?: InputMaybe<Scalars['Bytes']['input']>;
-  id_not_in?: InputMaybe<Array<Scalars['Bytes']['input']>>;
-  or?: InputMaybe<Array<InputMaybe<RelayerRegistered_Filter>>>;
-  relayer?: InputMaybe<Scalars['Bytes']['input']>;
-  relayerClass?: InputMaybe<Scalars['Bytes']['input']>;
-  relayerClass_contains?: InputMaybe<Scalars['Bytes']['input']>;
-  relayerClass_gt?: InputMaybe<Scalars['Bytes']['input']>;
-  relayerClass_gte?: InputMaybe<Scalars['Bytes']['input']>;
-  relayerClass_in?: InputMaybe<Array<Scalars['Bytes']['input']>>;
-  relayerClass_lt?: InputMaybe<Scalars['Bytes']['input']>;
-  relayerClass_lte?: InputMaybe<Scalars['Bytes']['input']>;
-  relayerClass_not?: InputMaybe<Scalars['Bytes']['input']>;
-  relayerClass_not_contains?: InputMaybe<Scalars['Bytes']['input']>;
-  relayerClass_not_in?: InputMaybe<Array<Scalars['Bytes']['input']>>;
-  relayer_contains?: InputMaybe<Scalars['Bytes']['input']>;
-  relayer_gt?: InputMaybe<Scalars['Bytes']['input']>;
-  relayer_gte?: InputMaybe<Scalars['Bytes']['input']>;
-  relayer_in?: InputMaybe<Array<Scalars['Bytes']['input']>>;
-  relayer_lt?: InputMaybe<Scalars['Bytes']['input']>;
-  relayer_lte?: InputMaybe<Scalars['Bytes']['input']>;
-  relayer_not?: InputMaybe<Scalars['Bytes']['input']>;
-  relayer_not_contains?: InputMaybe<Scalars['Bytes']['input']>;
-  relayer_not_in?: InputMaybe<Array<Scalars['Bytes']['input']>>;
-  transactionHash?: InputMaybe<Scalars['Bytes']['input']>;
-  transactionHash_contains?: InputMaybe<Scalars['Bytes']['input']>;
-  transactionHash_gt?: InputMaybe<Scalars['Bytes']['input']>;
-  transactionHash_gte?: InputMaybe<Scalars['Bytes']['input']>;
-  transactionHash_in?: InputMaybe<Array<Scalars['Bytes']['input']>>;
-  transactionHash_lt?: InputMaybe<Scalars['Bytes']['input']>;
-  transactionHash_lte?: InputMaybe<Scalars['Bytes']['input']>;
-  transactionHash_not?: InputMaybe<Scalars['Bytes']['input']>;
-  transactionHash_not_contains?: InputMaybe<Scalars['Bytes']['input']>;
-  transactionHash_not_in?: InputMaybe<Array<Scalars['Bytes']['input']>>;
+
+export type QueryWormholeMessageReceivedsArgs = {
+  block?: InputMaybe<Block_Height>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<WormholeMessageReceived_OrderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  subgraphError?: _SubgraphErrorPolicy_;
+  where?: InputMaybe<WormholeMessageReceived_Filter>;
 };
 
-export enum RelayerRegistered_OrderBy {
-  BlockNumber = 'blockNumber',
-  BlockTimestamp = 'blockTimestamp',
-  Id = 'id',
-  Relayer = 'relayer',
-  RelayerClass = 'relayerClass',
-  TransactionHash = 'transactionHash'
-}
+
+export type QueryWormholeMessageSentArgs = {
+  block?: InputMaybe<Block_Height>;
+  id: Scalars['ID']['input'];
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+
+export type QueryWormholeMessageSentsArgs = {
+  block?: InputMaybe<Block_Height>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<WormholeMessageSent_OrderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  subgraphError?: _SubgraphErrorPolicy_;
+  where?: InputMaybe<WormholeMessageSent_Filter>;
+};
 
 export type ReplicaAdapterCreated = {
   __typename?: 'ReplicaAdapterCreated';
   address_: Scalars['Bytes']['output'];
   assetData_address_: Scalars['Bytes']['output'];
-  assetData_chainBid: Scalars['BigInt']['output'];
+  assetData_chainBid: Scalars['Int']['output'];
   assetData_metadata: Scalars['Bytes']['output'];
   assetData_type_: Scalars['Int']['output'];
   blockNumber: Scalars['BigInt']['output'];
@@ -522,14 +460,14 @@ export type ReplicaAdapterCreated_Filter = {
   assetData_address__not?: InputMaybe<Scalars['Bytes']['input']>;
   assetData_address__not_contains?: InputMaybe<Scalars['Bytes']['input']>;
   assetData_address__not_in?: InputMaybe<Array<Scalars['Bytes']['input']>>;
-  assetData_chainBid?: InputMaybe<Scalars['BigInt']['input']>;
-  assetData_chainBid_gt?: InputMaybe<Scalars['BigInt']['input']>;
-  assetData_chainBid_gte?: InputMaybe<Scalars['BigInt']['input']>;
-  assetData_chainBid_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
-  assetData_chainBid_lt?: InputMaybe<Scalars['BigInt']['input']>;
-  assetData_chainBid_lte?: InputMaybe<Scalars['BigInt']['input']>;
-  assetData_chainBid_not?: InputMaybe<Scalars['BigInt']['input']>;
-  assetData_chainBid_not_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
+  assetData_chainBid?: InputMaybe<Scalars['Int']['input']>;
+  assetData_chainBid_gt?: InputMaybe<Scalars['Int']['input']>;
+  assetData_chainBid_gte?: InputMaybe<Scalars['Int']['input']>;
+  assetData_chainBid_in?: InputMaybe<Array<Scalars['Int']['input']>>;
+  assetData_chainBid_lt?: InputMaybe<Scalars['Int']['input']>;
+  assetData_chainBid_lte?: InputMaybe<Scalars['Int']['input']>;
+  assetData_chainBid_not?: InputMaybe<Scalars['Int']['input']>;
+  assetData_chainBid_not_in?: InputMaybe<Array<Scalars['Int']['input']>>;
   assetData_metadata?: InputMaybe<Scalars['Bytes']['input']>;
   assetData_metadata_contains?: InputMaybe<Scalars['Bytes']['input']>;
   assetData_metadata_gt?: InputMaybe<Scalars['Bytes']['input']>;
@@ -625,7 +563,7 @@ export type ReplicaCreated = {
   __typename?: 'ReplicaCreated';
   address_: Scalars['Bytes']['output'];
   assetData_address_: Scalars['Bytes']['output'];
-  assetData_chainBid: Scalars['BigInt']['output'];
+  assetData_chainBid: Scalars['Int']['output'];
   assetData_metadata: Scalars['Bytes']['output'];
   assetData_type_: Scalars['Int']['output'];
   blockNumber: Scalars['BigInt']['output'];
@@ -660,14 +598,14 @@ export type ReplicaCreated_Filter = {
   assetData_address__not?: InputMaybe<Scalars['Bytes']['input']>;
   assetData_address__not_contains?: InputMaybe<Scalars['Bytes']['input']>;
   assetData_address__not_in?: InputMaybe<Array<Scalars['Bytes']['input']>>;
-  assetData_chainBid?: InputMaybe<Scalars['BigInt']['input']>;
-  assetData_chainBid_gt?: InputMaybe<Scalars['BigInt']['input']>;
-  assetData_chainBid_gte?: InputMaybe<Scalars['BigInt']['input']>;
-  assetData_chainBid_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
-  assetData_chainBid_lt?: InputMaybe<Scalars['BigInt']['input']>;
-  assetData_chainBid_lte?: InputMaybe<Scalars['BigInt']['input']>;
-  assetData_chainBid_not?: InputMaybe<Scalars['BigInt']['input']>;
-  assetData_chainBid_not_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
+  assetData_chainBid?: InputMaybe<Scalars['Int']['input']>;
+  assetData_chainBid_gt?: InputMaybe<Scalars['Int']['input']>;
+  assetData_chainBid_gte?: InputMaybe<Scalars['Int']['input']>;
+  assetData_chainBid_in?: InputMaybe<Array<Scalars['Int']['input']>>;
+  assetData_chainBid_lt?: InputMaybe<Scalars['Int']['input']>;
+  assetData_chainBid_lte?: InputMaybe<Scalars['Int']['input']>;
+  assetData_chainBid_not?: InputMaybe<Scalars['Int']['input']>;
+  assetData_chainBid_not_in?: InputMaybe<Array<Scalars['Int']['input']>>;
   assetData_metadata?: InputMaybe<Scalars['Bytes']['input']>;
   assetData_metadata_contains?: InputMaybe<Scalars['Bytes']['input']>;
   assetData_metadata_gt?: InputMaybe<Scalars['Bytes']['input']>;
@@ -759,6 +697,154 @@ export enum ReplicaCreated_OrderBy {
   TransactionHash = 'transactionHash'
 }
 
+export type ReplicaFactory_FeeUpdated = {
+  __typename?: 'ReplicaFactory_FeeUpdated';
+  blockNumber: Scalars['BigInt']['output'];
+  blockTimestamp: Scalars['BigInt']['output'];
+  fee: Scalars['BigInt']['output'];
+  id: Scalars['Bytes']['output'];
+  transactionHash: Scalars['Bytes']['output'];
+};
+
+export type ReplicaFactory_FeeUpdated_Filter = {
+  /** Filter for the block changed event. */
+  _change_block?: InputMaybe<BlockChangedFilter>;
+  and?: InputMaybe<Array<InputMaybe<ReplicaFactory_FeeUpdated_Filter>>>;
+  blockNumber?: InputMaybe<Scalars['BigInt']['input']>;
+  blockNumber_gt?: InputMaybe<Scalars['BigInt']['input']>;
+  blockNumber_gte?: InputMaybe<Scalars['BigInt']['input']>;
+  blockNumber_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
+  blockNumber_lt?: InputMaybe<Scalars['BigInt']['input']>;
+  blockNumber_lte?: InputMaybe<Scalars['BigInt']['input']>;
+  blockNumber_not?: InputMaybe<Scalars['BigInt']['input']>;
+  blockNumber_not_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
+  blockTimestamp?: InputMaybe<Scalars['BigInt']['input']>;
+  blockTimestamp_gt?: InputMaybe<Scalars['BigInt']['input']>;
+  blockTimestamp_gte?: InputMaybe<Scalars['BigInt']['input']>;
+  blockTimestamp_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
+  blockTimestamp_lt?: InputMaybe<Scalars['BigInt']['input']>;
+  blockTimestamp_lte?: InputMaybe<Scalars['BigInt']['input']>;
+  blockTimestamp_not?: InputMaybe<Scalars['BigInt']['input']>;
+  blockTimestamp_not_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
+  fee?: InputMaybe<Scalars['BigInt']['input']>;
+  fee_gt?: InputMaybe<Scalars['BigInt']['input']>;
+  fee_gte?: InputMaybe<Scalars['BigInt']['input']>;
+  fee_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
+  fee_lt?: InputMaybe<Scalars['BigInt']['input']>;
+  fee_lte?: InputMaybe<Scalars['BigInt']['input']>;
+  fee_not?: InputMaybe<Scalars['BigInt']['input']>;
+  fee_not_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
+  id?: InputMaybe<Scalars['Bytes']['input']>;
+  id_contains?: InputMaybe<Scalars['Bytes']['input']>;
+  id_gt?: InputMaybe<Scalars['Bytes']['input']>;
+  id_gte?: InputMaybe<Scalars['Bytes']['input']>;
+  id_in?: InputMaybe<Array<Scalars['Bytes']['input']>>;
+  id_lt?: InputMaybe<Scalars['Bytes']['input']>;
+  id_lte?: InputMaybe<Scalars['Bytes']['input']>;
+  id_not?: InputMaybe<Scalars['Bytes']['input']>;
+  id_not_contains?: InputMaybe<Scalars['Bytes']['input']>;
+  id_not_in?: InputMaybe<Array<Scalars['Bytes']['input']>>;
+  or?: InputMaybe<Array<InputMaybe<ReplicaFactory_FeeUpdated_Filter>>>;
+  transactionHash?: InputMaybe<Scalars['Bytes']['input']>;
+  transactionHash_contains?: InputMaybe<Scalars['Bytes']['input']>;
+  transactionHash_gt?: InputMaybe<Scalars['Bytes']['input']>;
+  transactionHash_gte?: InputMaybe<Scalars['Bytes']['input']>;
+  transactionHash_in?: InputMaybe<Array<Scalars['Bytes']['input']>>;
+  transactionHash_lt?: InputMaybe<Scalars['Bytes']['input']>;
+  transactionHash_lte?: InputMaybe<Scalars['Bytes']['input']>;
+  transactionHash_not?: InputMaybe<Scalars['Bytes']['input']>;
+  transactionHash_not_contains?: InputMaybe<Scalars['Bytes']['input']>;
+  transactionHash_not_in?: InputMaybe<Array<Scalars['Bytes']['input']>>;
+};
+
+export enum ReplicaFactory_FeeUpdated_OrderBy {
+  BlockNumber = 'blockNumber',
+  BlockTimestamp = 'blockTimestamp',
+  Fee = 'fee',
+  Id = 'id',
+  TransactionHash = 'transactionHash'
+}
+
+export type ReplicaFactory_FeesWithdrawn = {
+  __typename?: 'ReplicaFactory_FeesWithdrawn';
+  amount: Scalars['BigInt']['output'];
+  blockNumber: Scalars['BigInt']['output'];
+  blockTimestamp: Scalars['BigInt']['output'];
+  id: Scalars['Bytes']['output'];
+  payee: Scalars['Bytes']['output'];
+  transactionHash: Scalars['Bytes']['output'];
+};
+
+export type ReplicaFactory_FeesWithdrawn_Filter = {
+  /** Filter for the block changed event. */
+  _change_block?: InputMaybe<BlockChangedFilter>;
+  amount?: InputMaybe<Scalars['BigInt']['input']>;
+  amount_gt?: InputMaybe<Scalars['BigInt']['input']>;
+  amount_gte?: InputMaybe<Scalars['BigInt']['input']>;
+  amount_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
+  amount_lt?: InputMaybe<Scalars['BigInt']['input']>;
+  amount_lte?: InputMaybe<Scalars['BigInt']['input']>;
+  amount_not?: InputMaybe<Scalars['BigInt']['input']>;
+  amount_not_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
+  and?: InputMaybe<Array<InputMaybe<ReplicaFactory_FeesWithdrawn_Filter>>>;
+  blockNumber?: InputMaybe<Scalars['BigInt']['input']>;
+  blockNumber_gt?: InputMaybe<Scalars['BigInt']['input']>;
+  blockNumber_gte?: InputMaybe<Scalars['BigInt']['input']>;
+  blockNumber_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
+  blockNumber_lt?: InputMaybe<Scalars['BigInt']['input']>;
+  blockNumber_lte?: InputMaybe<Scalars['BigInt']['input']>;
+  blockNumber_not?: InputMaybe<Scalars['BigInt']['input']>;
+  blockNumber_not_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
+  blockTimestamp?: InputMaybe<Scalars['BigInt']['input']>;
+  blockTimestamp_gt?: InputMaybe<Scalars['BigInt']['input']>;
+  blockTimestamp_gte?: InputMaybe<Scalars['BigInt']['input']>;
+  blockTimestamp_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
+  blockTimestamp_lt?: InputMaybe<Scalars['BigInt']['input']>;
+  blockTimestamp_lte?: InputMaybe<Scalars['BigInt']['input']>;
+  blockTimestamp_not?: InputMaybe<Scalars['BigInt']['input']>;
+  blockTimestamp_not_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
+  id?: InputMaybe<Scalars['Bytes']['input']>;
+  id_contains?: InputMaybe<Scalars['Bytes']['input']>;
+  id_gt?: InputMaybe<Scalars['Bytes']['input']>;
+  id_gte?: InputMaybe<Scalars['Bytes']['input']>;
+  id_in?: InputMaybe<Array<Scalars['Bytes']['input']>>;
+  id_lt?: InputMaybe<Scalars['Bytes']['input']>;
+  id_lte?: InputMaybe<Scalars['Bytes']['input']>;
+  id_not?: InputMaybe<Scalars['Bytes']['input']>;
+  id_not_contains?: InputMaybe<Scalars['Bytes']['input']>;
+  id_not_in?: InputMaybe<Array<Scalars['Bytes']['input']>>;
+  or?: InputMaybe<Array<InputMaybe<ReplicaFactory_FeesWithdrawn_Filter>>>;
+  payee?: InputMaybe<Scalars['Bytes']['input']>;
+  payee_contains?: InputMaybe<Scalars['Bytes']['input']>;
+  payee_gt?: InputMaybe<Scalars['Bytes']['input']>;
+  payee_gte?: InputMaybe<Scalars['Bytes']['input']>;
+  payee_in?: InputMaybe<Array<Scalars['Bytes']['input']>>;
+  payee_lt?: InputMaybe<Scalars['Bytes']['input']>;
+  payee_lte?: InputMaybe<Scalars['Bytes']['input']>;
+  payee_not?: InputMaybe<Scalars['Bytes']['input']>;
+  payee_not_contains?: InputMaybe<Scalars['Bytes']['input']>;
+  payee_not_in?: InputMaybe<Array<Scalars['Bytes']['input']>>;
+  transactionHash?: InputMaybe<Scalars['Bytes']['input']>;
+  transactionHash_contains?: InputMaybe<Scalars['Bytes']['input']>;
+  transactionHash_gt?: InputMaybe<Scalars['Bytes']['input']>;
+  transactionHash_gte?: InputMaybe<Scalars['Bytes']['input']>;
+  transactionHash_in?: InputMaybe<Array<Scalars['Bytes']['input']>>;
+  transactionHash_lt?: InputMaybe<Scalars['Bytes']['input']>;
+  transactionHash_lte?: InputMaybe<Scalars['Bytes']['input']>;
+  transactionHash_not?: InputMaybe<Scalars['Bytes']['input']>;
+  transactionHash_not_contains?: InputMaybe<Scalars['Bytes']['input']>;
+  transactionHash_not_in?: InputMaybe<Array<Scalars['Bytes']['input']>>;
+};
+
+export enum ReplicaFactory_FeesWithdrawn_OrderBy {
+  Amount = 'amount',
+  BlockNumber = 'blockNumber',
+  BlockTimestamp = 'blockTimestamp',
+  Id = 'id',
+  Payee = 'payee',
+  TransactionHash = 'transactionHash'
+}
+
 export type Subscription = {
   __typename?: 'Subscription';
   /** Access to subgraph metadata */
@@ -767,22 +853,24 @@ export type Subscription = {
   eip712DomainChangeds: Array<Eip712DomainChanged>;
   ownershipTransferred?: Maybe<OwnershipTransferred>;
   ownershipTransferreds: Array<OwnershipTransferred>;
-  relayerRegistered?: Maybe<RelayerRegistered>;
-  relayerRegistereds: Array<RelayerRegistered>;
   replicaAdapterCreated?: Maybe<ReplicaAdapterCreated>;
   replicaAdapterCreateds: Array<ReplicaAdapterCreated>;
   replicaCreated?: Maybe<ReplicaCreated>;
   replicaCreateds: Array<ReplicaCreated>;
-  transferFeeUpdated?: Maybe<TransferFeeUpdated>;
-  transferFeeUpdateds: Array<TransferFeeUpdated>;
-  transferFeesWithdrawn?: Maybe<TransferFeesWithdrawn>;
-  transferFeesWithdrawns: Array<TransferFeesWithdrawn>;
+  replicaFactoryFeeUpdated?: Maybe<ReplicaFactory_FeeUpdated>;
+  replicaFactoryFeeUpdateds: Array<ReplicaFactory_FeeUpdated>;
+  replicaFactoryFeesWithdrawn?: Maybe<ReplicaFactory_FeesWithdrawn>;
+  replicaFactoryFeesWithdrawns: Array<ReplicaFactory_FeesWithdrawn>;
   transferReverted?: Maybe<TransferReverted>;
   transferReverteds: Array<TransferReverted>;
   transfered?: Maybe<Transfered>;
   transferedCrosschain?: Maybe<TransferedCrosschain>;
   transferedCrosschains: Array<TransferedCrosschain>;
   transfereds: Array<Transfered>;
+  wormholeMessageReceived?: Maybe<WormholeMessageReceived>;
+  wormholeMessageReceiveds: Array<WormholeMessageReceived>;
+  wormholeMessageSent?: Maybe<WormholeMessageSent>;
+  wormholeMessageSents: Array<WormholeMessageSent>;
 };
 
 
@@ -827,24 +915,6 @@ export type SubscriptionOwnershipTransferredsArgs = {
 };
 
 
-export type SubscriptionRelayerRegisteredArgs = {
-  block?: InputMaybe<Block_Height>;
-  id: Scalars['ID']['input'];
-  subgraphError?: _SubgraphErrorPolicy_;
-};
-
-
-export type SubscriptionRelayerRegisteredsArgs = {
-  block?: InputMaybe<Block_Height>;
-  first?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<RelayerRegistered_OrderBy>;
-  orderDirection?: InputMaybe<OrderDirection>;
-  skip?: InputMaybe<Scalars['Int']['input']>;
-  subgraphError?: _SubgraphErrorPolicy_;
-  where?: InputMaybe<RelayerRegistered_Filter>;
-};
-
-
 export type SubscriptionReplicaAdapterCreatedArgs = {
   block?: InputMaybe<Block_Height>;
   id: Scalars['ID']['input'];
@@ -881,39 +951,39 @@ export type SubscriptionReplicaCreatedsArgs = {
 };
 
 
-export type SubscriptionTransferFeeUpdatedArgs = {
+export type SubscriptionReplicaFactoryFeeUpdatedArgs = {
   block?: InputMaybe<Block_Height>;
   id: Scalars['ID']['input'];
   subgraphError?: _SubgraphErrorPolicy_;
 };
 
 
-export type SubscriptionTransferFeeUpdatedsArgs = {
+export type SubscriptionReplicaFactoryFeeUpdatedsArgs = {
   block?: InputMaybe<Block_Height>;
   first?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<TransferFeeUpdated_OrderBy>;
+  orderBy?: InputMaybe<ReplicaFactory_FeeUpdated_OrderBy>;
   orderDirection?: InputMaybe<OrderDirection>;
   skip?: InputMaybe<Scalars['Int']['input']>;
   subgraphError?: _SubgraphErrorPolicy_;
-  where?: InputMaybe<TransferFeeUpdated_Filter>;
+  where?: InputMaybe<ReplicaFactory_FeeUpdated_Filter>;
 };
 
 
-export type SubscriptionTransferFeesWithdrawnArgs = {
+export type SubscriptionReplicaFactoryFeesWithdrawnArgs = {
   block?: InputMaybe<Block_Height>;
   id: Scalars['ID']['input'];
   subgraphError?: _SubgraphErrorPolicy_;
 };
 
 
-export type SubscriptionTransferFeesWithdrawnsArgs = {
+export type SubscriptionReplicaFactoryFeesWithdrawnsArgs = {
   block?: InputMaybe<Block_Height>;
   first?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<TransferFeesWithdrawn_OrderBy>;
+  orderBy?: InputMaybe<ReplicaFactory_FeesWithdrawn_OrderBy>;
   orderDirection?: InputMaybe<OrderDirection>;
   skip?: InputMaybe<Scalars['Int']['input']>;
   subgraphError?: _SubgraphErrorPolicy_;
-  where?: InputMaybe<TransferFeesWithdrawn_Filter>;
+  where?: InputMaybe<ReplicaFactory_FeesWithdrawn_Filter>;
 };
 
 
@@ -970,165 +1040,41 @@ export type SubscriptionTransferedsArgs = {
   where?: InputMaybe<Transfered_Filter>;
 };
 
-export type TransferFeeUpdated = {
-  __typename?: 'TransferFeeUpdated';
-  blockNumber: Scalars['BigInt']['output'];
-  blockTimestamp: Scalars['BigInt']['output'];
-  fee_feeBp: Scalars['BigInt']['output'];
-  fee_payee: Scalars['Bytes']['output'];
-  id: Scalars['Bytes']['output'];
-  transactionHash: Scalars['Bytes']['output'];
+
+export type SubscriptionWormholeMessageReceivedArgs = {
+  block?: InputMaybe<Block_Height>;
+  id: Scalars['ID']['input'];
+  subgraphError?: _SubgraphErrorPolicy_;
 };
 
-export type TransferFeeUpdated_Filter = {
-  /** Filter for the block changed event. */
-  _change_block?: InputMaybe<BlockChangedFilter>;
-  and?: InputMaybe<Array<InputMaybe<TransferFeeUpdated_Filter>>>;
-  blockNumber?: InputMaybe<Scalars['BigInt']['input']>;
-  blockNumber_gt?: InputMaybe<Scalars['BigInt']['input']>;
-  blockNumber_gte?: InputMaybe<Scalars['BigInt']['input']>;
-  blockNumber_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
-  blockNumber_lt?: InputMaybe<Scalars['BigInt']['input']>;
-  blockNumber_lte?: InputMaybe<Scalars['BigInt']['input']>;
-  blockNumber_not?: InputMaybe<Scalars['BigInt']['input']>;
-  blockNumber_not_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
-  blockTimestamp?: InputMaybe<Scalars['BigInt']['input']>;
-  blockTimestamp_gt?: InputMaybe<Scalars['BigInt']['input']>;
-  blockTimestamp_gte?: InputMaybe<Scalars['BigInt']['input']>;
-  blockTimestamp_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
-  blockTimestamp_lt?: InputMaybe<Scalars['BigInt']['input']>;
-  blockTimestamp_lte?: InputMaybe<Scalars['BigInt']['input']>;
-  blockTimestamp_not?: InputMaybe<Scalars['BigInt']['input']>;
-  blockTimestamp_not_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
-  fee_feeBp?: InputMaybe<Scalars['BigInt']['input']>;
-  fee_feeBp_gt?: InputMaybe<Scalars['BigInt']['input']>;
-  fee_feeBp_gte?: InputMaybe<Scalars['BigInt']['input']>;
-  fee_feeBp_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
-  fee_feeBp_lt?: InputMaybe<Scalars['BigInt']['input']>;
-  fee_feeBp_lte?: InputMaybe<Scalars['BigInt']['input']>;
-  fee_feeBp_not?: InputMaybe<Scalars['BigInt']['input']>;
-  fee_feeBp_not_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
-  fee_payee?: InputMaybe<Scalars['Bytes']['input']>;
-  fee_payee_contains?: InputMaybe<Scalars['Bytes']['input']>;
-  fee_payee_gt?: InputMaybe<Scalars['Bytes']['input']>;
-  fee_payee_gte?: InputMaybe<Scalars['Bytes']['input']>;
-  fee_payee_in?: InputMaybe<Array<Scalars['Bytes']['input']>>;
-  fee_payee_lt?: InputMaybe<Scalars['Bytes']['input']>;
-  fee_payee_lte?: InputMaybe<Scalars['Bytes']['input']>;
-  fee_payee_not?: InputMaybe<Scalars['Bytes']['input']>;
-  fee_payee_not_contains?: InputMaybe<Scalars['Bytes']['input']>;
-  fee_payee_not_in?: InputMaybe<Array<Scalars['Bytes']['input']>>;
-  id?: InputMaybe<Scalars['Bytes']['input']>;
-  id_contains?: InputMaybe<Scalars['Bytes']['input']>;
-  id_gt?: InputMaybe<Scalars['Bytes']['input']>;
-  id_gte?: InputMaybe<Scalars['Bytes']['input']>;
-  id_in?: InputMaybe<Array<Scalars['Bytes']['input']>>;
-  id_lt?: InputMaybe<Scalars['Bytes']['input']>;
-  id_lte?: InputMaybe<Scalars['Bytes']['input']>;
-  id_not?: InputMaybe<Scalars['Bytes']['input']>;
-  id_not_contains?: InputMaybe<Scalars['Bytes']['input']>;
-  id_not_in?: InputMaybe<Array<Scalars['Bytes']['input']>>;
-  or?: InputMaybe<Array<InputMaybe<TransferFeeUpdated_Filter>>>;
-  transactionHash?: InputMaybe<Scalars['Bytes']['input']>;
-  transactionHash_contains?: InputMaybe<Scalars['Bytes']['input']>;
-  transactionHash_gt?: InputMaybe<Scalars['Bytes']['input']>;
-  transactionHash_gte?: InputMaybe<Scalars['Bytes']['input']>;
-  transactionHash_in?: InputMaybe<Array<Scalars['Bytes']['input']>>;
-  transactionHash_lt?: InputMaybe<Scalars['Bytes']['input']>;
-  transactionHash_lte?: InputMaybe<Scalars['Bytes']['input']>;
-  transactionHash_not?: InputMaybe<Scalars['Bytes']['input']>;
-  transactionHash_not_contains?: InputMaybe<Scalars['Bytes']['input']>;
-  transactionHash_not_in?: InputMaybe<Array<Scalars['Bytes']['input']>>;
+
+export type SubscriptionWormholeMessageReceivedsArgs = {
+  block?: InputMaybe<Block_Height>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<WormholeMessageReceived_OrderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  subgraphError?: _SubgraphErrorPolicy_;
+  where?: InputMaybe<WormholeMessageReceived_Filter>;
 };
 
-export enum TransferFeeUpdated_OrderBy {
-  BlockNumber = 'blockNumber',
-  BlockTimestamp = 'blockTimestamp',
-  FeeFeeBp = 'fee_feeBp',
-  FeePayee = 'fee_payee',
-  Id = 'id',
-  TransactionHash = 'transactionHash'
-}
 
-export type TransferFeesWithdrawn = {
-  __typename?: 'TransferFeesWithdrawn';
-  amount: Scalars['BigInt']['output'];
-  blockNumber: Scalars['BigInt']['output'];
-  blockTimestamp: Scalars['BigInt']['output'];
-  id: Scalars['Bytes']['output'];
-  payee: Scalars['Bytes']['output'];
-  transactionHash: Scalars['Bytes']['output'];
+export type SubscriptionWormholeMessageSentArgs = {
+  block?: InputMaybe<Block_Height>;
+  id: Scalars['ID']['input'];
+  subgraphError?: _SubgraphErrorPolicy_;
 };
 
-export type TransferFeesWithdrawn_Filter = {
-  /** Filter for the block changed event. */
-  _change_block?: InputMaybe<BlockChangedFilter>;
-  amount?: InputMaybe<Scalars['BigInt']['input']>;
-  amount_gt?: InputMaybe<Scalars['BigInt']['input']>;
-  amount_gte?: InputMaybe<Scalars['BigInt']['input']>;
-  amount_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
-  amount_lt?: InputMaybe<Scalars['BigInt']['input']>;
-  amount_lte?: InputMaybe<Scalars['BigInt']['input']>;
-  amount_not?: InputMaybe<Scalars['BigInt']['input']>;
-  amount_not_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
-  and?: InputMaybe<Array<InputMaybe<TransferFeesWithdrawn_Filter>>>;
-  blockNumber?: InputMaybe<Scalars['BigInt']['input']>;
-  blockNumber_gt?: InputMaybe<Scalars['BigInt']['input']>;
-  blockNumber_gte?: InputMaybe<Scalars['BigInt']['input']>;
-  blockNumber_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
-  blockNumber_lt?: InputMaybe<Scalars['BigInt']['input']>;
-  blockNumber_lte?: InputMaybe<Scalars['BigInt']['input']>;
-  blockNumber_not?: InputMaybe<Scalars['BigInt']['input']>;
-  blockNumber_not_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
-  blockTimestamp?: InputMaybe<Scalars['BigInt']['input']>;
-  blockTimestamp_gt?: InputMaybe<Scalars['BigInt']['input']>;
-  blockTimestamp_gte?: InputMaybe<Scalars['BigInt']['input']>;
-  blockTimestamp_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
-  blockTimestamp_lt?: InputMaybe<Scalars['BigInt']['input']>;
-  blockTimestamp_lte?: InputMaybe<Scalars['BigInt']['input']>;
-  blockTimestamp_not?: InputMaybe<Scalars['BigInt']['input']>;
-  blockTimestamp_not_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
-  id?: InputMaybe<Scalars['Bytes']['input']>;
-  id_contains?: InputMaybe<Scalars['Bytes']['input']>;
-  id_gt?: InputMaybe<Scalars['Bytes']['input']>;
-  id_gte?: InputMaybe<Scalars['Bytes']['input']>;
-  id_in?: InputMaybe<Array<Scalars['Bytes']['input']>>;
-  id_lt?: InputMaybe<Scalars['Bytes']['input']>;
-  id_lte?: InputMaybe<Scalars['Bytes']['input']>;
-  id_not?: InputMaybe<Scalars['Bytes']['input']>;
-  id_not_contains?: InputMaybe<Scalars['Bytes']['input']>;
-  id_not_in?: InputMaybe<Array<Scalars['Bytes']['input']>>;
-  or?: InputMaybe<Array<InputMaybe<TransferFeesWithdrawn_Filter>>>;
-  payee?: InputMaybe<Scalars['Bytes']['input']>;
-  payee_contains?: InputMaybe<Scalars['Bytes']['input']>;
-  payee_gt?: InputMaybe<Scalars['Bytes']['input']>;
-  payee_gte?: InputMaybe<Scalars['Bytes']['input']>;
-  payee_in?: InputMaybe<Array<Scalars['Bytes']['input']>>;
-  payee_lt?: InputMaybe<Scalars['Bytes']['input']>;
-  payee_lte?: InputMaybe<Scalars['Bytes']['input']>;
-  payee_not?: InputMaybe<Scalars['Bytes']['input']>;
-  payee_not_contains?: InputMaybe<Scalars['Bytes']['input']>;
-  payee_not_in?: InputMaybe<Array<Scalars['Bytes']['input']>>;
-  transactionHash?: InputMaybe<Scalars['Bytes']['input']>;
-  transactionHash_contains?: InputMaybe<Scalars['Bytes']['input']>;
-  transactionHash_gt?: InputMaybe<Scalars['Bytes']['input']>;
-  transactionHash_gte?: InputMaybe<Scalars['Bytes']['input']>;
-  transactionHash_in?: InputMaybe<Array<Scalars['Bytes']['input']>>;
-  transactionHash_lt?: InputMaybe<Scalars['Bytes']['input']>;
-  transactionHash_lte?: InputMaybe<Scalars['Bytes']['input']>;
-  transactionHash_not?: InputMaybe<Scalars['Bytes']['input']>;
-  transactionHash_not_contains?: InputMaybe<Scalars['Bytes']['input']>;
-  transactionHash_not_in?: InputMaybe<Array<Scalars['Bytes']['input']>>;
-};
 
-export enum TransferFeesWithdrawn_OrderBy {
-  Amount = 'amount',
-  BlockNumber = 'blockNumber',
-  BlockTimestamp = 'blockTimestamp',
-  Id = 'id',
-  Payee = 'payee',
-  TransactionHash = 'transactionHash'
-}
+export type SubscriptionWormholeMessageSentsArgs = {
+  block?: InputMaybe<Block_Height>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<WormholeMessageSent_OrderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  subgraphError?: _SubgraphErrorPolicy_;
+  where?: InputMaybe<WormholeMessageSent_Filter>;
+};
 
 export type TransferReverted = {
   __typename?: 'TransferReverted';
@@ -1136,7 +1082,7 @@ export type TransferReverted = {
   blockTimestamp: Scalars['BigInt']['output'];
   data_assetHash: Scalars['Bytes']['output'];
   data_assetType: Scalars['Int']['output'];
-  data_chainBid: Scalars['BigInt']['output'];
+  data_chainBid: Scalars['Int']['output'];
   data_from: Scalars['Bytes']['output'];
   data_nonce: Scalars['BigInt']['output'];
   data_params: Scalars['Bytes']['output'];
@@ -1184,14 +1130,14 @@ export type TransferReverted_Filter = {
   data_assetType_lte?: InputMaybe<Scalars['Int']['input']>;
   data_assetType_not?: InputMaybe<Scalars['Int']['input']>;
   data_assetType_not_in?: InputMaybe<Array<Scalars['Int']['input']>>;
-  data_chainBid?: InputMaybe<Scalars['BigInt']['input']>;
-  data_chainBid_gt?: InputMaybe<Scalars['BigInt']['input']>;
-  data_chainBid_gte?: InputMaybe<Scalars['BigInt']['input']>;
-  data_chainBid_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
-  data_chainBid_lt?: InputMaybe<Scalars['BigInt']['input']>;
-  data_chainBid_lte?: InputMaybe<Scalars['BigInt']['input']>;
-  data_chainBid_not?: InputMaybe<Scalars['BigInt']['input']>;
-  data_chainBid_not_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
+  data_chainBid?: InputMaybe<Scalars['Int']['input']>;
+  data_chainBid_gt?: InputMaybe<Scalars['Int']['input']>;
+  data_chainBid_gte?: InputMaybe<Scalars['Int']['input']>;
+  data_chainBid_in?: InputMaybe<Array<Scalars['Int']['input']>>;
+  data_chainBid_lt?: InputMaybe<Scalars['Int']['input']>;
+  data_chainBid_lte?: InputMaybe<Scalars['Int']['input']>;
+  data_chainBid_not?: InputMaybe<Scalars['Int']['input']>;
+  data_chainBid_not_in?: InputMaybe<Array<Scalars['Int']['input']>>;
   data_from?: InputMaybe<Scalars['Bytes']['input']>;
   data_from_contains?: InputMaybe<Scalars['Bytes']['input']>;
   data_from_gt?: InputMaybe<Scalars['Bytes']['input']>;
@@ -1284,7 +1230,7 @@ export type Transfered = {
   blockTimestamp: Scalars['BigInt']['output'];
   data_assetHash: Scalars['Bytes']['output'];
   data_assetType: Scalars['Int']['output'];
-  data_chainBid: Scalars['BigInt']['output'];
+  data_chainBid: Scalars['Int']['output'];
   data_from: Scalars['Bytes']['output'];
   data_nonce: Scalars['BigInt']['output'];
   data_params: Scalars['Bytes']['output'];
@@ -1458,14 +1404,14 @@ export type Transfered_Filter = {
   data_assetType_lte?: InputMaybe<Scalars['Int']['input']>;
   data_assetType_not?: InputMaybe<Scalars['Int']['input']>;
   data_assetType_not_in?: InputMaybe<Array<Scalars['Int']['input']>>;
-  data_chainBid?: InputMaybe<Scalars['BigInt']['input']>;
-  data_chainBid_gt?: InputMaybe<Scalars['BigInt']['input']>;
-  data_chainBid_gte?: InputMaybe<Scalars['BigInt']['input']>;
-  data_chainBid_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
-  data_chainBid_lt?: InputMaybe<Scalars['BigInt']['input']>;
-  data_chainBid_lte?: InputMaybe<Scalars['BigInt']['input']>;
-  data_chainBid_not?: InputMaybe<Scalars['BigInt']['input']>;
-  data_chainBid_not_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
+  data_chainBid?: InputMaybe<Scalars['Int']['input']>;
+  data_chainBid_gt?: InputMaybe<Scalars['Int']['input']>;
+  data_chainBid_gte?: InputMaybe<Scalars['Int']['input']>;
+  data_chainBid_in?: InputMaybe<Array<Scalars['Int']['input']>>;
+  data_chainBid_lt?: InputMaybe<Scalars['Int']['input']>;
+  data_chainBid_lte?: InputMaybe<Scalars['Int']['input']>;
+  data_chainBid_not?: InputMaybe<Scalars['Int']['input']>;
+  data_chainBid_not_in?: InputMaybe<Array<Scalars['Int']['input']>>;
   data_from?: InputMaybe<Scalars['Bytes']['input']>;
   data_from_contains?: InputMaybe<Scalars['Bytes']['input']>;
   data_from_gt?: InputMaybe<Scalars['Bytes']['input']>;
@@ -1552,6 +1498,188 @@ export enum Transfered_OrderBy {
   TransferHash = 'transferHash'
 }
 
+export type WormholeMessageReceived = {
+  __typename?: 'WormholeMessageReceived';
+  blockNumber: Scalars['BigInt']['output'];
+  blockTimestamp: Scalars['BigInt']['output'];
+  deliveryHash: Scalars['Bytes']['output'];
+  id: Scalars['Bytes']['output'];
+  payload: Scalars['Bytes']['output'];
+  sourceChain: Scalars['Int']['output'];
+  transactionHash: Scalars['Bytes']['output'];
+};
+
+export type WormholeMessageReceived_Filter = {
+  /** Filter for the block changed event. */
+  _change_block?: InputMaybe<BlockChangedFilter>;
+  and?: InputMaybe<Array<InputMaybe<WormholeMessageReceived_Filter>>>;
+  blockNumber?: InputMaybe<Scalars['BigInt']['input']>;
+  blockNumber_gt?: InputMaybe<Scalars['BigInt']['input']>;
+  blockNumber_gte?: InputMaybe<Scalars['BigInt']['input']>;
+  blockNumber_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
+  blockNumber_lt?: InputMaybe<Scalars['BigInt']['input']>;
+  blockNumber_lte?: InputMaybe<Scalars['BigInt']['input']>;
+  blockNumber_not?: InputMaybe<Scalars['BigInt']['input']>;
+  blockNumber_not_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
+  blockTimestamp?: InputMaybe<Scalars['BigInt']['input']>;
+  blockTimestamp_gt?: InputMaybe<Scalars['BigInt']['input']>;
+  blockTimestamp_gte?: InputMaybe<Scalars['BigInt']['input']>;
+  blockTimestamp_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
+  blockTimestamp_lt?: InputMaybe<Scalars['BigInt']['input']>;
+  blockTimestamp_lte?: InputMaybe<Scalars['BigInt']['input']>;
+  blockTimestamp_not?: InputMaybe<Scalars['BigInt']['input']>;
+  blockTimestamp_not_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
+  deliveryHash?: InputMaybe<Scalars['Bytes']['input']>;
+  deliveryHash_contains?: InputMaybe<Scalars['Bytes']['input']>;
+  deliveryHash_gt?: InputMaybe<Scalars['Bytes']['input']>;
+  deliveryHash_gte?: InputMaybe<Scalars['Bytes']['input']>;
+  deliveryHash_in?: InputMaybe<Array<Scalars['Bytes']['input']>>;
+  deliveryHash_lt?: InputMaybe<Scalars['Bytes']['input']>;
+  deliveryHash_lte?: InputMaybe<Scalars['Bytes']['input']>;
+  deliveryHash_not?: InputMaybe<Scalars['Bytes']['input']>;
+  deliveryHash_not_contains?: InputMaybe<Scalars['Bytes']['input']>;
+  deliveryHash_not_in?: InputMaybe<Array<Scalars['Bytes']['input']>>;
+  id?: InputMaybe<Scalars['Bytes']['input']>;
+  id_contains?: InputMaybe<Scalars['Bytes']['input']>;
+  id_gt?: InputMaybe<Scalars['Bytes']['input']>;
+  id_gte?: InputMaybe<Scalars['Bytes']['input']>;
+  id_in?: InputMaybe<Array<Scalars['Bytes']['input']>>;
+  id_lt?: InputMaybe<Scalars['Bytes']['input']>;
+  id_lte?: InputMaybe<Scalars['Bytes']['input']>;
+  id_not?: InputMaybe<Scalars['Bytes']['input']>;
+  id_not_contains?: InputMaybe<Scalars['Bytes']['input']>;
+  id_not_in?: InputMaybe<Array<Scalars['Bytes']['input']>>;
+  or?: InputMaybe<Array<InputMaybe<WormholeMessageReceived_Filter>>>;
+  payload?: InputMaybe<Scalars['Bytes']['input']>;
+  payload_contains?: InputMaybe<Scalars['Bytes']['input']>;
+  payload_gt?: InputMaybe<Scalars['Bytes']['input']>;
+  payload_gte?: InputMaybe<Scalars['Bytes']['input']>;
+  payload_in?: InputMaybe<Array<Scalars['Bytes']['input']>>;
+  payload_lt?: InputMaybe<Scalars['Bytes']['input']>;
+  payload_lte?: InputMaybe<Scalars['Bytes']['input']>;
+  payload_not?: InputMaybe<Scalars['Bytes']['input']>;
+  payload_not_contains?: InputMaybe<Scalars['Bytes']['input']>;
+  payload_not_in?: InputMaybe<Array<Scalars['Bytes']['input']>>;
+  sourceChain?: InputMaybe<Scalars['Int']['input']>;
+  sourceChain_gt?: InputMaybe<Scalars['Int']['input']>;
+  sourceChain_gte?: InputMaybe<Scalars['Int']['input']>;
+  sourceChain_in?: InputMaybe<Array<Scalars['Int']['input']>>;
+  sourceChain_lt?: InputMaybe<Scalars['Int']['input']>;
+  sourceChain_lte?: InputMaybe<Scalars['Int']['input']>;
+  sourceChain_not?: InputMaybe<Scalars['Int']['input']>;
+  sourceChain_not_in?: InputMaybe<Array<Scalars['Int']['input']>>;
+  transactionHash?: InputMaybe<Scalars['Bytes']['input']>;
+  transactionHash_contains?: InputMaybe<Scalars['Bytes']['input']>;
+  transactionHash_gt?: InputMaybe<Scalars['Bytes']['input']>;
+  transactionHash_gte?: InputMaybe<Scalars['Bytes']['input']>;
+  transactionHash_in?: InputMaybe<Array<Scalars['Bytes']['input']>>;
+  transactionHash_lt?: InputMaybe<Scalars['Bytes']['input']>;
+  transactionHash_lte?: InputMaybe<Scalars['Bytes']['input']>;
+  transactionHash_not?: InputMaybe<Scalars['Bytes']['input']>;
+  transactionHash_not_contains?: InputMaybe<Scalars['Bytes']['input']>;
+  transactionHash_not_in?: InputMaybe<Array<Scalars['Bytes']['input']>>;
+};
+
+export enum WormholeMessageReceived_OrderBy {
+  BlockNumber = 'blockNumber',
+  BlockTimestamp = 'blockTimestamp',
+  DeliveryHash = 'deliveryHash',
+  Id = 'id',
+  Payload = 'payload',
+  SourceChain = 'sourceChain',
+  TransactionHash = 'transactionHash'
+}
+
+export type WormholeMessageSent = {
+  __typename?: 'WormholeMessageSent';
+  blockNumber: Scalars['BigInt']['output'];
+  blockTimestamp: Scalars['BigInt']['output'];
+  id: Scalars['Bytes']['output'];
+  payload: Scalars['Bytes']['output'];
+  sequence: Scalars['BigInt']['output'];
+  targetChainBid: Scalars['Int']['output'];
+  transactionHash: Scalars['Bytes']['output'];
+};
+
+export type WormholeMessageSent_Filter = {
+  /** Filter for the block changed event. */
+  _change_block?: InputMaybe<BlockChangedFilter>;
+  and?: InputMaybe<Array<InputMaybe<WormholeMessageSent_Filter>>>;
+  blockNumber?: InputMaybe<Scalars['BigInt']['input']>;
+  blockNumber_gt?: InputMaybe<Scalars['BigInt']['input']>;
+  blockNumber_gte?: InputMaybe<Scalars['BigInt']['input']>;
+  blockNumber_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
+  blockNumber_lt?: InputMaybe<Scalars['BigInt']['input']>;
+  blockNumber_lte?: InputMaybe<Scalars['BigInt']['input']>;
+  blockNumber_not?: InputMaybe<Scalars['BigInt']['input']>;
+  blockNumber_not_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
+  blockTimestamp?: InputMaybe<Scalars['BigInt']['input']>;
+  blockTimestamp_gt?: InputMaybe<Scalars['BigInt']['input']>;
+  blockTimestamp_gte?: InputMaybe<Scalars['BigInt']['input']>;
+  blockTimestamp_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
+  blockTimestamp_lt?: InputMaybe<Scalars['BigInt']['input']>;
+  blockTimestamp_lte?: InputMaybe<Scalars['BigInt']['input']>;
+  blockTimestamp_not?: InputMaybe<Scalars['BigInt']['input']>;
+  blockTimestamp_not_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
+  id?: InputMaybe<Scalars['Bytes']['input']>;
+  id_contains?: InputMaybe<Scalars['Bytes']['input']>;
+  id_gt?: InputMaybe<Scalars['Bytes']['input']>;
+  id_gte?: InputMaybe<Scalars['Bytes']['input']>;
+  id_in?: InputMaybe<Array<Scalars['Bytes']['input']>>;
+  id_lt?: InputMaybe<Scalars['Bytes']['input']>;
+  id_lte?: InputMaybe<Scalars['Bytes']['input']>;
+  id_not?: InputMaybe<Scalars['Bytes']['input']>;
+  id_not_contains?: InputMaybe<Scalars['Bytes']['input']>;
+  id_not_in?: InputMaybe<Array<Scalars['Bytes']['input']>>;
+  or?: InputMaybe<Array<InputMaybe<WormholeMessageSent_Filter>>>;
+  payload?: InputMaybe<Scalars['Bytes']['input']>;
+  payload_contains?: InputMaybe<Scalars['Bytes']['input']>;
+  payload_gt?: InputMaybe<Scalars['Bytes']['input']>;
+  payload_gte?: InputMaybe<Scalars['Bytes']['input']>;
+  payload_in?: InputMaybe<Array<Scalars['Bytes']['input']>>;
+  payload_lt?: InputMaybe<Scalars['Bytes']['input']>;
+  payload_lte?: InputMaybe<Scalars['Bytes']['input']>;
+  payload_not?: InputMaybe<Scalars['Bytes']['input']>;
+  payload_not_contains?: InputMaybe<Scalars['Bytes']['input']>;
+  payload_not_in?: InputMaybe<Array<Scalars['Bytes']['input']>>;
+  sequence?: InputMaybe<Scalars['BigInt']['input']>;
+  sequence_gt?: InputMaybe<Scalars['BigInt']['input']>;
+  sequence_gte?: InputMaybe<Scalars['BigInt']['input']>;
+  sequence_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
+  sequence_lt?: InputMaybe<Scalars['BigInt']['input']>;
+  sequence_lte?: InputMaybe<Scalars['BigInt']['input']>;
+  sequence_not?: InputMaybe<Scalars['BigInt']['input']>;
+  sequence_not_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
+  targetChainBid?: InputMaybe<Scalars['Int']['input']>;
+  targetChainBid_gt?: InputMaybe<Scalars['Int']['input']>;
+  targetChainBid_gte?: InputMaybe<Scalars['Int']['input']>;
+  targetChainBid_in?: InputMaybe<Array<Scalars['Int']['input']>>;
+  targetChainBid_lt?: InputMaybe<Scalars['Int']['input']>;
+  targetChainBid_lte?: InputMaybe<Scalars['Int']['input']>;
+  targetChainBid_not?: InputMaybe<Scalars['Int']['input']>;
+  targetChainBid_not_in?: InputMaybe<Array<Scalars['Int']['input']>>;
+  transactionHash?: InputMaybe<Scalars['Bytes']['input']>;
+  transactionHash_contains?: InputMaybe<Scalars['Bytes']['input']>;
+  transactionHash_gt?: InputMaybe<Scalars['Bytes']['input']>;
+  transactionHash_gte?: InputMaybe<Scalars['Bytes']['input']>;
+  transactionHash_in?: InputMaybe<Array<Scalars['Bytes']['input']>>;
+  transactionHash_lt?: InputMaybe<Scalars['Bytes']['input']>;
+  transactionHash_lte?: InputMaybe<Scalars['Bytes']['input']>;
+  transactionHash_not?: InputMaybe<Scalars['Bytes']['input']>;
+  transactionHash_not_contains?: InputMaybe<Scalars['Bytes']['input']>;
+  transactionHash_not_in?: InputMaybe<Array<Scalars['Bytes']['input']>>;
+};
+
+export enum WormholeMessageSent_OrderBy {
+  BlockNumber = 'blockNumber',
+  BlockTimestamp = 'blockTimestamp',
+  Id = 'id',
+  Payload = 'payload',
+  Sequence = 'sequence',
+  TargetChainBid = 'targetChainBid',
+  TransactionHash = 'transactionHash'
+}
+
 export type _Block_ = {
   __typename?: '_Block_';
   /** The hash of the block */
@@ -1591,7 +1719,7 @@ export enum _SubgraphErrorPolicy_ {
 export type ReplicasQueryQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type ReplicasQueryQuery = { __typename?: 'Query', replicaCreateds: Array<{ __typename?: 'ReplicaCreated', id: any, hash: any, address_: any, creator: any, assetData_type_: number, assetData_chainBid: any, assetData_address_: any, assetData_metadata: any }>, replicaAdapterCreateds: Array<{ __typename?: 'ReplicaAdapterCreated', id: any, hash: any, address_: any, creator: any, assetData_type_: number, assetData_chainBid: any, assetData_address_: any, assetData_metadata: any }> };
+export type ReplicasQueryQuery = { __typename?: 'Query', replicaCreateds: Array<{ __typename?: 'ReplicaCreated', id: any, hash: any, address_: any, creator: any, assetData_type_: number, assetData_chainBid: number, assetData_address_: any, assetData_metadata: any }>, replicaAdapterCreateds: Array<{ __typename?: 'ReplicaAdapterCreated', id: any, hash: any, address_: any, creator: any, assetData_type_: number, assetData_chainBid: number, assetData_address_: any, assetData_metadata: any }> };
 
 export type TransferQueryQueryVariables = Exact<{
   transferHash: Scalars['Bytes']['input'];
@@ -1606,7 +1734,7 @@ export type TransfersQueryQueryVariables = Exact<{
 }>;
 
 
-export type TransfersQueryQuery = { __typename?: 'Query', transfereds: Array<{ __typename?: 'Transfered', id: any, transferHash: any, transactionHash: any, data_assetType: number, data_assetHash: any, data_from: any, data_to: any, data_chainBid: any, data_params: any, data_nonce: any }> };
+export type TransfersQueryQuery = { __typename?: 'Query', transfereds: Array<{ __typename?: 'Transfered', id: any, transferHash: any, transactionHash: any, data_assetType: number, data_assetHash: any, data_from: any, data_to: any, data_chainBid: number, data_params: any, data_nonce: any }> };
 
 
 export const ReplicasQueryDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"replicasQuery"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"replicaCreateds"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"hash"}},{"kind":"Field","name":{"kind":"Name","value":"address_"}},{"kind":"Field","name":{"kind":"Name","value":"creator"}},{"kind":"Field","name":{"kind":"Name","value":"assetData_type_"}},{"kind":"Field","name":{"kind":"Name","value":"assetData_chainBid"}},{"kind":"Field","name":{"kind":"Name","value":"assetData_address_"}},{"kind":"Field","name":{"kind":"Name","value":"assetData_metadata"}}]}},{"kind":"Field","name":{"kind":"Name","value":"replicaAdapterCreateds"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"hash"}},{"kind":"Field","name":{"kind":"Name","value":"address_"}},{"kind":"Field","name":{"kind":"Name","value":"creator"}},{"kind":"Field","name":{"kind":"Name","value":"assetData_type_"}},{"kind":"Field","name":{"kind":"Name","value":"assetData_chainBid"}},{"kind":"Field","name":{"kind":"Name","value":"assetData_address_"}},{"kind":"Field","name":{"kind":"Name","value":"assetData_metadata"}}]}}]}}]} as unknown as DocumentNode<ReplicasQueryQuery, ReplicasQueryQueryVariables>;

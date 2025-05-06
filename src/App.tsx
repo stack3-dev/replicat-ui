@@ -3,7 +3,7 @@ import Navbar from './components/navbar/navbar';
 import Bridge from './components/bridge/common/bridge';
 import './App.css';
 import { Toaster } from './components/ui/toaster';
-import FAQ from './components/common/faq';
+// import FAQ from './components/common/faq';
 
 function App() {
   return (
@@ -15,11 +15,11 @@ function App() {
             <Bridge />
           </VStack>
         </Center>
-        <Center fontSize='xl' pt='15vh'>
+        {/* <Center fontSize='xl' pt='15vh'>
           <VStack gap='8' width='lg'>
             <FAQ />
           </VStack>
-        </Center>
+        </Center> */}
       </Box>
       <Toaster />
     </>

@@ -1,4 +1,4 @@
 import { zeroAddress } from 'viem';
-import { bytesToAddress } from './format';
+import { addressToBytes32 } from './format';
 
-export const zeroBytes32 = bytesToAddress(zeroAddress);
+export const zeroBytes32 = addressToBytes32(zeroAddress);

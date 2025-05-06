@@ -2,22 +2,22 @@ import { Asset } from '@/types/types';
 import { RadioCardItem, RadioCardRoot } from '../ui/radio-card';
 import { Grid } from '@chakra-ui/react';
 import ChainIcon from './chain-icon';
-import { chainBids, chains } from '@/config/chains';
+import { Chain, chainById, chains } from '@/config/chains';
 
 export default function ChainInput({
-  chainBid,
+  chain,
   onChange,
   disabled,
 }: {
-  chainBid?: number;
-  onChange: (chainBid: number) => void;
+  chain?: Chain;
+  onChange: (chain: Chain) => void;
   assetFilter?: Asset;
   disabled?: boolean;
 }) {
   return (
     <RadioCardRoot
-      defaultValue={chainBid?.toString() ?? chainBids[0].toString()}
-      onValueChange={(value) => onChange(parseInt(value.value ?? '0'))}
+      defaultValue={chain?.id.toString()}
+      onValueChange={(value) => onChange(chainById(Number(value.value))!)}
       width='full'
       align='center'
       justify='center'
@@ -25,13 +25,13 @@ export default function ChainInput({
       disabled={disabled}
     >
       <Grid templateColumns='repeat(3, 1fr)' gap='2'>
-        {chainBids.map((chainBid) => (
+        {chains.map((c) => (
           <RadioCardItem
-            label={chains[chainBid].name}
-            icon={<ChainIcon chainBid={chainBid} />}
+            label={c.name}
+            icon={<ChainIcon chain={c} />}
             indicator={false}
-            key={chainBid}
-            value={chainBid.toString()}
+            key={c.id}
+            value={c.id.toString()}
           />
         ))}
       </Grid>

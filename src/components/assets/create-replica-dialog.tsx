@@ -1,5 +1,5 @@
 import { Asset, AssetType } from '@/types/types';
-import { Alert, Button, Center, Stack, Text } from '@chakra-ui/react';
+import { Alert, Button, Center, Stack } from '@chakra-ui/react';
 import {
   DialogContent,
   DialogHeader,
@@ -17,26 +17,25 @@ import EvmCreateReplicaAdapterButton from '../evm/evm-create-replica-adapter-for
 import EvmCreateReplicaButton from '../evm/evm-create-replica-button';
 import { useCallback, useState } from 'react';
 import TransactionSuccess from '@/components/common/transaction-success';
-import { chains } from '@/config/chains';
+import { Chain } from '@/config/chains';
 
 export default function FtCreateReplicaDialog(props: {
   asset: Asset;
-  chainBid: number;
+  chain: Chain;
   onTransactionSuccess?: (receipt: TransactionReceipt) => void;
   children?: React.ReactNode;
 }) {
   const {
     asset,
-    chainBid,
+    chain,
     onTransactionSuccess: onTransactionSuccessParent,
     children,
   } = props;
   const [transactionReceipt, setTransactionReceipt] =
     useState<TransactionReceipt>();
 
-  const chain = chains[chainBid];
-  const targetChainBid = chainBid;
-  const isLocalChain = chainBid === asset.chainBid;
+  const targetChain = chain;
+  const isLocalChain = chain.bridgeId === asset.chainBid;
 
   const onTransactionSuccess = useCallback(
     (receipt: TransactionReceipt) => {
@@ -65,99 +64,90 @@ export default function FtCreateReplicaDialog(props: {
             {!transactionReceipt && (
               <>
                 <AssetDataList asset={asset} />
-                {chain.isEvm ? (
+                {asset.type === AssetType.FT && (
                   <>
-                    {asset.type === AssetType.FT && (
+                    {isLocalChain ? (
                       <>
-                        {isLocalChain ? (
-                          <>
-                            <Alert.Root status='info'>
-                              <Alert.Indicator />
-                              <Alert.Title>
-                                You are about to create an <b>ERC20</b> Adapter
-                                on network '<b>{chains[targetChainBid].name}</b>
-                                '.
-                              </Alert.Title>
-                            </Alert.Root>
+                        <Alert.Root status='info'>
+                          <Alert.Indicator />
+                          <Alert.Title>
+                            You are about to create an <b>ERC20</b> Adapter on
+                            network '<b>{targetChain.name}</b>
+                            '.
+                          </Alert.Title>
+                        </Alert.Root>
 
-                            <EvmCreateReplicaAdapterButton
-                              asset={asset}
-                              chainBid={chainBid}
-                              onTransactionSuccess={onTransactionSuccess}
-                            >
-                              Create Adapter
-                            </EvmCreateReplicaAdapterButton>
-                          </>
-                        ) : (
-                          <>
-                            <Alert.Root status='info'>
-                              <Alert.Indicator />
-                              <Alert.Title>
-                                You are about to create an <b>RERC20</b> Replica
-                                on network '<b>{chains[targetChainBid].name}</b>
-                                '.
-                              </Alert.Title>
-                            </Alert.Root>
-                            <EvmCreateReplicaButton
-                              asset={asset}
-                              chainBid={chainBid}
-                              onTransactionSuccess={onTransactionSuccess}
-                            >
-                              Create Replica
-                            </EvmCreateReplicaButton>
-                          </>
-                        )}
+                        <EvmCreateReplicaAdapterButton
+                          asset={asset}
+                          chain={targetChain}
+                          onTransactionSuccess={onTransactionSuccess}
+                        >
+                          Create Adapter
+                        </EvmCreateReplicaAdapterButton>
                       </>
-                    )}
-
-                    {asset.type === AssetType.XFT && (
+                    ) : (
                       <>
-                        {chains[chainBid].isSuperchain ? (
-                          <>
-                            <Alert.Root status='info'>
-                              <Alert.Indicator />
-                              <Alert.Title>
-                                You are about to create an <b>xERC20</b> Adapter
-                                on network '<b>{chains[targetChainBid].name}</b>
-                                '. You must ensure that the bridge{' '}
-                                {chains[targetChainBid].bridgeAddress} allowed
-                                to mint and burn tokens (see our documentation
-                                for more details).
-                              </Alert.Title>
-                            </Alert.Root>
-                            <EvmCreateReplicaAdapterButton
-                              asset={asset}
-                              chainBid={chainBid}
-                              onTransactionSuccess={onTransactionSuccess}
-                            >
-                              Create Adapter
-                            </EvmCreateReplicaAdapterButton>
-                          </>
-                        ) : (
-                          <>
-                            <Alert.Root status='info'>
-                              <Alert.Indicator />
-                              <Alert.Title>
-                                You are about to create an <b>RERC20</b> Replica
-                                on network '<b>{chains[targetChainBid].name}</b>
-                                '.
-                              </Alert.Title>
-                            </Alert.Root>
-                            <EvmCreateReplicaButton
-                              asset={asset}
-                              chainBid={chainBid}
-                              onTransactionSuccess={onTransactionSuccess}
-                            >
-                              Create Replica
-                            </EvmCreateReplicaButton>
-                          </>
-                        )}
+                        <Alert.Root status='info'>
+                          <Alert.Indicator />
+                          <Alert.Title>
+                            You are about to create an <b>RERC20</b> Replica on
+                            network '<b>{targetChain.name}</b>
+                            '.
+                          </Alert.Title>
+                        </Alert.Root>
+                        <EvmCreateReplicaButton
+                          asset={asset}
+                          chain={chain}
+                          onTransactionSuccess={onTransactionSuccess}
+                        >
+                          Create Replica
+                        </EvmCreateReplicaButton>
                       </>
                     )}
                   </>
-                ) : (
+                )}
+
+                {asset.type === AssetType.XFT && (
                   <>
-                    <Text>Chain not yet supported</Text>
+                    {chain.isSuperchain ? (
+                      <>
+                        <Alert.Root status='info'>
+                          <Alert.Indicator />
+                          <Alert.Title>
+                            You are about to create an <b>xERC20</b> Adapter on
+                            network '<b>{targetChain.name}</b>
+                            '. You must ensure that the bridge{' '}
+                            {targetChain.bridgeAddress} allowed to mint and burn
+                            tokens (see our documentation for more details).
+                          </Alert.Title>
+                        </Alert.Root>
+                        <EvmCreateReplicaAdapterButton
+                          asset={asset}
+                          chain={chain}
+                          onTransactionSuccess={onTransactionSuccess}
+                        >
+                          Create Adapter
+                        </EvmCreateReplicaAdapterButton>
+                      </>
+                    ) : (
+                      <>
+                        <Alert.Root status='info'>
+                          <Alert.Indicator />
+                          <Alert.Title>
+                            You are about to create an <b>RERC20</b> Replica on
+                            network '<b>{targetChain.name}</b>
+                            '.
+                          </Alert.Title>
+                        </Alert.Root>
+                        <EvmCreateReplicaButton
+                          asset={asset}
+                          chain={chain}
+                          onTransactionSuccess={onTransactionSuccess}
+                        >
+                          Create Replica
+                        </EvmCreateReplicaButton>
+                      </>
+                    )}
                   </>
                 )}
               </>
@@ -167,7 +157,7 @@ export default function FtCreateReplicaDialog(props: {
               <Center>
                 <TransactionSuccess
                   hash={transactionReceipt.transactionHash}
-                  chainBid={chainBid}
+                  chain={chain}
                 />
               </Center>
             )}

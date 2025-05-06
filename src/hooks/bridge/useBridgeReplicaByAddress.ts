@@ -1,17 +1,18 @@
 import { Hex } from 'viem';
 import { useBridgeReplicas } from './useBridgeReplicas';
+import { Chain } from '@/config/chains';
 
 export const useBridgeReplicaByAddress = ({
   address,
-  chainBid,
+  chain,
   enabled = true,
 }: {
   address: Hex;
-  chainBid: number;
+  chain: Chain;
   enabled?: boolean;
 }) => {
   const replicasQuery = useBridgeReplicas({
-    chainBid,
+    chain,
     enabled,
   });
 

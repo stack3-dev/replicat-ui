@@ -1,21 +1,23 @@
+import { Chain } from '@/config/chains';
 import { MetadataFT } from '@/types/types';
-import { addressToEvm } from '@/utils/format';
 import { useQuery } from '@tanstack/react-query';
 import { erc20Abi, Hex } from 'viem';
 import { useReadContracts } from 'wagmi';
 
 export const useFtMetadata = ({
-  chainBid,
+  chain,
   address,
   enabled = true,
 }: {
-  chainBid: number;
+  chain: Chain | undefined;
   address: Hex;
   enabled?: boolean;
 }) => {
+  const chainId = chain?.id ?? 0;
+
   const erc20Contract = {
-    chainId: chainBid,
-    address: addressToEvm(address),
+    chainId: chainId,
+    address: address,
     abi: erc20Abi,
   };
   const readsQuery = useReadContracts({
@@ -37,7 +39,7 @@ export const useFtMetadata = ({
   });
 
   return useQuery({
-    queryKey: ['fr-metadata', address, { chainBid }],
+    queryKey: ['fr-metadata', address, { chainId: chainId }],
     queryFn: () => {
       const name = readsQuery.data?.[0].result;
       const symbol = readsQuery.data?.[1].result;

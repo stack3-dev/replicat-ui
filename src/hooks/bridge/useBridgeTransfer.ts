@@ -20,13 +20,16 @@ export const useBridgeTransfer = ({
   transfer: Transfer;
   enabled: boolean;
 }) => {
-  const targetChainBid = transfer.from.chainBid;
   const transferHash = ''; // TODO hashTransfer(transfer, targetChainBid);
 
   const result = useQuery({
-    queryKey: ['bridge-transfer', transferHash, { targetChainBid }],
+    queryKey: [
+      'bridge-transfer',
+      transferHash,
+      { chainId: transfer.from.chain.id },
+    ],
     queryFn: async () =>
-      request(graphUrl(targetChainBid), transferQuery, {
+      request(graphUrl(transfer.from.chain), transferQuery, {
         transferHash,
       }),
     enabled: enabled,

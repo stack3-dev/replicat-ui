@@ -82,16 +82,11 @@ export const encodeAsset = (asset: Asset) => {
   return encodeAbiParameters(
     [
       { name: 'type_', type: 'uint8' },
-      { name: 'chainBid', type: 'uint256' },
-      { name: 'address_', type: 'bytes32' },
+      { name: 'chainBid', type: 'uint16' },
+      { name: 'address_', type: 'address' },
       { name: 'metadata', type: 'bytes' },
     ],
-    [
-      asset.type,
-      BigInt(asset.chainBid),
-      asset.address,
-      encodeAssetMetadata(asset),
-    ]
+    [asset.type, asset.chainBid, asset.address, encodeAssetMetadata(asset)]
   );
 };
 

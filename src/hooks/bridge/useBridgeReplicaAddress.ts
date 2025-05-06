@@ -1,25 +1,25 @@
+import { Chain } from '@/config/chains';
 import { useReadBridgeComputeReplicaAddress } from '@/generated/wagmi/wagmi';
 import { Asset } from '@/types/types';
-import { getBridgeAddress } from '@/utils/chains';
 import { encodeAssetMetadata } from '@/utils/encoding';
 import { safeAddress } from '@/utils/format';
 
 export const useBridgeReplicaAddress = ({
   asset,
-  chainBid,
+  chain,
   enabled = true,
 }: {
   asset: Asset;
-  chainBid: number;
+  chain: Chain;
   enabled?: boolean;
 }) => {
   const query = useReadBridgeComputeReplicaAddress({
-    chainId: chainBid,
-    address: getBridgeAddress(chainBid),
+    chainId: chain.id,
+    address: chain.bridgeAddress,
     args: [
       {
         type_: asset.type,
-        chainBid: BigInt(asset.chainBid),
+        chainBid: asset.chainBid,
         address_: asset.address,
         metadata: encodeAssetMetadata(asset),
       },

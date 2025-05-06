@@ -2,15 +2,17 @@ import { Badge, Flex, Icon, Link, Stack, Text } from '@chakra-ui/react';
 import { LuCircleCheck, LuExternalLink } from 'react-icons/lu';
 import { Hex } from 'viem';
 import TransactionBadge from './transaction-badge';
+import { Chain } from '@/config/chains';
+import { getWormholeTransactionLink } from '@/utils/chains';
 
 export default function TransactionSuccess({
   hash,
-  chainBid,
-  isLayerZero,
+  chain,
+  isWormhole,
 }: {
   hash: Hex;
-  chainBid: number;
-  isLayerZero?: boolean;
+  chain: Chain;
+  isWormhole?: boolean;
 }) {
   return (
     <Stack gap='2'>
@@ -21,11 +23,11 @@ export default function TransactionSuccess({
         <Text fontSize='xl'>Success</Text>
       </Flex>
       <Flex gap='2'>
-        Transaction: <TransactionBadge hash={hash} chainBid={chainBid} />
-        {isLayerZero && (
-          <Link href={`https://layerzeroscan.com/tx/${hash}`}>
+        Transaction: <TransactionBadge hash={hash} chain={chain} />
+        {isWormhole && (
+          <Link href={getWormholeTransactionLink(hash)}>
             <Badge variant='solid'>
-              LayerZero <LuExternalLink />
+              Wormhole <LuExternalLink />
             </Badge>
           </Link>
         )}

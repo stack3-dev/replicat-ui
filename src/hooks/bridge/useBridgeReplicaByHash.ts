@@ -1,17 +1,18 @@
 import { Hex } from 'viem';
 import { useBridgeReplicas } from './useBridgeReplicas';
+import { Chain } from '@/config/chains';
 
 export const useBridgeReplicaByHash = ({
   assetHash,
-  chainBid,
+  chain,
   enabled = true,
 }: {
   assetHash: Hex;
-  chainBid: number;
+  chain: Chain;
   enabled?: boolean;
 }) => {
   const replicasQuery = useBridgeReplicas({
-    chainBid,
+    chain,
     enabled,
   });
 

@@ -1,9 +1,5 @@
-import { LAYERZERO } from '@/config/messengers';
 import { useReadBridgeQuoteTransfer } from '@/generated/wagmi/wagmi';
-import { Transfer, TransferParamsFT } from '@/types/types';
-import { getBridgeAddress } from '@/utils/chains';
-import { encodeTransferParamsFT, hashAsset } from '@/utils/encoding';
-import { addressToEvm } from '@/utils/format';
+import { Transfer } from '@/types/types';
 
 export const useBridgeTransferQuote = ({
   transfer,
@@ -12,22 +8,10 @@ export const useBridgeTransferQuote = ({
   transfer: Transfer;
   enabled?: boolean;
 }) => {
-  const bridgeAddress = getBridgeAddress(transfer.from.chainBid);
-
-  const transferData = {
-    assetType: transfer.asset.type,
-    assetHash: hashAsset(transfer.asset),
-    from: addressToEvm(transfer.from.address),
-    to: transfer.to.address,
-    chainBid: BigInt(transfer.to.chainBid),
-    params: encodeTransferParamsFT(transfer.params as TransferParamsFT),
-    nonce: transfer.nonce,
-  };
-
   return useReadBridgeQuoteTransfer({
-    chainId: transfer.from.chainBid,
-    address: bridgeAddress,
-    args: [transferData, LAYERZERO, '0x'],
+    chainId: transfer.from.chain.id,
+    address: transfer.from.chain.bridgeAddress,
+    args: [transfer.to.chain.bridgeId],
     query: {
       enabled,
     },

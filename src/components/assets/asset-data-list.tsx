@@ -1,4 +1,5 @@
 import AccountBadge from '@/components/account/account-badge';
+import { chainByBid } from '@/config/chains';
 import { Asset, AssetType, MetadataFT } from '@/types/types';
 import { getAssetTypeName } from '@/utils/asset';
 import { DataList, DataListRootProps } from '@chakra-ui/react';
@@ -14,7 +15,10 @@ export default function AssetDataList({
         <DataList.ItemLabel>Origin</DataList.ItemLabel>
         <DataList.ItemValue>
           <AccountBadge
-            account={{ address: asset.address, chainBid: asset.chainBid }}
+            account={{
+              address: asset.address,
+              chain: chainByBid(asset.chainBid)!,
+            }}
           />
         </DataList.ItemValue>
       </DataList.Item>

@@ -2,10 +2,10 @@ import { Hex } from 'viem';
 import { alchemy } from '../../utils/alchemy';
 import { useQueries } from '@tanstack/react-query';
 import { TokenBalancesResponseErc20 } from 'alchemy-sdk';
-import { chainBids } from '@/config/chains';
+import { Chain, chains } from '@/config/chains';
 
 interface MultiChainTokenBalancesResponse extends TokenBalancesResponseErc20 {
-  chainBid: number;
+  chain: Chain;
 }
 
 export const useAccountMultichainTokenBalances = ({
@@ -14,11 +14,11 @@ export const useAccountMultichainTokenBalances = ({
   address: Hex;
 }) => {
   const tokenBalances = async (
-    chainBid: number
+    chain: Chain
   ): Promise<MultiChainTokenBalancesResponse> => {
-    const sdk = alchemy(chainBid);
+    const sdk = alchemy(chain);
     return {
-      chainBid,
+      chain,
       ...(await sdk.core.getTokenBalances(address)),
     };
   };
@@ -31,10 +31,10 @@ export const useAccountMultichainTokenBalances = ({
         error: results.find((result) => result.error)?.error,
       };
     },
-    queries: chainBids.map((chainBid) => {
+    queries: chains.map((chain) => {
       return {
-        queryKey: ['account-token-balances', address, { chainBid }],
-        queryFn: async () => tokenBalances(chainBid),
+        queryKey: ['account-token-balances', address, { chainId: chain.id }],
+        queryFn: async () => tokenBalances(chain),
       };
     }),
   });

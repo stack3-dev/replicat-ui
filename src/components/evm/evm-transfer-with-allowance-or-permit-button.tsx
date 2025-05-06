@@ -5,7 +5,7 @@ import {
   TransferParamsFT,
 } from '@/types/types';
 import { EvmWriteContractButton } from './evm-write-contract-button';
-import { TransactionReceipt } from 'viem';
+import { TransactionReceipt, zeroAddress } from 'viem';
 import { Button, ButtonProps } from '@chakra-ui/react';
 import {
   erc20Abi,
@@ -17,8 +17,6 @@ import EvmErc20PermitButton from './evm-erc20-permit-button';
 import { useEffect, useState } from 'react';
 import EvmTransferButton from './evm-transfer-button';
 import { toaster } from '../ui/toaster';
-import { addressToEvm } from '@/utils/format';
-import { zeroBytes32 } from '@/utils/constants';
 import { useBridgeReplicaAddress } from '@/hooks/bridge/useBridgeReplicaAddress';
 
 export default function EvmTransferWithAllowanceOrPermitButton(
@@ -29,8 +27,8 @@ export default function EvmTransferWithAllowanceOrPermitButton(
 ) {
   const [permit, setPermit] = useState<TransferEvmPermit>();
   const { transfer, onTransactionSuccess, ...buttonProps } = props;
-  const chainBid = transfer.from.chainBid;
-  const assetEvmAddress = addressToEvm(transfer.asset.address);
+  const chain = transfer.from.chain;
+  const assetEvmAddress = transfer.asset.address;
   const params = transfer.params as TransferParamsFT;
   const metadata = transfer.asset.metadata as MetadataFT;
   const permitDeadline = BigInt(Math.floor(Date.now() / 1000) + 3600);
@@ -45,7 +43,7 @@ export default function EvmTransferWithAllowanceOrPermitButton(
     isPending: isPendingReplicaAddress,
     error: errorReplicaAddress,
   } = useBridgeReplicaAddress({
-    chainBid: chainBid,
+    chain: chain,
     asset: transfer.asset,
   });
 
@@ -55,18 +53,15 @@ export default function EvmTransferWithAllowanceOrPermitButton(
     error: errorAllowance,
     refetch: refetchAllowance,
   } = useReadErc20Allowance({
-    chainId: chainBid,
+    chainId: chain.id,
     address: assetEvmAddress,
-    args: [
-      addressToEvm(transfer.from.address),
-      addressToEvm(dataReplicaAddress ?? zeroBytes32),
-    ],
+    args: [transfer.from.address, dataReplicaAddress ?? zeroAddress],
   });
 
   const { data: dataDomain, isPending: isPendingDomain } =
     useReadErc20PermitEip712Domain({
-      chainId: chainBid,
-      address: addressToEvm(transfer.asset.address),
+      chainId: chain.id,
+      address: transfer.asset.address,
     });
 
   const isPermit = dataDomain !== undefined; // consider permit if domain is available
@@ -96,15 +91,15 @@ export default function EvmTransferWithAllowanceOrPermitButton(
       ) : needPermit ? (
         <>
           <EvmErc20PermitButton
-            token={addressToEvm(transfer.asset.address)}
+            token={transfer.asset.address}
             amount={amountLD}
             deadline={permitDeadline}
-            owner={addressToEvm(transfer.from.address)}
-            spender={addressToEvm(dataReplicaAddress ?? zeroBytes32)}
-            chainId={chainBid}
+            owner={transfer.from.address}
+            spender={dataReplicaAddress ?? zeroAddress}
+            chainId={chain.id}
             onChange={(sig) => {
               setPermit({
-                token: addressToEvm(transfer.asset.address),
+                token: transfer.asset.address,
                 value: amountLD,
                 deadline: permitDeadline,
                 r: sig.r,
@@ -121,10 +116,10 @@ export default function EvmTransferWithAllowanceOrPermitButton(
         <EvmWriteContractButton
           params={{
             abi: erc20Abi,
-            chainId: chainBid,
-            address: addressToEvm(transfer.asset.address),
+            chainId: chain.id,
+            address: transfer.asset.address,
             functionName: 'approve',
-            args: [addressToEvm(dataReplicaAddress ?? zeroBytes32), amountLD],
+            args: [dataReplicaAddress ?? zeroAddress, amountLD],
           }}
           onTransactionSuccess={() => refetchAllowance()}
         >

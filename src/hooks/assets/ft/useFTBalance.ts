@@ -1,6 +1,5 @@
 import { useReadErc20BalanceOf } from '@/generated/wagmi/wagmi';
 import { Account } from '@/types/types';
-import { addressToEvm } from '@/utils/format';
 import { Hex } from 'viem';
 
 export const useFTBalanceOf = ({
@@ -13,9 +12,9 @@ export const useFTBalanceOf = ({
   enabled?: boolean;
 }) => {
   return useReadErc20BalanceOf({
-    chainId: account.chainBid,
-    address: addressToEvm(tokenAddress),
-    args: [addressToEvm(account.address)],
+    chainId: account.chain.id,
+    address: tokenAddress,
+    args: [account.address],
     query: { enabled },
   });
 };

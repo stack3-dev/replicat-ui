@@ -1,62 +1,34 @@
+import { Chain, chains, isTestnet } from '@/config/chains';
 import { Hex } from 'viem';
-import { formatAddress } from './format';
-import { chainBids, chains } from '@/config/chains';
 
-export const getAlchemyName = (chainBid: number): string => {
-  return chains[chainBid].alchemyNetwork;
-};
-
-export const getChainBidFromAlchemyName = (alchemyName: string): number => {
-  const chain = chainBids.find(
-    (chainBid) => chains[chainBid].alchemyNetwork === alchemyName
-  );
-
+export const getChainFromAlchemyName = (alchemyName: string): Chain => {
+  const chain = chains.find((chain) => chain.alchemyNetwork === alchemyName);
   if (chain === undefined) {
     throw new Error(`Unexpected alchemy network name: ${alchemyName}`);
   }
-
   return chain;
 };
 
-export const getChainDecimals = (chainBid: number): number => {
-  return chains[chainBid].decimals;
+export const isChainSupported = (chainId?: number): boolean => {
+  return chains.some((chain) => chain.id === chainId);
 };
 
-export const getBridgeAddress = (chainBid: number): Hex => {
-  return chains[chainBid].bridgeAddress;
+export const getExplorerTransactionLink = (chain: Chain, hash: Hex): string => {
+  return `${chain.blockExplorers?.default.url}/tx/${hash}`;
 };
 
-export const getAddressLength = (chainBid: number): number => {
-  return chains[chainBid].addressLength;
+export const getExplorerAddressLink = (chain: Chain, address: Hex): string => {
+  const formattedAddress = address;
+  return `${chain.blockExplorers?.default.url}/address/${formattedAddress}`;
 };
 
-export const isChainBidValid = (chainBid?: number): boolean => {
-  return chainBid ? chainBids.includes(chainBid) : false;
+export const getExplorerTokenLink = (chain: Chain, address: Hex): string => {
+  const formattedAddress = address;
+  return `${chain.blockExplorers?.default.url}/token/${formattedAddress}`;
 };
 
-export const getExplorerTransactionLink = (
-  chainBid: number,
-  hash: Hex
-): string => {
-  return `${chains[chainBid].explorerTransactionLink}${hash}`;
-};
-
-export const getExplorerAddressLink = (
-  chainBid: number,
-  address: Hex
-): string => {
-  const formattedAddress = formatAddress(address, chainBid);
-  return `${chains[chainBid].explorerAddressLink}${formattedAddress}`;
-};
-
-export const getExplorerTokenLink = (
-  chainBid: number,
-  address: Hex
-): string => {
-  const formattedAddress = formatAddress(address, chainBid);
-  return `${chains[chainBid].explorerTokenLink}${formattedAddress}`;
-};
-
-export const getChainName = (chainBid: number): string => {
-  return chains[chainBid].name;
+export const getWormholeTransactionLink = (hash: Hex): string => {
+  return `https://wormholescan.io/#/tx/${hash}${
+    isTestnet ? '?network=Testnet' : ''
+  }`;
 };

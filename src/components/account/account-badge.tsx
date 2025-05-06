@@ -1,4 +1,4 @@
-import { formatAddress, shortenAddress } from '@/utils/format';
+import { shortenAddress } from '@/utils/format';
 import { Badge, BadgeProps, Flex, Link } from '@chakra-ui/react';
 import ChainIcon from '../chains/chain-icon';
 import { LuCopy } from 'react-icons/lu';
@@ -12,19 +12,11 @@ export default function AccountBadge({
   const [, copyToClipboard] = useCopyToClipboard();
 
   return (
-    <Link
-      onClick={() =>
-        copyToClipboard(formatAddress(account.address, account.chainBid))
-      }
-    >
+    <Link onClick={() => copyToClipboard(account.address)}>
       <Badge variant='solid' {...badgeProps}>
         <Flex alignItems={'center'} gap={2}>
-          <ChainIcon
-            variant='ghost'
-            boxSize={'17px'}
-            chainBid={account.chainBid}
-          />
-          {shortenAddress(account.address, account.chainBid)}
+          <ChainIcon variant='ghost' boxSize={'17px'} chain={account.chain} />
+          {shortenAddress(account.address)}
           <LuCopy />
         </Flex>
       </Badge>

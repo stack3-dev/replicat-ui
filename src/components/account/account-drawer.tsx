@@ -15,14 +15,16 @@ import { LuActivity, LuCoins, LuIdCard, LuLogOut } from 'react-icons/lu';
 import { AccountTokens } from './account-tokens';
 import ChainInput from '../chains/chain-input';
 import AccountBadge from './account-badge';
-import { zeroBytes32 } from '@/utils/constants';
 import { AccountActivity } from './account-activity';
 import { toaster } from '../ui/toaster';
 import { useEffect } from 'react';
+import { chainById } from '@/config/chains';
+import { zeroAddress } from 'viem';
 
 export const AccountDrawer = ({ children }: { children: React.ReactNode }) => {
   const account = useAccount();
   const { switchChain, error } = useSwitchChain();
+  const chain = chainById(account.chainId)!;
 
   useEffect(() => {
     if (error) {
@@ -64,14 +66,14 @@ export const AccountDrawer = ({ children }: { children: React.ReactNode }) => {
                     alignSelf={'center'}
                     size='lg'
                     account={{
-                      address: account.address ?? zeroBytes32,
-                      chainBid: account.chainId ?? 0,
+                      address: account.address ?? zeroAddress,
+                      chain: chain,
                     }}
                   />
                 </Center>
                 <ChainInput
-                  chainBid={account.chainId}
-                  onChange={(chainBid) => switchChain({ chainId: chainBid })}
+                  chain={chain}
+                  onChange={(c) => switchChain({ chainId: c.id })}
                 />
 
                 <Separator />

@@ -1,22 +1,23 @@
 import { Box, Circle, Float, ImageProps } from '@chakra-ui/react';
 import IconImage from './icon-image';
 import ChainIcon from '../chains/chain-icon';
+import { Chain } from '@/config/chains';
 
 export default function TokenIcon(
   props: {
     logo?: string;
     symbol?: string;
     name?: string;
-    chainBid?: number;
+    chain?: Chain;
     noChainIcon?: boolean;
   } & ImageProps
 ) {
-  const { logo, name, symbol, chainBid, noChainIcon, ...imageProps } = props;
+  const { logo, name, symbol, chain, noChainIcon, ...imageProps } = props;
 
-  const networkIcon = (chainBid?: number) => {
-    return !noChainIcon && chainBid ? (
+  const networkIcon = (chain?: Chain) => {
+    return !noChainIcon && chain ? (
       <Float placement={'bottom-end'}>
-        <ChainIcon chainBid={chainBid} boxSize='20px' />
+        <ChainIcon chain={chain} boxSize='20px' />
       </Float>
     ) : null;
   };
@@ -30,7 +31,7 @@ export default function TokenIcon(
         title={name}
         {...imageProps}
       />
-      {networkIcon(chainBid)}
+      {networkIcon(chain)}
     </Box>
   ) : (
     <Circle
@@ -40,7 +41,7 @@ export default function TokenIcon(
       {...imageProps}
       position='relative'
     >
-      {networkIcon(chainBid)}
+      {networkIcon(chain)}
     </Circle>
   );
 }

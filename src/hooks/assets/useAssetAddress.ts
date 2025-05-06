@@ -1,22 +1,23 @@
 import { Asset, AssetType } from '@/types/types';
 import { useQuery } from '@tanstack/react-query';
 import { useBridgeReplicaAddress } from '../bridge/useBridgeReplicaAddress';
+import { Chain } from '@/config/chains';
 
 export const useAssetAddress = ({
   asset,
-  chainBid,
+  chain,
   enabled = true,
 }: {
   asset: Asset;
-  chainBid: number;
+  chain: Chain;
   enabled: boolean;
 }) => {
   const useReplicaAddress =
-    asset.chainBid !== chainBid &&
+    asset.chainBid !== chain.bridgeId &&
     [AssetType.FT, AssetType.NFT].includes(asset.type);
 
   const queryReplicaAddress = useBridgeReplicaAddress({
-    chainBid,
+    chain,
     asset,
     enabled: enabled && useReplicaAddress,
   });
@@ -24,7 +25,7 @@ export const useAssetAddress = ({
   const replicaAddress = queryReplicaAddress.data;
 
   const query = useQuery({
-    queryKey: ['asset-address', asset.address, { chainBid }],
+    queryKey: ['asset-address', asset.address, { chainId: chain.id }],
     queryFn: () => {
       return useReplicaAddress ? replicaAddress! : asset.address;
     },

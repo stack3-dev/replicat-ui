@@ -3,7 +3,6 @@ import { DataList, Link, Separator, Stack } from '@chakra-ui/react';
 import AssetDataList from '../asset-data-list';
 import { formatUnits } from 'viem';
 import { LuExternalLink } from 'react-icons/lu';
-import { getBridgeAddress } from '@/utils/chains';
 import AddressBadge from '@/components/common/address-badge';
 import AccountBadge from '@/components/account/account-badge';
 
@@ -55,18 +54,15 @@ export default function FtTransferDataList({
         <DataList.Item>
           <DataList.ItemLabel>Bridge </DataList.ItemLabel>
           <DataList.ItemValue>
-            <AddressBadge
-              address={getBridgeAddress(transfer.from.chainBid)}
-              chainBid={transfer.from.chainBid}
-            />
+            <AddressBadge address={transfer.from.chain.bridgeAddress} />
           </DataList.ItemValue>
         </DataList.Item>
 
         <DataList.Item>
           <DataList.ItemLabel>Relayer </DataList.ItemLabel>
           <DataList.ItemValue>
-            <Link href='https://layerzero.network'>
-              LayerZero <LuExternalLink />
+            <Link href='https://wormhole.com/'>
+              Wormhole <LuExternalLink />
             </Link>
           </DataList.ItemValue>
         </DataList.Item>

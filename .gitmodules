@@ -1,3 +1,3 @@
 [submodule "libraries/replicat-evm"]
 	path = libraries/replicat-evm
-	url = ../replicat-evm.git
+	url = ../replicat-evm

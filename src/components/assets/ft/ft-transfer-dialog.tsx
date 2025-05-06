@@ -33,7 +33,7 @@ export default function FtTransferDialog(props: {
     useState<TransactionReceipt>();
   const needAllowanceOrPermit =
     transfer.asset.type === AssetType.FT &&
-    transfer.asset.chainBid === transfer.from.chainBid;
+    transfer.asset.chainBid === transfer.from.chain.bridgeId;
 
   const onTransactionSuccess = (receipt: TransactionReceipt) => {
     setTransactionReceipt(receipt);
@@ -89,8 +89,8 @@ export default function FtTransferDialog(props: {
               <Center>
                 <TransactionSuccess
                   hash={transactionReceipt.transactionHash}
-                  chainBid={transfer.from.chainBid}
-                  isLayerZero={true}
+                  chain={transfer.from.chain}
+                  isWormhole={true}
                 />
               </Center>
             )}

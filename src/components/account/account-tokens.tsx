@@ -1,8 +1,6 @@
 import { useAccountTokenBalances } from '@/hooks/account/useAccountTokenBalances';
 import { useFtMetadata } from '@/hooks/assets/ft/useFTMetadata';
-import { getChainName, isChainBidValid } from '@/utils/chains';
 import {
-  formatAddress,
   safeAddress,
   shortenAddress,
   toFixedIfNecessary,
@@ -29,18 +27,19 @@ import { Asset, AssetType } from '@/types/types';
 import { zeroAsset } from '@/utils/asset';
 import { ReplicaTLogo } from '../common/replicat-logo';
 import { hashAsset } from '@/utils/encoding';
-import { zeroBytes32 } from '@/utils/constants';
 import { useBridgeReplicaByAddress } from '@/hooks/bridge/useBridgeReplicaByAddress';
 import { useBridgeReplicaByHash } from '@/hooks/bridge/useBridgeReplicaByHash';
+import { Chain, chainByBid, chainById } from '@/config/chains';
+import { zeroBytes32 } from '@/utils/constants';
 
 export const AccountTokens = () => {
   const account = useAccount();
-  const isBridgeChain = isChainBidValid(account.chainId);
+  const chain = chainById(account.chainId)!;
 
   const accountTokenBalances = useAccountTokenBalances({
     address: account.address ?? zeroAddress,
-    chainBid: account.chainId ?? 0,
-    enabled: isBridgeChain,
+    chain: chain,
+    enabled: true,
   });
 
   return (
@@ -58,7 +57,7 @@ export const AccountTokens = () => {
 
       {accountTokenBalances.data && (
         <AccountChainToken
-          chainBid={accountTokenBalances.data.chainBid}
+          chain={accountTokenBalances.data.chain}
           tokenBalances={accountTokenBalances.data.tokenBalances}
         />
       )}
@@ -67,22 +66,22 @@ export const AccountTokens = () => {
 };
 
 export const AccountChainToken = ({
-  chainBid,
+  chain,
   tokenBalances,
 }: {
-  chainBid: number;
+  chain: Chain;
   tokenBalances: TokenBalance[];
 }) => {
   return (
     <Stack gap={4} p={2}>
       {tokenBalances.map((balance) => (
         <AccountToken
-          key={'account-token-' + chainBid + '-' + balance.contractAddress}
+          key={'account-token-' + chain.id + '-' + balance.contractAddress}
           contractAddress={safeAddress(balance.contractAddress)}
           balance={hexToBigInt(
             (balance.tokenBalance as Hex | null) ?? zeroAddress
           )}
-          chainBid={chainBid}
+          chain={chain}
         />
       ))}
     </Stack>
@@ -92,28 +91,28 @@ export const AccountChainToken = ({
 export const AccountToken = ({
   balance,
   contractAddress,
-  chainBid,
+  chain,
 }: {
   balance: bigint;
   contractAddress: Hex;
-  chainBid: number;
+  chain: Chain;
 }) => {
   const { switchChain } = useSwitchChain();
 
   const { data: dataMetadata, isLoading: isLoadingMetadata } = useFtMetadata({
-    chainBid,
+    chain,
     address: contractAddress,
   });
 
   const { data: dataLogo, isLoading: isLoadingLogo } = useFtLogo({
-    chainBid,
+    chain,
     address: contractAddress,
   });
 
   const asset: Asset | undefined = dataMetadata
     ? {
         address: contractAddress,
-        chainBid,
+        chainBid: chain.bridgeId,
         type: AssetType.FT,
         metadata: {
           name: dataMetadata.name,
@@ -128,14 +127,14 @@ export const AccountToken = ({
   const { data: dataReplicaByHash, isPending: isPendingReplicaByHash } =
     useBridgeReplicaByHash({
       assetHash: assetHash,
-      chainBid,
+      chain,
       enabled: !!asset,
     });
 
   const { data: dataReplicaByAddress, isPending: isPendingReplicaByAddress } =
     useBridgeReplicaByAddress({
       address: contractAddress,
-      chainBid,
+      chain,
       enabled: !!asset,
     });
 
@@ -146,17 +145,17 @@ export const AccountToken = ({
   const onClick = () => {
     if (replica) {
       setQuery({
-        address: formatAddress(replica.asset.address, replica.asset.chainBid),
+        address: replica.asset.address,
         chainBid: replica.asset.chainBid,
       });
     } else {
       setQuery({
-        address: formatAddress(contractAddress, chainBid),
-        chainBid: chainBid,
+        address: contractAddress,
+        chainBid: chain.bridgeId,
       });
     }
     switchChain({
-      chainId: chainBid,
+      chainId: chain.id,
     });
   };
 
@@ -181,7 +180,7 @@ export const AccountToken = ({
             content={
               <Stack gap={2} p={2}>
                 <Text fontSize={'sm'} fontWeight={'semibold'}>
-                  Origin chain : '{getChainName(replica.asset.chainBid)}'
+                  Origin chain : '{chainByBid(replica.asset.chainBid)?.name}'
                 </Text>
                 <Separator />
                 <AssetDataList asset={replica.asset} />
@@ -193,7 +192,7 @@ export const AccountToken = ({
         )}
         {dataLogo && <TokenIcon logo={dataLogo} noChainIcon />}
         <Text whiteSpace={'nowrap'}>
-          {dataMetadata?.name ?? shortenAddress(contractAddress, chainBid, 4)}
+          {dataMetadata?.name ?? shortenAddress(contractAddress, 4)}
         </Text>
       </Flex>
       <Flex wrap={'nowrap'} gap={2}>

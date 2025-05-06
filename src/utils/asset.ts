@@ -1,5 +1,5 @@
 import { Asset, AssetType, MetadataFT, MetadataNFT } from '@/types/types';
-import { zeroBytes32 } from './constants';
+import { zeroAddress } from 'viem';
 
 export const getAssetName = (asset: Asset): string => {
   if (asset.type === AssetType.FT || asset.type === AssetType.XFT) {
@@ -37,7 +37,7 @@ export const getAssetTypeName = (assetType: AssetType): string => {
 };
 
 export const zeroAsset = {
-  address: zeroBytes32,
+  address: zeroAddress,
   chainBid: 0,
   type: 0,
   metadata: {

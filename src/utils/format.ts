@@ -1,5 +1,4 @@
 import { Hex, pad } from 'viem';
-import { getAddressLength, isChainBidValid } from './chains';
 
 // eg:  0x111122223333444455556677779877A7B0D9E8603169DdbD7836e478b4624789
 // =>                           0x779877A7B0D9E8603169DdbD7836e478b4624789
@@ -9,7 +8,7 @@ export const addressToEvm = (address: Hex): Hex => {
 
 // eg: 0x779877A7B0D9E8603169DdbD7836e478b4624789
 // => 0x000000000000000000000000779877A7B0D9E8603169DdbD7836e478b4624789
-export const bytesToAddress = (bytes: Hex): Hex => {
+export const addressToBytes32 = (bytes: Hex): Hex => {
   return pad(bytes);
 };
 
@@ -25,23 +24,10 @@ export const addressToLength = (bytes32: Hex, length: number): Hex => {
   }
 };
 
-// eg: 0x000000000000000000000000779877A7B0D9E8603169DdbD7836e478b4624789
-// => 0x779877A7B0D9E8603169DdbD7836e478b4624789
-export const formatAddress = (address: Hex, chainBid?: number): string => {
-  const addressLength = isChainBidValid(chainBid)
-    ? getAddressLength(chainBid!)
-    : 32;
-  return addressToLength(address, addressLength);
-};
-
-// eg: 0x000000000000000000000000779877A7B0D9E8603169DdbD7836e478b4624789
+// eg: 0x779877A7B0D9E8603169DdbD7836e478b4624789
 // => 0x77987...47889
-export const shortenAddress = (
-  address: Hex,
-  chainBid: number | undefined,
-  chars: number = 5
-): string => {
-  const formatedAddress = formatAddress(address, chainBid);
+export const shortenAddress = (address: Hex, chars: number = 5): string => {
+  const formatedAddress = safeAddress(address);
   return shorten(formatedAddress, chars);
 };
 
@@ -55,12 +41,12 @@ export const hexify = (str: string): Hex => {
   if (str.startsWith('0x')) {
     return str as Hex;
   } else {
-    return `0x${str.slice(2)}`;
+    return `0x${str}`;
   }
 };
 
 export const safeAddress = (address: string | Hex | undefined): Hex => {
-  return bytesToAddress(hexify(address ?? '0x'));
+  return pad(hexify(address ?? ''), { size: 20 });
 };
 
 export const toFixedIfNecessary = (
@@ -69,3 +55,12 @@ export const toFixedIfNecessary = (
 ): number => {
   return +parseFloat(value.toString()).toFixed(dp);
 };
+
+// eg: 0x000000000000000000000000779877A7B0D9E8603169DdbD7836e478b4624789
+// => 0x779877A7B0D9E8603169DdbD7836e478b4624789
+// export const formatAddress = (address: Hex, chainBid?: number): string => {
+//   const addressLength = isChainBidValid(chainBid)
+//     ? getAddressLength(chainBid!)
+//     : 32;
+//   return addressToLength(address, addressLength);
+// };

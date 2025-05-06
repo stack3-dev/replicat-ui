@@ -4,33 +4,31 @@ import { ButtonProps } from '@chakra-ui/react';
 import { Hex, TransactionReceipt } from 'viem';
 import { EvmWriteContractButton } from './evm-write-contract-button';
 import { bridgeAbi } from '@/generated/wagmi/wagmi';
-import { chains } from '@/config/chains';
+import { Chain } from '@/config/chains';
 
 export default function EvmCreateReplicaButton({
   asset,
-  chainBid,
+  chain,
   extraArgs,
   onTransactionSuccess,
   ...buttonProps
 }: {
   asset: Asset;
-  chainBid: number;
+  chain: Chain;
   extraArgs?: Hex;
   onTransactionSuccess?: (receipt: TransactionReceipt) => void;
 } & ButtonProps) {
-  const targetChainBid = chainBid;
-
   return (
     <EvmWriteContractButton
       params={{
         abi: bridgeAbi,
-        address: chains[targetChainBid].bridgeAddress as Hex,
+        address: chain.bridgeAddress as Hex,
         functionName: 'createReplica',
-        chainId: chainBid,
+        chainId: chain.id,
         args: [
           {
             type_: asset.type,
-            chainBid: BigInt(asset.chainBid),
+            chainBid: asset.chainBid,
             address_: asset.address,
             metadata: encodeMetadataFT(asset.metadata as MetadataFT),
           },

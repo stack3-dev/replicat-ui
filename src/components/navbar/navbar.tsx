@@ -3,11 +3,14 @@ import AccountConnectButton from '../account/account-connect-button';
 import { useAccount } from 'wagmi';
 import { AccountDrawer } from '../account/account-drawer';
 import ChainIcon from '../chains/chain-icon';
-import { safeAddress, shortenAddress } from '@/utils/format';
+import { shortenAddress } from '@/utils/format';
 import { HomeLogo } from './home-logo';
+import { zeroAddress } from 'viem';
+import { chainById } from '@/config/chains';
 
 export default function Navbar() {
   const account = useAccount();
+  const chain = chainById(account.chainId);
 
   return (
     <>
@@ -34,13 +37,10 @@ export default function Navbar() {
                       <ChainIcon
                         bgColor='transparent'
                         border='none'
-                        chainBid={account.chainId!}
+                        chain={chain!}
                       />
                       <span>
-                        {shortenAddress(
-                          safeAddress(account.address),
-                          account.chainId
-                        )}
+                        {shortenAddress(account.address ?? zeroAddress)}
                       </span>
                     </Flex>
                   </Button>

@@ -1,3 +1,4 @@
+import { Chain } from '@/config/chains';
 import { Hex } from 'viem';
 
 export type ERC20 = {
@@ -28,7 +29,7 @@ export type Replica = {
 };
 
 export type Account = {
-  chainBid: number;
+  chain: Chain;
   address: Hex;
 };
 

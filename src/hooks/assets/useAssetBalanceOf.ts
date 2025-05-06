@@ -1,7 +1,7 @@
 import { Account, Asset } from '@/types/types';
 import { useAssetAddress } from './useAssetAddress';
 import { useFTBalanceOf } from './ft/useFTBalance';
-import { zeroBytes32 } from '@/utils/constants';
+import { zeroAddress } from 'viem';
 
 export const useAssetBalanceOf = ({
   asset,
@@ -14,7 +14,7 @@ export const useAssetBalanceOf = ({
 }) => {
   const assetAddressQuery = useAssetAddress({
     asset,
-    chainBid: account.chainBid,
+    chain: account.chain,
     enabled,
   });
 
@@ -22,7 +22,7 @@ export const useAssetBalanceOf = ({
 
   return useFTBalanceOf({
     account: account,
-    tokenAddress: assetAddress ?? zeroBytes32,
+    tokenAddress: assetAddress ?? zeroAddress,
     enabled: enabled && !!assetAddressQuery,
   });
 };

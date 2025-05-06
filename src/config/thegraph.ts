@@ -1,29 +1,28 @@
 import {
-  ARBITRUM_SEPOLIA_BID,
-  BASE_SEPOLIA_BID,
-  BSC_TESTNET_BID,
-  OPTIMISM_SEPOLIA_BID,
-  SEPOLIA_BID,
-  SONEIUM_MINATO_BID,
-  UNICHAIN_SEPOLIA_BID,
+  arbitrumSepolia,
+  baseSepolia,
+  bscTestnet,
+  Chain,
+  optimismSepolia,
+  sepolia,
+  unichainSepolia,
 } from './chains';
 
 const chainBidToGraphId: Record<number, string> = {
-  [SEPOLIA_BID]: 'replicat-ethereum-sepolia',
-  [BASE_SEPOLIA_BID]: 'replicat-base-sepolia',
-  [OPTIMISM_SEPOLIA_BID]: 'replicat-optimism-sepolia',
-  [BSC_TESTNET_BID]: 'replicat-bsc-chapel',
-  [ARBITRUM_SEPOLIA_BID]: 'replicat-arbitrum-sepolia',
-  [SONEIUM_MINATO_BID]: 'replicat-soneuim-minato',
-  [UNICHAIN_SEPOLIA_BID]: 'replicat-unichain-sepolia',
+  [sepolia.id]: 'replicat-v1-ethereum-sepolia',
+  [baseSepolia.id]: 'replicat-v1-base-sepolia',
+  [optimismSepolia.id]: 'replicat-v1-optimism-sepolia',
+  [bscTestnet.id]: 'replicat-v1-bsc-chapel',
+  [arbitrumSepolia.id]: 'replicat-v1-arbitrum-sepolia',
+  [unichainSepolia.id]: 'replicat-v1-unichain-sepolia',
 };
 
 const baseURL = 'https://subgraph.satsuma-prod.com';
-const versionPath = 'version/v0.1.0/api';
+const versionPath = 'version/v0.2.0/api';
 const teamPath = 'stack3s-team--981216';
 
-export const graphUrl = (chainBid: number) => {
-  const subgraphID = chainBidToGraphId[chainBid];
+export const graphUrl = (chain: Chain) => {
+  const subgraphID = chainBidToGraphId[chain.id];
 
   if (!subgraphID) {
     throw new Error('Unexpected evm chain bid');

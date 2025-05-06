@@ -14,14 +14,23 @@ export const bridgeAbi = [
     type: 'constructor',
     inputs: [
       { name: 'initialOwner', internalType: 'address', type: 'address' },
+      { name: 'wormholeChainId', internalType: 'uint16', type: 'uint16' },
+      { name: 'wormholeRelayer', internalType: 'address', type: 'address' },
     ],
     stateMutability: 'nonpayable',
   },
   {
     type: 'function',
     inputs: [],
-    name: 'chainBid',
+    name: 'GAS_LIMIT',
     outputs: [{ name: '', internalType: 'uint256', type: 'uint256' }],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
+    inputs: [],
+    name: 'chainBid',
+    outputs: [{ name: '', internalType: 'uint16', type: 'uint16' }],
     stateMutability: 'view',
   },
   {
@@ -33,8 +42,8 @@ export const bridgeAbi = [
         type: 'tuple',
         components: [
           { name: 'type_', internalType: 'enum AssetType', type: 'uint8' },
-          { name: 'chainBid', internalType: 'uint256', type: 'uint256' },
-          { name: 'address_', internalType: 'bytes32', type: 'bytes32' },
+          { name: 'chainBid', internalType: 'uint16', type: 'uint16' },
+          { name: 'address_', internalType: 'address', type: 'address' },
           { name: 'metadata', internalType: 'bytes', type: 'bytes' },
         ],
       },
@@ -52,8 +61,8 @@ export const bridgeAbi = [
         type: 'tuple',
         components: [
           { name: 'type_', internalType: 'enum AssetType', type: 'uint8' },
-          { name: 'chainBid', internalType: 'uint256', type: 'uint256' },
-          { name: 'address_', internalType: 'bytes32', type: 'bytes32' },
+          { name: 'chainBid', internalType: 'uint16', type: 'uint16' },
+          { name: 'address_', internalType: 'address', type: 'address' },
           { name: 'metadata', internalType: 'bytes', type: 'bytes' },
         ],
       },
@@ -63,7 +72,7 @@ export const bridgeAbi = [
     outputs: [
       { name: 'replicaAddress', internalType: 'address', type: 'address' },
     ],
-    stateMutability: 'nonpayable',
+    stateMutability: 'payable',
   },
   {
     type: 'function',
@@ -74,8 +83,8 @@ export const bridgeAbi = [
         type: 'tuple',
         components: [
           { name: 'type_', internalType: 'enum AssetType', type: 'uint8' },
-          { name: 'chainBid', internalType: 'uint256', type: 'uint256' },
-          { name: 'address_', internalType: 'bytes32', type: 'bytes32' },
+          { name: 'chainBid', internalType: 'uint16', type: 'uint16' },
+          { name: 'address_', internalType: 'address', type: 'address' },
           { name: 'metadata', internalType: 'bytes', type: 'bytes' },
         ],
       },
@@ -88,7 +97,7 @@ export const bridgeAbi = [
         type: 'address',
       },
     ],
-    stateMutability: 'nonpayable',
+    stateMutability: 'payable',
   },
   {
     type: 'function',
@@ -107,26 +116,9 @@ export const bridgeAbi = [
   },
   {
     type: 'function',
-    inputs: [{ name: 'relayerClass', internalType: 'bytes4', type: 'bytes4' }],
-    name: 'getRelayer',
-    outputs: [{ name: '', internalType: 'contract IRelayer', type: 'address' }],
-    stateMutability: 'view',
-  },
-  {
-    type: 'function',
     inputs: [],
-    name: 'getTransferFee',
-    outputs: [
-      {
-        name: '',
-        internalType: 'struct IBridge.TransferFee',
-        type: 'tuple',
-        components: [
-          { name: 'feeBp', internalType: 'uint48', type: 'uint48' },
-          { name: 'payee', internalType: 'address payable', type: 'address' },
-        ],
-      },
-    ],
+    name: 'getFactoryFee',
+    outputs: [{ name: '', internalType: 'uint256', type: 'uint256' }],
     stateMutability: 'view',
   },
   {
@@ -134,40 +126,15 @@ export const bridgeAbi = [
     inputs: [
       { name: 'transferHash', internalType: 'bytes32', type: 'bytes32' },
     ],
-    name: 'getTransferStatus',
-    outputs: [
-      {
-        name: '',
-        internalType: 'struct IBridge.TransferStatus',
-        type: 'tuple',
-        components: [
-          { name: 'isReverted', internalType: 'bool', type: 'bool' },
-          { name: 'relayer', internalType: 'address', type: 'address' },
-          { name: 'relayerTrackId', internalType: 'uint256', type: 'uint256' },
-        ],
-      },
-    ],
+    name: 'getTransferSequence',
+    outputs: [{ name: '', internalType: 'uint64', type: 'uint64' }],
     stateMutability: 'view',
-  },
-  {
-    type: 'function',
-    inputs: [{ name: 'data', internalType: 'bytes', type: 'bytes' }],
-    name: 'handleMessage',
-    outputs: [],
-    stateMutability: 'nonpayable',
   },
   {
     type: 'function',
     inputs: [{ name: 'dataHash_', internalType: 'bytes32', type: 'bytes32' }],
     name: 'hash',
     outputs: [{ name: '', internalType: 'bytes32', type: 'bytes32' }],
-    stateMutability: 'view',
-  },
-  {
-    type: 'function',
-    inputs: [{ name: 'relayer', internalType: 'address', type: 'address' }],
-    name: 'isRelayer',
-    outputs: [{ name: '', internalType: 'bool', type: 'bool' }],
     stateMutability: 'view',
   },
   {
@@ -180,22 +147,7 @@ export const bridgeAbi = [
   {
     type: 'function',
     inputs: [
-      {
-        name: 'transfer_',
-        internalType: 'struct Transfer',
-        type: 'tuple',
-        components: [
-          { name: 'assetType', internalType: 'enum AssetType', type: 'uint8' },
-          { name: 'assetHash', internalType: 'bytes32', type: 'bytes32' },
-          { name: 'from', internalType: 'address', type: 'address' },
-          { name: 'to', internalType: 'bytes32', type: 'bytes32' },
-          { name: 'chainBid', internalType: 'uint256', type: 'uint256' },
-          { name: 'params', internalType: 'bytes', type: 'bytes' },
-          { name: 'nonce', internalType: 'uint256', type: 'uint256' },
-        ],
-      },
-      { name: 'relayerClass', internalType: 'bytes4', type: 'bytes4' },
-      { name: 'relayerOptions', internalType: 'bytes', type: 'bytes' },
+      { name: 'targetChainBid', internalType: 'uint16', type: 'uint16' },
     ],
     name: 'quoteTransfer',
     outputs: [{ name: '', internalType: 'uint256', type: 'uint256' }],
@@ -203,13 +155,23 @@ export const bridgeAbi = [
   },
   {
     type: 'function',
+    inputs: [{ name: 'targetChain', internalType: 'uint16', type: 'uint16' }],
+    name: 'quoteTransmitMessage',
+    outputs: [{ name: 'cost', internalType: 'uint256', type: 'uint256' }],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
     inputs: [
-      { name: 'messengerClass', internalType: 'bytes4', type: 'bytes4' },
-      { name: 'messenger', internalType: 'contract IRelayer', type: 'address' },
+      { name: 'payload', internalType: 'bytes', type: 'bytes' },
+      { name: '', internalType: 'bytes[]', type: 'bytes[]' },
+      { name: 'sourceAddress', internalType: 'bytes32', type: 'bytes32' },
+      { name: 'sourceChain', internalType: 'uint16', type: 'uint16' },
+      { name: 'deliveryHash', internalType: 'bytes32', type: 'bytes32' },
     ],
-    name: 'registerRelayer',
+    name: 'receiveWormholeMessages',
     outputs: [],
-    stateMutability: 'nonpayable',
+    stateMutability: 'payable',
   },
   {
     type: 'function',
@@ -220,41 +182,8 @@ export const bridgeAbi = [
   },
   {
     type: 'function',
-    inputs: [
-      {
-        name: 'transfer_',
-        internalType: 'struct Transfer',
-        type: 'tuple',
-        components: [
-          { name: 'assetType', internalType: 'enum AssetType', type: 'uint8' },
-          { name: 'assetHash', internalType: 'bytes32', type: 'bytes32' },
-          { name: 'from', internalType: 'address', type: 'address' },
-          { name: 'to', internalType: 'bytes32', type: 'bytes32' },
-          { name: 'chainBid', internalType: 'uint256', type: 'uint256' },
-          { name: 'params', internalType: 'bytes', type: 'bytes' },
-          { name: 'nonce', internalType: 'uint256', type: 'uint256' },
-        ],
-      },
-      { name: 'signature', internalType: 'bytes', type: 'bytes' },
-    ],
-    name: 'revertTransfer',
-    outputs: [],
-    stateMutability: 'nonpayable',
-  },
-  {
-    type: 'function',
-    inputs: [
-      {
-        name: 'fee',
-        internalType: 'struct IBridge.TransferFee',
-        type: 'tuple',
-        components: [
-          { name: 'feeBp', internalType: 'uint48', type: 'uint48' },
-          { name: 'payee', internalType: 'address payable', type: 'address' },
-        ],
-      },
-    ],
-    name: 'setTransferFee',
+    inputs: [{ name: 'fee', internalType: 'uint256', type: 'uint256' }],
+    name: 'setFactoryFee',
     outputs: [],
     stateMutability: 'nonpayable',
   },
@@ -269,15 +198,13 @@ export const bridgeAbi = [
           { name: 'assetType', internalType: 'enum AssetType', type: 'uint8' },
           { name: 'assetHash', internalType: 'bytes32', type: 'bytes32' },
           { name: 'from', internalType: 'address', type: 'address' },
-          { name: 'to', internalType: 'bytes32', type: 'bytes32' },
-          { name: 'chainBid', internalType: 'uint256', type: 'uint256' },
+          { name: 'to', internalType: 'address', type: 'address' },
+          { name: 'chainBid', internalType: 'uint16', type: 'uint16' },
           { name: 'params', internalType: 'bytes', type: 'bytes' },
           { name: 'nonce', internalType: 'uint256', type: 'uint256' },
         ],
       },
       { name: 'signature', internalType: 'bytes', type: 'bytes' },
-      { name: 'relayerClass', internalType: 'bytes4', type: 'bytes4' },
-      { name: 'relayerOptions', internalType: 'bytes', type: 'bytes' },
     ],
     name: 'transfer',
     outputs: [{ name: '', internalType: 'bytes32', type: 'bytes32' }],
@@ -301,15 +228,13 @@ export const bridgeAbi = [
           { name: 'assetType', internalType: 'enum AssetType', type: 'uint8' },
           { name: 'assetHash', internalType: 'bytes32', type: 'bytes32' },
           { name: 'from', internalType: 'address', type: 'address' },
-          { name: 'to', internalType: 'bytes32', type: 'bytes32' },
-          { name: 'chainBid', internalType: 'uint256', type: 'uint256' },
+          { name: 'to', internalType: 'address', type: 'address' },
+          { name: 'chainBid', internalType: 'uint16', type: 'uint16' },
           { name: 'params', internalType: 'bytes', type: 'bytes' },
           { name: 'nonce', internalType: 'uint256', type: 'uint256' },
         ],
       },
       { name: 'signature', internalType: 'bytes', type: 'bytes' },
-      { name: 'relayerClass', internalType: 'bytes4', type: 'bytes4' },
-      { name: 'relayerOptions', internalType: 'bytes', type: 'bytes' },
       {
         name: 'permit',
         internalType: 'struct IBridge.Permit',
@@ -340,10 +265,21 @@ export const bridgeAbi = [
   },
   {
     type: 'function',
-    inputs: [],
+    inputs: [
+      { name: 'payee', internalType: 'address payable', type: 'address' },
+    ],
     name: 'withdrawTransferFees',
     outputs: [],
     stateMutability: 'nonpayable',
+  },
+  {
+    type: 'function',
+    inputs: [],
+    name: 'wormholeRelayer',
+    outputs: [
+      { name: '', internalType: 'contract IWormholeRelayer', type: 'address' },
+    ],
+    stateMutability: 'view',
   },
   { type: 'event', anonymous: false, inputs: [], name: 'EIP712DomainChanged' },
   {
@@ -369,25 +305,6 @@ export const bridgeAbi = [
     type: 'event',
     anonymous: false,
     inputs: [
-      {
-        name: 'relayerClass',
-        internalType: 'bytes4',
-        type: 'bytes4',
-        indexed: true,
-      },
-      {
-        name: 'relayer',
-        internalType: 'contract IRelayer',
-        type: 'address',
-        indexed: false,
-      },
-    ],
-    name: 'RelayerRegistered',
-  },
-  {
-    type: 'event',
-    anonymous: false,
-    inputs: [
       { name: 'hash', internalType: 'bytes32', type: 'bytes32', indexed: true },
       {
         name: 'address_',
@@ -407,8 +324,8 @@ export const bridgeAbi = [
         type: 'tuple',
         components: [
           { name: 'type_', internalType: 'enum AssetType', type: 'uint8' },
-          { name: 'chainBid', internalType: 'uint256', type: 'uint256' },
-          { name: 'address_', internalType: 'bytes32', type: 'bytes32' },
+          { name: 'chainBid', internalType: 'uint16', type: 'uint16' },
+          { name: 'address_', internalType: 'address', type: 'address' },
           { name: 'metadata', internalType: 'bytes', type: 'bytes' },
         ],
         indexed: false,
@@ -439,8 +356,8 @@ export const bridgeAbi = [
         type: 'tuple',
         components: [
           { name: 'type_', internalType: 'enum AssetType', type: 'uint8' },
-          { name: 'chainBid', internalType: 'uint256', type: 'uint256' },
-          { name: 'address_', internalType: 'bytes32', type: 'bytes32' },
+          { name: 'chainBid', internalType: 'uint16', type: 'uint16' },
+          { name: 'address_', internalType: 'address', type: 'address' },
           { name: 'metadata', internalType: 'bytes', type: 'bytes' },
         ],
         indexed: false,
@@ -452,18 +369,9 @@ export const bridgeAbi = [
     type: 'event',
     anonymous: false,
     inputs: [
-      {
-        name: 'fee',
-        internalType: 'struct IBridge.TransferFee',
-        type: 'tuple',
-        components: [
-          { name: 'feeBp', internalType: 'uint48', type: 'uint48' },
-          { name: 'payee', internalType: 'address payable', type: 'address' },
-        ],
-        indexed: false,
-      },
+      { name: 'fee', internalType: 'uint256', type: 'uint256', indexed: false },
     ],
-    name: 'TransferFeeUpdated',
+    name: 'ReplicaFactory_FeeUpdated',
   },
   {
     type: 'event',
@@ -473,7 +381,7 @@ export const bridgeAbi = [
         name: 'payee',
         internalType: 'address',
         type: 'address',
-        indexed: true,
+        indexed: false,
       },
       {
         name: 'amount',
@@ -482,7 +390,7 @@ export const bridgeAbi = [
         indexed: false,
       },
     ],
-    name: 'TransferFeesWithdrawn',
+    name: 'ReplicaFactory_FeesWithdrawn',
   },
   {
     type: 'event',
@@ -502,8 +410,8 @@ export const bridgeAbi = [
           { name: 'assetType', internalType: 'enum AssetType', type: 'uint8' },
           { name: 'assetHash', internalType: 'bytes32', type: 'bytes32' },
           { name: 'from', internalType: 'address', type: 'address' },
-          { name: 'to', internalType: 'bytes32', type: 'bytes32' },
-          { name: 'chainBid', internalType: 'uint256', type: 'uint256' },
+          { name: 'to', internalType: 'address', type: 'address' },
+          { name: 'chainBid', internalType: 'uint16', type: 'uint16' },
           { name: 'params', internalType: 'bytes', type: 'bytes' },
           { name: 'nonce', internalType: 'uint256', type: 'uint256' },
         ],
@@ -530,8 +438,8 @@ export const bridgeAbi = [
           { name: 'assetType', internalType: 'enum AssetType', type: 'uint8' },
           { name: 'assetHash', internalType: 'bytes32', type: 'bytes32' },
           { name: 'from', internalType: 'address', type: 'address' },
-          { name: 'to', internalType: 'bytes32', type: 'bytes32' },
-          { name: 'chainBid', internalType: 'uint256', type: 'uint256' },
+          { name: 'to', internalType: 'address', type: 'address' },
+          { name: 'chainBid', internalType: 'uint16', type: 'uint16' },
           { name: 'params', internalType: 'bytes', type: 'bytes' },
           { name: 'nonce', internalType: 'uint256', type: 'uint256' },
         ],
@@ -557,7 +465,7 @@ export const bridgeAbi = [
         components: [
           { name: 'assetType', internalType: 'enum AssetType', type: 'uint8' },
           { name: 'assetHash', internalType: 'bytes32', type: 'bytes32' },
-          { name: 'to', internalType: 'bytes32', type: 'bytes32' },
+          { name: 'to', internalType: 'address', type: 'address' },
           { name: 'params', internalType: 'bytes', type: 'bytes' },
           { name: 'nonce', internalType: 'uint256', type: 'uint256' },
         ],
@@ -565,6 +473,46 @@ export const bridgeAbi = [
       },
     ],
     name: 'TransferedCrosschain',
+  },
+  {
+    type: 'event',
+    anonymous: false,
+    inputs: [
+      {
+        name: 'deliveryHash',
+        internalType: 'bytes32',
+        type: 'bytes32',
+        indexed: true,
+      },
+      { name: 'payload', internalType: 'bytes', type: 'bytes', indexed: false },
+      {
+        name: 'sourceChain',
+        internalType: 'uint16',
+        type: 'uint16',
+        indexed: false,
+      },
+    ],
+    name: 'WormholeMessageReceived',
+  },
+  {
+    type: 'event',
+    anonymous: false,
+    inputs: [
+      {
+        name: 'sequence',
+        internalType: 'uint64',
+        type: 'uint64',
+        indexed: true,
+      },
+      {
+        name: 'targetChainBid',
+        internalType: 'uint16',
+        type: 'uint16',
+        indexed: false,
+      },
+      { name: 'payload', internalType: 'bytes', type: 'bytes', indexed: false },
+    ],
+    name: 'WormholeMessageSent',
   },
   {
     type: 'error',
@@ -575,21 +523,6 @@ export const bridgeAbi = [
     type: 'error',
     inputs: [{ name: 'chainBid', internalType: 'uint256', type: 'uint256' }],
     name: 'Bridge_InvalidChainBid',
-  },
-  {
-    type: 'error',
-    inputs: [
-      {
-        name: 'fee',
-        internalType: 'struct IBridge.TransferFee',
-        type: 'tuple',
-        components: [
-          { name: 'feeBp', internalType: 'uint48', type: 'uint48' },
-          { name: 'payee', internalType: 'address payable', type: 'address' },
-        ],
-      },
-    ],
-    name: 'Bridge_InvalidFeeBpTooHigh',
   },
   {
     type: 'error',
@@ -675,19 +608,6 @@ export const bridgeAbi = [
     inputs: [{ name: 'account', internalType: 'address', type: 'address' }],
     name: 'OwnableUnauthorizedAccount',
   },
-  { type: 'error', inputs: [], name: 'ReentrancyGuardReentrantCall' },
-  {
-    type: 'error',
-    inputs: [
-      { name: 'relayer', internalType: 'contract IRelayer', type: 'address' },
-    ],
-    name: 'RelayerRegistry_InvalidRelayer',
-  },
-  {
-    type: 'error',
-    inputs: [{ name: 'relayerClass', internalType: 'bytes4', type: 'bytes4' }],
-    name: 'RelayerRegistry_InvalidRelayerClass',
-  },
   {
     type: 'error',
     inputs: [
@@ -695,10 +615,36 @@ export const bridgeAbi = [
     ],
     name: 'ReplicaFactory_AssetClassNotSupported',
   },
+  { type: 'error', inputs: [], name: 'ReplicaFactory_InsufficientFee' },
   {
     type: 'error',
     inputs: [{ name: 'str', internalType: 'string', type: 'string' }],
     name: 'StringTooLong',
+  },
+  { type: 'error', inputs: [], name: 'WormholeMessenger_InsufficientFunds' },
+  {
+    type: 'error',
+    inputs: [
+      { name: 'foreignRelayer', internalType: 'address', type: 'address' },
+    ],
+    name: 'WormholeMessenger_InvalidForeignRelayer',
+  },
+  {
+    type: 'error',
+    inputs: [],
+    name: 'WormholeMessenger_InvalidWormholeRelayerAddress',
+  },
+  {
+    type: 'error',
+    inputs: [
+      { name: 'deliveryHash', internalType: 'bytes32', type: 'bytes32' },
+    ],
+    name: 'WormholeMessenger_MessageAlreadyHandled',
+  },
+  {
+    type: 'error',
+    inputs: [{ name: 'caller', internalType: 'address', type: 'address' }],
+    name: 'WormholeMessenger_UnauthorizedCaller',
   },
 ] as const
 
@@ -1346,6 +1292,14 @@ export const useReadBridge = /*#__PURE__*/ createUseReadContract({
 })
 
 /**
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link bridgeAbi}__ and `functionName` set to `"GAS_LIMIT"`
+ */
+export const useReadBridgeGasLimit = /*#__PURE__*/ createUseReadContract({
+  abi: bridgeAbi,
+  functionName: 'GAS_LIMIT',
+})
+
+/**
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link bridgeAbi}__ and `functionName` set to `"chainBid"`
  */
 export const useReadBridgeChainBid = /*#__PURE__*/ createUseReadContract({
@@ -1371,28 +1325,20 @@ export const useReadBridgeEip712Domain = /*#__PURE__*/ createUseReadContract({
 })
 
 /**
- * Wraps __{@link useReadContract}__ with `abi` set to __{@link bridgeAbi}__ and `functionName` set to `"getRelayer"`
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link bridgeAbi}__ and `functionName` set to `"getFactoryFee"`
  */
-export const useReadBridgeGetRelayer = /*#__PURE__*/ createUseReadContract({
+export const useReadBridgeGetFactoryFee = /*#__PURE__*/ createUseReadContract({
   abi: bridgeAbi,
-  functionName: 'getRelayer',
+  functionName: 'getFactoryFee',
 })
 
 /**
- * Wraps __{@link useReadContract}__ with `abi` set to __{@link bridgeAbi}__ and `functionName` set to `"getTransferFee"`
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link bridgeAbi}__ and `functionName` set to `"getTransferSequence"`
  */
-export const useReadBridgeGetTransferFee = /*#__PURE__*/ createUseReadContract({
-  abi: bridgeAbi,
-  functionName: 'getTransferFee',
-})
-
-/**
- * Wraps __{@link useReadContract}__ with `abi` set to __{@link bridgeAbi}__ and `functionName` set to `"getTransferStatus"`
- */
-export const useReadBridgeGetTransferStatus =
+export const useReadBridgeGetTransferSequence =
   /*#__PURE__*/ createUseReadContract({
     abi: bridgeAbi,
-    functionName: 'getTransferStatus',
+    functionName: 'getTransferSequence',
   })
 
 /**
@@ -1401,14 +1347,6 @@ export const useReadBridgeGetTransferStatus =
 export const useReadBridgeHash = /*#__PURE__*/ createUseReadContract({
   abi: bridgeAbi,
   functionName: 'hash',
-})
-
-/**
- * Wraps __{@link useReadContract}__ with `abi` set to __{@link bridgeAbi}__ and `functionName` set to `"isRelayer"`
- */
-export const useReadBridgeIsRelayer = /*#__PURE__*/ createUseReadContract({
-  abi: bridgeAbi,
-  functionName: 'isRelayer',
 })
 
 /**
@@ -1426,6 +1364,22 @@ export const useReadBridgeQuoteTransfer = /*#__PURE__*/ createUseReadContract({
   abi: bridgeAbi,
   functionName: 'quoteTransfer',
 })
+
+/**
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link bridgeAbi}__ and `functionName` set to `"quoteTransmitMessage"`
+ */
+export const useReadBridgeQuoteTransmitMessage =
+  /*#__PURE__*/ createUseReadContract({
+    abi: bridgeAbi,
+    functionName: 'quoteTransmitMessage',
+  })
+
+/**
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link bridgeAbi}__ and `functionName` set to `"wormholeRelayer"`
+ */
+export const useReadBridgeWormholeRelayer = /*#__PURE__*/ createUseReadContract(
+  { abi: bridgeAbi, functionName: 'wormholeRelayer' },
+)
 
 /**
  * Wraps __{@link useWriteContract}__ with `abi` set to __{@link bridgeAbi}__
@@ -1451,19 +1405,12 @@ export const useWriteBridgeCreateReplicaAdapter =
   })
 
 /**
- * Wraps __{@link useWriteContract}__ with `abi` set to __{@link bridgeAbi}__ and `functionName` set to `"handleMessage"`
+ * Wraps __{@link useWriteContract}__ with `abi` set to __{@link bridgeAbi}__ and `functionName` set to `"receiveWormholeMessages"`
  */
-export const useWriteBridgeHandleMessage = /*#__PURE__*/ createUseWriteContract(
-  { abi: bridgeAbi, functionName: 'handleMessage' },
-)
-
-/**
- * Wraps __{@link useWriteContract}__ with `abi` set to __{@link bridgeAbi}__ and `functionName` set to `"registerRelayer"`
- */
-export const useWriteBridgeRegisterRelayer =
+export const useWriteBridgeReceiveWormholeMessages =
   /*#__PURE__*/ createUseWriteContract({
     abi: bridgeAbi,
-    functionName: 'registerRelayer',
+    functionName: 'receiveWormholeMessages',
   })
 
 /**
@@ -1476,22 +1423,11 @@ export const useWriteBridgeRenounceOwnership =
   })
 
 /**
- * Wraps __{@link useWriteContract}__ with `abi` set to __{@link bridgeAbi}__ and `functionName` set to `"revertTransfer"`
+ * Wraps __{@link useWriteContract}__ with `abi` set to __{@link bridgeAbi}__ and `functionName` set to `"setFactoryFee"`
  */
-export const useWriteBridgeRevertTransfer =
-  /*#__PURE__*/ createUseWriteContract({
-    abi: bridgeAbi,
-    functionName: 'revertTransfer',
-  })
-
-/**
- * Wraps __{@link useWriteContract}__ with `abi` set to __{@link bridgeAbi}__ and `functionName` set to `"setTransferFee"`
- */
-export const useWriteBridgeSetTransferFee =
-  /*#__PURE__*/ createUseWriteContract({
-    abi: bridgeAbi,
-    functionName: 'setTransferFee',
-  })
+export const useWriteBridgeSetFactoryFee = /*#__PURE__*/ createUseWriteContract(
+  { abi: bridgeAbi, functionName: 'setFactoryFee' },
+)
 
 /**
  * Wraps __{@link useWriteContract}__ with `abi` set to __{@link bridgeAbi}__ and `functionName` set to `"transfer"`
@@ -1563,21 +1499,12 @@ export const useSimulateBridgeCreateReplicaAdapter =
   })
 
 /**
- * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link bridgeAbi}__ and `functionName` set to `"handleMessage"`
+ * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link bridgeAbi}__ and `functionName` set to `"receiveWormholeMessages"`
  */
-export const useSimulateBridgeHandleMessage =
+export const useSimulateBridgeReceiveWormholeMessages =
   /*#__PURE__*/ createUseSimulateContract({
     abi: bridgeAbi,
-    functionName: 'handleMessage',
-  })
-
-/**
- * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link bridgeAbi}__ and `functionName` set to `"registerRelayer"`
- */
-export const useSimulateBridgeRegisterRelayer =
-  /*#__PURE__*/ createUseSimulateContract({
-    abi: bridgeAbi,
-    functionName: 'registerRelayer',
+    functionName: 'receiveWormholeMessages',
   })
 
 /**
@@ -1590,21 +1517,12 @@ export const useSimulateBridgeRenounceOwnership =
   })
 
 /**
- * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link bridgeAbi}__ and `functionName` set to `"revertTransfer"`
+ * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link bridgeAbi}__ and `functionName` set to `"setFactoryFee"`
  */
-export const useSimulateBridgeRevertTransfer =
+export const useSimulateBridgeSetFactoryFee =
   /*#__PURE__*/ createUseSimulateContract({
     abi: bridgeAbi,
-    functionName: 'revertTransfer',
-  })
-
-/**
- * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link bridgeAbi}__ and `functionName` set to `"setTransferFee"`
- */
-export const useSimulateBridgeSetTransferFee =
-  /*#__PURE__*/ createUseSimulateContract({
-    abi: bridgeAbi,
-    functionName: 'setTransferFee',
+    functionName: 'setFactoryFee',
   })
 
 /**
@@ -1678,15 +1596,6 @@ export const useWatchBridgeOwnershipTransferredEvent =
   })
 
 /**
- * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link bridgeAbi}__ and `eventName` set to `"RelayerRegistered"`
- */
-export const useWatchBridgeRelayerRegisteredEvent =
-  /*#__PURE__*/ createUseWatchContractEvent({
-    abi: bridgeAbi,
-    eventName: 'RelayerRegistered',
-  })
-
-/**
  * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link bridgeAbi}__ and `eventName` set to `"ReplicaAdapterCreated"`
  */
 export const useWatchBridgeReplicaAdapterCreatedEvent =
@@ -1705,21 +1614,21 @@ export const useWatchBridgeReplicaCreatedEvent =
   })
 
 /**
- * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link bridgeAbi}__ and `eventName` set to `"TransferFeeUpdated"`
+ * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link bridgeAbi}__ and `eventName` set to `"ReplicaFactory_FeeUpdated"`
  */
-export const useWatchBridgeTransferFeeUpdatedEvent =
+export const useWatchBridgeReplicaFactoryFeeUpdatedEvent =
   /*#__PURE__*/ createUseWatchContractEvent({
     abi: bridgeAbi,
-    eventName: 'TransferFeeUpdated',
+    eventName: 'ReplicaFactory_FeeUpdated',
   })
 
 /**
- * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link bridgeAbi}__ and `eventName` set to `"TransferFeesWithdrawn"`
+ * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link bridgeAbi}__ and `eventName` set to `"ReplicaFactory_FeesWithdrawn"`
  */
-export const useWatchBridgeTransferFeesWithdrawnEvent =
+export const useWatchBridgeReplicaFactoryFeesWithdrawnEvent =
   /*#__PURE__*/ createUseWatchContractEvent({
     abi: bridgeAbi,
-    eventName: 'TransferFeesWithdrawn',
+    eventName: 'ReplicaFactory_FeesWithdrawn',
   })
 
 /**
@@ -1747,6 +1656,24 @@ export const useWatchBridgeTransferedCrosschainEvent =
   /*#__PURE__*/ createUseWatchContractEvent({
     abi: bridgeAbi,
     eventName: 'TransferedCrosschain',
+  })
+
+/**
+ * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link bridgeAbi}__ and `eventName` set to `"WormholeMessageReceived"`
+ */
+export const useWatchBridgeWormholeMessageReceivedEvent =
+  /*#__PURE__*/ createUseWatchContractEvent({
+    abi: bridgeAbi,
+    eventName: 'WormholeMessageReceived',
+  })
+
+/**
+ * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link bridgeAbi}__ and `eventName` set to `"WormholeMessageSent"`
+ */
+export const useWatchBridgeWormholeMessageSentEvent =
+  /*#__PURE__*/ createUseWatchContractEvent({
+    abi: bridgeAbi,
+    eventName: 'WormholeMessageSent',
   })
 
 /**

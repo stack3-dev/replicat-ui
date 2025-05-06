@@ -4,31 +4,29 @@ import { Hex, TransactionReceipt } from 'viem';
 import { EvmWriteContractButton } from './evm-write-contract-button';
 import { bridgeAbi } from '@/generated/wagmi/wagmi';
 import { encodeMetadataFT } from '@/utils/encoding';
-import { chains } from '@/config/chains';
+import { Chain } from '@/config/chains';
 
 export default function EvmCreateReplicaAdapterButton({
   asset,
-  chainBid,
+  chain,
   onTransactionSuccess,
   ...buttonProps
 }: {
   asset: Asset;
-  chainBid: number;
+  chain: Chain;
   onTransactionSuccess?: (receipt: TransactionReceipt) => void;
 } & ButtonProps) {
-  const targetChainBid = chainBid;
-
   return (
     <EvmWriteContractButton
       params={{
         abi: bridgeAbi,
-        address: chains[targetChainBid].bridgeAddress as Hex,
+        address: chain.bridgeAddress as Hex,
         functionName: 'createReplicaAdapter',
-        chainId: chainBid,
+        chainId: chain.id,
         args: [
           {
             type_: asset.type,
-            chainBid: BigInt(asset.chainBid),
+            chainBid: asset.chainBid,
             address_: asset.address,
             metadata: encodeMetadataFT(asset.metadata as MetadataFT),
           },
